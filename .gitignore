@@ -1,0 +1,41 @@
+# ==== ARQUIVOS SENSÍVEIS ====
+.env
+*.env
+.env.local
+.env.dev
+.env.prod
+
+# ==== PYTHON CACHE ====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ==== AMBIENTE VIRTUAL ====
+venv/
+.env/
+.venv/
+
+# ==== LOGS ====
+*.log
+
+# ==== ARQUIVOS TEMPORÁRIOS ====
+*.tmp
+*.bak
+
+# ==== CONFIGURAÇÕES DO SISTEMA ====
+Thumbs.db
+.DS_Store
+
+# ==== CONFIGURAÇÕES DE IDE ====
+.vscode/
+.idea/
+
+# ==== SQL / BACKUPS ====
+*.sql.bkp
+*.sql~
+
+# ==== ARQUIVOS DE TESTE (opcional) ====
+# Se NÃO quiser subir para o Git:
+# test_connection.py
+# test_insert.py
