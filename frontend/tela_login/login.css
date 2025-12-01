@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #b89bee, #774cb4, #5e3ea1);
+  background-size: 600% 600%;
+  animation: gradientAnim 12s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientAnim {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-box {
+  background: #ffffff;
+  width: 470px;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0px 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+  animation: aparecer 0.8s ease;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 24px;
+  color: #5e3ea1;
+}
+
+h3 {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #666;
+}
+
+p {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0 20px 0;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+
+.senha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.senha-header a {
+  font-size: 12px;
+  text-decoration: none;
+  color: #6f42c1;
+}
+
+input {
+  margin-top: 5px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 5px rgba(111,66,193,0.3);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #5e3ea1, #8e5ad7);
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 12px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.btn-login:hover {
+  transform: scale(1.02);
+  transition: 0.3s;
+}
+
+.google-area {
+  margin-top: 15px;
+}
+
+.btn-google {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.btn-google img {
+  width: 20px;
+}
+
+.btn-especialista {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: transparent;
+  border: 1px solid #6f42c1;
+  color: #6f42c1;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-especialista:hover {
+  background: #6f42c1;
+  color: white;
+  transition: 0.3s;
+}
+
+.cadastro {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.cadastro a {
+  color: #6f42c1;
+  text-decoration: none;
+  font-weight: bold;
+}
