@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
+from database import db 
 from models import db, Usuario, Ticket,Case
 from uuid import uuid4
 from datetime import datetime
 import re
 import json
 import os
-
+from flask_cors import CORS
 # --- LLM ---
 from google import genai
 from google.genai import types
@@ -23,6 +24,8 @@ def call_llm_api(user_message):
         if not os.getenv("GEMINI_API_KEY"):
             raise ValueError("A variável GEMINI_API_KEY não está configurada.")
         
+        api_key = os.getenv("GEMINI_API_KEY")
+        genai.configure(api_key=api_key)
         client = genai.Client()
         system_prompt = (
             "Você é um sistema de triagem inteligente. Sua única função é analisar a mensagem "
@@ -46,6 +49,7 @@ def call_llm_api(user_message):
 
 # --- FLASK ---
 app = Flask(__name__)
+CORS(app)
 
 @app.before_request
 def _db_connect():
@@ -219,7 +223,7 @@ def listar_especialistas_pendentes():
         } for u in especialistas
     ])
 
-# --- ROTAS DE TICKETS ---
+# --- ROTAS DE TICKETS -----
 @app.post("/tickets")
 def criar_ticket():
     data = request.json
@@ -293,6 +297,13 @@ def listar_casos_pendentes():
             "criado_em": c.criado_em.isoformat()
         } for c in casos
     ])
+    
+from flask import Flask, request, jsonify, render_template
+...
+@app.get("/chat")
+def home():
+    return render_template("chat.html")
+
 
 # --- RUN ---
 if __name__ == "__main__":
