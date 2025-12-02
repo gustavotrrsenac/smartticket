@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chatbot Especialista</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        .chat-bubble {
+            max-width: 70%;
+            border-radius: 1rem;
+            word-wrap: break-word;
+        }
+
+        .user-bubble {
+            background-color: #0d6efd;
+            align-self: flex-end;
+        }
+
+        .expert-bubble {
+            background-color: #6c757d;
+            align-self: flex-start;
+        }
+
+        .messages-area-wrapper {
+            max-height: calc(100vh - 120px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-md-4 col-lg-3 bg-white border-end p-3 d-flex flex-column">
+                <h5 class="mb-3 text-center text-primary">Contatos (Mock)</h5>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary" onclick="window.location.reload();">Novo Caso/Resetar Chat</button>
+                    <div class="mt-4 text-muted small">
+                        * O chat atual é um fluxo de triagem estruturado. Clique em "Novo Caso" para limpar a sessão.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-lg-9 d-flex flex-column p-3">
+                <div class="flex-grow-1 bg-light rounded shadow-sm p-3 overflow-auto messages-area-wrapper" id="messages-area">
+                    <!-- Mensagens serão injetadas aqui -->
+                </div>
+
+                <div class="mt-3 d-flex">
+                    <input type="text" class="form-control me-2" id="message-input" placeholder="Digite sua pergunta para o especialista...">
+                    <button class="btn btn-primary" id="send-button">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        const inputField = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const messagesArea = document.getElementById('messages-area');
+
+        // Substitua pelo ID do usuário logado
+        const USUARIO_ID = "COLOQUE_AQUI_O_ID_DO_CLIENTE";
+
+        // Adiciona mensagem ao chat
+        function appendMessage(text, sender) {
+            const isUser = sender === 'user';
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'd-flex flex-column';
+
+            const messageBubble = document.createElement('div');
+            messageBubble.className = 'p-3 mb-2 text-white chat-bubble ' + (isUser ? 'user-bubble' : 'expert-bubble');
+            messageBubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            messageContainer.appendChild(messageBubble);
+            messagesArea.appendChild(messageContainer);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userMessage = inputField.value.trim();
+            if (!userMessage) return;
+
+            appendMessage(userMessage, 'user');
+            inputField.value = '';
+            inputField.disabled = true;
+            sendButton.disabled = true;
+
+            try {
+                const response = await fetch('/triagem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        mensagem: userMessage,
+                        criado_por: USUARIO_ID
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    appendMessage(data.msg, 'expert');
+                } else {
+                    appendMessage("Erro: Não foi possível processar sua solicitação.", 'expert');
+                    console.error(data.message || data.error);
+                }
+
+            } catch (error) {
+                console.error('Erro de rede:', error);
+                appendMessage("Erro: Falha na conexão com o servidor.", 'expert');
+            } finally {
+                inputField.disabled = false;
+                sendButton.disabled = false;
+                inputField.focus();
+            }
+        }
+
+        // Listeners
+        sendButton.addEventListener('click', sendMessage);
+        inputField.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+
+</html>
