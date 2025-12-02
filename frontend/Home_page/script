@@ -1,0 +1,56 @@
+// Buscar JSON
+let dados = [];
+
+async function iniciarBusca() {
+  const resposta = await fetch("data.json");
+  dados = await resposta.json();
+  console.log(dados);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  /* --- LÓGICA DO CARROSSEL --- */
+  const wrapper = document.getElementById('carouselWrapper');
+  const images = document.querySelectorAll('.carousel-image');
+  let currentIndex = 0;
+  const totalImages = images.length;
+
+  // Tempo de troca: 3500 milissegundos = 3.5 segundos
+  const intervalTime = 3500;
+
+  function nextSlide() {
+    currentIndex++;
+
+    // Se chegar no fim, volta para a primeira imagem (loop)
+    if (currentIndex >= totalImages) {
+      currentIndex = 0;
+    }
+
+    // Move o carrossel para a esquerda baseado na largura da tela (100vw)
+    wrapper.style.transform = `translateX(-${currentIndex * 100}vw)`;
+  }
+
+  // Inicia a troca automática
+  setInterval(nextSlide, intervalTime);
+
+  /* --- LÓGICA DO SCROLL SUAVE (MENU) --- */
+  // Isso garante que ao clicar no menu, a página deslize suavemente
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+
+      if (targetElement) {
+        // Ajuste para descontar a altura do header fixo (70px) + um respiro
+        const headerOffset = 100;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    });
+  });
+});

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Ticket</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="glass-capsule">
+        <a href="/" class="logo-container">
+            <img src="logo1.png" alt="Logo Smart Ticket" class="logo-img">
+            <span class="logo-text">Smart Ticket</span>
+        </a>
+
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#descubra">Descubra</a></li>
+                <li><a href="#categorias">Categorias</a></li>
+                <li><a href="#passo-a-passo">Como Funciona</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#impacto">Alcance</a></li>
+            </ul>
+        </nav>
+
+        <div class="search-compact">
+            <button id="botao-busca-icon" onclick="alert('Funcionalidade de busca...')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <section id="descubra" class="carousel-container">
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <img src="teste 4.jpg" alt="Destaque 1" class="carousel-image">
+            <img src="teste 7.jpg" alt="Destaque 2" class="carousel-image">
+            <img src="teste 8.jpg" alt="Destaque 3" class="carousel-image">
+        </div>
+    </section>
+
+    <div class="carousel-reflection-container">
+        <div class="carousel-reflection" id="carouselReflection"></div>
+    </div>
+
+    <main>
+        <section id="categorias" class="categories-section">
+            <div class="categories-card">
+                <h3 class="section-title">Escolha o Assunto e Explore</h3>
+
+                <div class="tags-container">
+                    <a href="#" class="tag-pill">Advocacia</a>
+                    <a href="#" class="tag-pill">Arquitetura</a>
+                    <a href="#" class="tag-pill">Saúde</a>
+                    <a href="#" class="tag-pill">Manutenção</a>
+                    <a href="#" class="tag-pill">Engenharia</a>
+                    <a href="#" class="tag-pill">Educação</a>
+                    <a href="#" class="tag-pill">Tecnologia</a>
+                </div>
+
+                <div class="cta-container">
+                    <a href="#" class="btn-start">
+                        comece agora
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-services-section">
+            <div class="section-header">
+                <h2 class="main-title">Principais serviços pedidos</h2>
+                <p class="sub-title">Os serviços mais realizados de cada categoria</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="card-image"><img src="https://images.unsplash.com/photo-1581092921461-eab62e97a78e?q=80&w=600&auto=format&fit=crop" alt="Móveis"></div>
+                    <div class="card-content">
+                        <h3>Montagem de móveis</h3>
+                        <a href="#" class="service-link">Solicitar orçamento</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="card-image"><img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=600&auto=format&fit=crop" alt="Mudanças"></div>
+                    <div class="card-content">
+                        <h3>Mudanças e Carretos</h3>
+                        <a href="#" class="service-link">Solicitar orçamento</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="card-image"><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=600&auto=format&fit=crop" alt="Pedreiro"></div>
+                    <div class="card-content">
+                        <h3>Serviço de Pedreiro</h3>
+                        <a href="#" class="service-link">Solicitar orçamento</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="passo-a-passo" class="how-it-works-section">
+            <div class="hiw-container">
+                <div class="hiw-visual">
+                    <div class="visual-content">
+                        <h2 class="hiw-title">Conecte-se<br>ao profissional<br>ideal em<br><span class="highlight-text">minutos</span></h2>
+                        <p class="hiw-desc">Resolva seu problema seguindo apenas 4 passos simples.</p>
+                        <div class="floating-shape"></div>
+                    </div>
+                </div>
+                <div class="hiw-steps">
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                        <div class="step-text"><h3>Encontre seu Nicho</h3><p>Use nossa busca inteligente.</p></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg></div>
+                        <div class="step-text"><h3>Escolha o Especialista</h3><p>Compare perfis e avaliações.</p></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                        <div class="step-text"><h3>Solicite Orçamento</h3><p>Negocie valores sem compromisso.</p></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                        <div class="step-text"><h3>Feche o Negócio</h3><p>Aproveite o serviço com segurança.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobre" class="about-us-section">
+            <div class="about-container">
+                <div class="about-header">
+                    <h2 class="about-title">Quem Somos Nós</h2>
+                    <p class="about-subtitle">Transformando conexões em resultados reais.</p>
+                </div>
+                <div class="features-row">
+                    <div class="feature-item">
+                        <h3 class="feature-title">Inovação</h3>
+                        <p class="feature-desc">Tecnologia para <span class="highlight">otimizar</span> encontros profissionais.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Segurança</h3>
+                        <p class="feature-desc">Ambiente seguro com perfis <span class="highlight">verificados</span>.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title text-gradient">Eficiência</h3>
+                        <p class="feature-desc">Experiência <span class="highlight">fluida</span> e sem burocracia.</p>
+                    </div>
+                </div>
+                <div class="about-cta">
+                    <a href="arquivo-empresa.pdf" target="_blank" class="btn-download">
+                        <span>Conheça nossa história completa</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="feedbacks" class="feedback-section">
+            <h2 class="section-title" style="text-align:center;">O que dizem sobre nós</h2>
+            <div class="feedback-grid">
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop" alt="Ana">
+                            </div>
+                            <span class="user-name">Ana Souza</span>
+                        </div>
+                        <div class="menu-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="social-body">
+                        <p class="feedback-text">"Nunca foi tão fácil encontrar um encanador. Em 10 minutos resolvi um problema de semanas!"</p>
+                        <span class="post-tag">#agilidade</span>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop" alt="Carlos">
+                            </div>
+                            <span class="user-name">Carlos M.</span>
+                        </div>
+                        <div class="menu-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="social-body">
+                        <p class="feedback-text">"A plataforma é super intuitiva. Consegui comparar orçamentos e escolher o melhor custo."</p>
+                        <span class="post-tag">#economia</span>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop" alt="Julia">
+                            </div>
+                            <span class="user-name">Julia Lima</span>
+                        </div>
+                        <div class="menu-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="social-body">
+                        <p class="feedback-text">"Sou prestadora de serviços e minha agenda lotou depois que entrei no Smart Ticket. Recomendo!"</p>
+                        <span class="post-tag">#parceria</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impacto" class="impact-section">
+            <div class="impact-container">
+                <div class="map-side">
+                    <div class="tech-map-visual">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/World_map_polygonal.svg" alt="Mapa de Alcance" class="world-map-svg">
+                        <div class="map-pin pin-1"></div>
+                        <div class="map-pin pin-2"></div>
+                        <div class="map-pin pin-3"></div>
+                        <div class="radar-scan"></div>
+                    </div>
+                </div>
+                <div class="data-side">
+                    <h2 class="impact-title">Quebrando barreiras <br><span class="highlight-text">geográficas</span></h2>
+                    <p class="impact-desc">
+                        Possibilitamos o atendimento em todo o Brasil. Conectamos quem precisa resolver com quem sabe fazer, sem fronteiras.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3 class="stat-number">+1000</h3>
+                            <p class="stat-label">Clientes satisfeitos com tickets validados</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 class="stat-number">75%</h3>
+                            <p class="stat-label">Dos especialistas voltaram à ativa ou renda extra</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 class="stat-number">100%</h3>
+                            <p class="stat-label">Cobertura de atendimento nacional</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <h2 class="section-title" style="text-align: center; margin-top: 5rem;">Tecnologias</h2>
+        <section class="card-container">
+            <article class="card">
+                <h2>JavaScript</h2>
+                <p><strong>Lançamento:</strong> 1995</p>
+                <p>Essencial para a web.</p>
+            </article>
+            <article class="card">
+                <h2>React</h2>
+                <p><strong>Lançamento:</strong> 2013</p>
+                <p>Interfaces modernas.</p>
+            </article>
+            <article class="card">
+                <h2>Python</h2>
+                <p><strong>Lançamento:</strong> 1991</p>
+                <p>Ciência de Dados.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <ul class="footer-links">
+            <li><a href="#" target="_blank">igesdf</a></li>
+            <li><a href="#" target="_blank">CNS</a></li>
+        </ul>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
