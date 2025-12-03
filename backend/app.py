@@ -275,6 +275,55 @@ def listar_tickets():
         }
         for t in tickets
     ])
+    
+    from flask import request, jsonify
+from models import Ticket
+from database import db
+
+
+@app.route("/tickets/draft", methods=["POST"])
+def create_ticket_draft():
+    data = request.get_json()
+
+    user_id = data.get("userId")
+    especialidade_id = data.get("especialidadeId")
+    respostas = data.get("respostasChat")
+    titulo = data.get("titulo")
+
+    if not user_id or not especialidade_id or not respostas:
+        return jsonify({"error": "Dados incompletos."}), 400
+
+    descricao = "\n".join(
+        [f"- {item['pergunta']}: {item['resposta']}" for item in respostas]
+    )
+
+    ticket = Ticket(
+        user_id=user_id,
+        especialidade_id=especialidade_id,
+        titulo=titulo if titulo else "Ticket Gerado pelo Chatbot",
+        descricao=descricao,
+        status="rascunho",
+    )
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Rascunho gerado com sucesso!",
+        "ticket": {
+            "id": ticket.id,
+            "user_id": ticket.user_id,
+            "especialidade_id": ticket.especialidade_id,
+            "titulo": ticket.titulo,
+            "descricao": ticket.descricao,
+            "status": ticket.status,
+            "criado_em": ticket.criado_em.isoformat()
+        }
+    }), 201
+    
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
+    

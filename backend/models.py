@@ -79,3 +79,24 @@ class Mensagem(BaseModel):
     mensagem = TextField()
     tipo = CharField(choices=[('texto','texto'),('imagem','imagem'),('arquivo','arquivo'),('audio','audio')], default='texto')
     enviado_em = DateTimeField(default=datetime.datetime.now)
+
+from datetime import datetime
+from database import db  # mantém igual aos seus outros imports
+
+class Ticket(db.Model):
+    __tablename__ = "tickets"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    especialidade_id = db.Column(db.Integer, nullable=False)
+
+    titulo = db.Column(db.String(255), nullable=True)
+    descricao = db.Column(db.Text, nullable=False)
+
+    status = db.Column(db.String(50), nullable=False, default="rascunho")
+
+    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+    atualizado_em = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<Ticket {self.id}>"
