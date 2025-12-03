@@ -276,17 +276,19 @@ def listar_tickets():
         for t in tickets
     ])
     
-   @app.post("/tickets/draft")
+  @app.post("/tickets/draft")
 def gerar_rascunho_ticket():
     try:
         data = request.json
 
-        user_id = data.get("user_id")
+        user_id = data.get("user_id")            # cliente
         especialidade_id = data.get("especialidade_id")
         respostas = data.get("respostas_chat")
         titulo = data.get("titulo")
 
-        # VERIFICAÇÕES
+        # ───────────────────────────────
+        # VALIDAÇÕES
+        # ───────────────────────────────
         if not user_id:
             return jsonify({"success": False, "message": "ID do usuário é obrigatório"}), 400
 
@@ -296,22 +298,31 @@ def gerar_rascunho_ticket():
         if not respostas or not isinstance(respostas, list):
             return jsonify({"success": False, "message": "Respostas do chatbot são obrigatórias"}), 400
 
-        # MONTAR DESCRIÇÃO A PARTIR DO CHATBOT
+        # ───────────────────────────────
+        # MONTAR DESCRIÇÃO
+        # ───────────────────────────────
         descricao = "\n".join(
             [f"- {r.get('pergunta')}: {r.get('resposta')}" for r in respostas]
         )
 
+        # ───────────────────────────────
         # CRIAR TICKET COMO RASCUNHO
+        # ───────────────────────────────
         ticket = Ticket.create(
             id=str(uuid4()),
+            cliente=user_id,                 # campo correto no modelo
+            especialista=None,               # ainda não atribuído
+            triagem=None,                    # opcional
             titulo=titulo if titulo else "Ticket Gerado pelo Chatbot",
             descricao=descricao,
-            criado_por=user_id,
+            status="rascunho",               
             especialidade_id=especialidade_id,
-            status="rascunho",
             criado_em=datetime.now()
         )
 
+        # ───────────────────────────────
+        # RESPOSTA
+        # ───────────────────────────────
         return jsonify({
             "success": True,
             "message": "Rascunho gerado com sucesso!",
@@ -320,8 +331,8 @@ def gerar_rascunho_ticket():
                 "titulo": ticket.titulo,
                 "descricao": ticket.descricao,
                 "status": ticket.status,
+                "cliente": user_id,
                 "especialidade_id": especialidade_id,
-                "criado_por": user_id,
                 "criado_em": ticket.criado_em.isoformat()
             }
         }), 201
@@ -331,6 +342,7 @@ def gerar_rascunho_ticket():
             "success": False,
             "message": f"Erro ao gerar rascunho: {str(e)}"
         }), 500
+
     
     
 
