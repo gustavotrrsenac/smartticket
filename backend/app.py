@@ -248,7 +248,7 @@ def listar_especialistas_pendentes():
         for u in especialistas
     ])
 
-# ROTAS DE TICKETS (mantidas do seu código original)
+
 @app.post("/tickets")
 def criar_ticket():
     data = request.json
@@ -276,50 +276,61 @@ def listar_tickets():
         for t in tickets
     ])
     
-    from flask import request, jsonify
-from models import Ticket
-from database import db
+   @app.post("/tickets/draft")
+def gerar_rascunho_ticket():
+    try:
+        data = request.json
 
+        user_id = data.get("user_id")
+        especialidade_id = data.get("especialidade_id")
+        respostas = data.get("respostas_chat")
+        titulo = data.get("titulo")
 
-@app.route("/tickets/draft", methods=["POST"])
-def create_ticket_draft():
-    data = request.get_json()
+        # VERIFICAÇÕES
+        if not user_id:
+            return jsonify({"success": False, "message": "ID do usuário é obrigatório"}), 400
 
-    user_id = data.get("userId")
-    especialidade_id = data.get("especialidadeId")
-    respostas = data.get("respostasChat")
-    titulo = data.get("titulo")
+        if not especialidade_id:
+            return jsonify({"success": False, "message": "Especialidade é obrigatória"}), 400
 
-    if not user_id or not especialidade_id or not respostas:
-        return jsonify({"error": "Dados incompletos."}), 400
+        if not respostas or not isinstance(respostas, list):
+            return jsonify({"success": False, "message": "Respostas do chatbot são obrigatórias"}), 400
 
-    descricao = "\n".join(
-        [f"- {item['pergunta']}: {item['resposta']}" for item in respostas]
-    )
+        # MONTAR DESCRIÇÃO A PARTIR DO CHATBOT
+        descricao = "\n".join(
+            [f"- {r.get('pergunta')}: {r.get('resposta')}" for r in respostas]
+        )
 
-    ticket = Ticket(
-        user_id=user_id,
-        especialidade_id=especialidade_id,
-        titulo=titulo if titulo else "Ticket Gerado pelo Chatbot",
-        descricao=descricao,
-        status="rascunho",
-    )
+        # CRIAR TICKET COMO RASCUNHO
+        ticket = Ticket.create(
+            id=str(uuid4()),
+            titulo=titulo if titulo else "Ticket Gerado pelo Chatbot",
+            descricao=descricao,
+            criado_por=user_id,
+            especialidade_id=especialidade_id,
+            status="rascunho",
+            criado_em=datetime.now()
+        )
 
-    db.session.add(ticket)
-    db.session.commit()
+        return jsonify({
+            "success": True,
+            "message": "Rascunho gerado com sucesso!",
+            "ticket": {
+                "id": ticket.id,
+                "titulo": ticket.titulo,
+                "descricao": ticket.descricao,
+                "status": ticket.status,
+                "especialidade_id": especialidade_id,
+                "criado_por": user_id,
+                "criado_em": ticket.criado_em.isoformat()
+            }
+        }), 201
 
-    return jsonify({
-        "message": "Rascunho gerado com sucesso!",
-        "ticket": {
-            "id": ticket.id,
-            "user_id": ticket.user_id,
-            "especialidade_id": ticket.especialidade_id,
-            "titulo": ticket.titulo,
-            "descricao": ticket.descricao,
-            "status": ticket.status,
-            "criado_em": ticket.criado_em.isoformat()
-        }
-    }), 201
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro ao gerar rascunho: {str(e)}"
+        }), 500
     
     
 
