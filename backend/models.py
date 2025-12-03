@@ -80,23 +80,43 @@ class Mensagem(BaseModel):
     tipo = CharField(choices=[('texto','texto'),('imagem','imagem'),('arquivo','arquivo'),('audio','audio')], default='texto')
     enviado_em = DateTimeField(default=datetime.datetime.now)
 
-from datetime import datetime
-from database import db  # mantém igual aos seus outros imports
+class Ticket(BaseModel):
+    id = CharField(primary_key=True, max_length=36)
 
-class Ticket(db.Model):
-    __tablename__ = "tickets"
+    # quem criou o ticket
+    cliente = ForeignKeyField(
+        Usuario, 
+        backref='tickets_cliente', 
+        on_delete='CASCADE'
+    )
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)
-    especialidade_id = db.Column(db.Integer, nullable=False)
+    # especialista só será definido após envio para a fila
+    especialista = ForeignKeyField(
+        Usuario, 
+        backref='tickets_especialista',
+        null=True,
+        on_delete='SET NULL'
+    )
 
-    titulo = db.Column(db.String(255), nullable=True)
-    descricao = db.Column(db.Text, nullable=False)
+    # triagem opcional (para quando o chatbot cria)
+    triagem = ForeignKeyField(
+        Triagem,
+        backref='ticket',
+        null=True,
+        on_delete='SET NULL'
+    )
 
-    status = db.Column(db.String(50), nullable=False, default="rascunho")
+    titulo = CharField(max_length=100)
+    descricao = TextField(null=True)
 
-    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
-    atualizado_em = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    def __repr__(self):
-        return f"<Ticket {self.id}>"
+    # status atualizado para permitir "rascunho"
+    status = CharField(
+        choices=[
+            ('rascunho', 'rascunho'),
+            ('aberto', 'aberto'),
+            ('aguardando', 'aguardando'),
+            ('em_atendimento', 'em_atendimento'),
+            ('concluido', 'concluido')
+        ],
+        default='rascunho'
+    )
