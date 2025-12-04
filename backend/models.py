@@ -79,3 +79,44 @@ class Mensagem(BaseModel):
     mensagem = TextField()
     tipo = CharField(choices=[('texto','texto'),('imagem','imagem'),('arquivo','arquivo'),('audio','audio')], default='texto')
     enviado_em = DateTimeField(default=datetime.datetime.now)
+
+class Ticket(BaseModel):
+    id = CharField(primary_key=True, max_length=36)
+
+    # quem criou o ticket
+    cliente = ForeignKeyField(
+        Usuario, 
+        backref='tickets_cliente', 
+        on_delete='CASCADE'
+    )
+
+    # especialista só será definido após envio para a fila
+    especialista = ForeignKeyField(
+        Usuario, 
+        backref='tickets_especialista',
+        null=True,
+        on_delete='SET NULL'
+    )
+
+    # triagem opcional (para quando o chatbot cria)
+    triagem = ForeignKeyField(
+        Triagem,
+        backref='ticket',
+        null=True,
+        on_delete='SET NULL'
+    )
+
+    titulo = CharField(max_length=100)
+    descricao = TextField(null=True)
+
+    # status atualizado para permitir "rascunho"
+    status = CharField(
+        choices=[
+            ('rascunho', 'rascunho'),
+            ('aberto', 'aberto'),
+            ('aguardando', 'aguardando'),
+            ('em_atendimento', 'em_atendimento'),
+            ('concluido', 'concluido')
+        ],
+        default='rascunho'
+    )

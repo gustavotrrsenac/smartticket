@@ -41,19 +41,24 @@
 
         /* MENU SECUNDÁRIO */
         .menu-secondary {
-            background-color: #4A0072;
-            color: white;
-            padding: 10px 30px;
-            display: flex;
-            gap: 40px;
-            font-size: 15px;
-            font-weight: 500;
-        }
+    background-color: #4A0072;
+    color: white;
+    padding: 10px 30px;
+    display: flex;
+    gap: 40px;
+    font-size: 15px;
+    font-weight: 500;
+}
 
-        .menu-secondary div:hover {
-            text-decoration: underline;
-            cursor: pointer;
-        }
+.menu-secondary a {
+    color: white !important;
+    text-decoration: none;
+}
+
+.menu-secondary a:hover {
+    text-decoration: underline;
+    color: #EDEDED !important;
+}
 
         /* FILTROS */
         .filtros-card {
@@ -153,12 +158,11 @@
     </div>
 
     <!-- MENU SECUNDÁRIO -->
-    <div class="menu-secondary">
-        <div>Tickets</div>
-        <div>Histórico</div>
-        <div>Cliente</div>
-        <div>Indicadores</div>
-    </div>
+<div class="menu-secondary">
+    <a href="telaticket.html">Tickets</a>
+    <a href="historico.html">Histórico</a>
+    <a href="indicadores.html">Indicadores</a>
+</div>
 
     <!-- CONTEÚDO -->
     <div class="container mt-4">
