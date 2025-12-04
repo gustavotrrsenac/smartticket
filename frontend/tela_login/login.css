@@ -16,9 +16,17 @@ body {
 }
 
 @keyframes gradientAnim {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .login-wrapper {
@@ -29,18 +37,28 @@ body {
 }
 
 .login-box {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   width: 470px;
   padding: 35px;
   border-radius: 20px;
-  box-shadow: 0px 20px 40px rgba(0,0,0,0.2);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
   animation: aparecer 0.8s ease;
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 @keyframes aparecer {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .logo {
@@ -56,12 +74,12 @@ h1 {
 h3 {
   margin-top: 5px;
   font-size: 16px;
-  color: #666;
+  color: #f0ebeb;
 }
 
 p {
   font-size: 14px;
-  color: #666;
+  color: #f0eaea;
   margin: 10px 0 20px 0;
 }
 
@@ -100,7 +118,7 @@ input {
 
 input:focus {
   border-color: #6f42c1;
-  box-shadow: 0 0 5px rgba(111,66,193,0.3);
+  box-shadow: 0 0 5px rgba(111, 66, 193, 0.3);
 }
 
 .btn-login {
@@ -154,12 +172,6 @@ input:focus {
   cursor: pointer;
 }
 
-.btn-especialista:hover {
-  background: #6f42c1;
-  color: white;
-  transition: 0.3s;
-}
-
 .cadastro {
   margin-top: 15px;
   font-size: 13px;
@@ -169,4 +181,95 @@ input:focus {
   color: #6f42c1;
   text-decoration: none;
   font-weight: bold;
+}
+
+/* ------------------------- */
+/*       MODAL DE CADASTRO  */
+/* ------------------------- */
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #130C49;
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  width: 350px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: subir 0.35s ease;
+}
+
+@keyframes subir {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.btn-opcao {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+
+.btn-opcao:hover {
+  background: rgba(61, 84, 237, 0.35);
+}
+
+.fechar {
+  margin-top: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.fechar:hover {
+  opacity: 1;
+}
+
+.modal-contents h3 {
+  color: #7569e5;
+  align-items: center;
+  
 }

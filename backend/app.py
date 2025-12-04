@@ -248,7 +248,7 @@ def listar_especialistas_pendentes():
         for u in especialistas
     ])
 
-# ROTAS DE TICKETS (mantidas do seu código original)
+
 @app.post("/tickets")
 def criar_ticket():
     data = request.json
@@ -275,6 +275,78 @@ def listar_tickets():
         }
         for t in tickets
     ])
+    
+  @app.post("/tickets/draft")
+def gerar_rascunho_ticket():
+    try:
+        data = request.json
+
+        user_id = data.get("user_id")            # cliente
+        especialidade_id = data.get("especialidade_id")
+        respostas = data.get("respostas_chat")
+        titulo = data.get("titulo")
+
+        # ───────────────────────────────
+        # VALIDAÇÕES
+        # ───────────────────────────────
+        if not user_id:
+            return jsonify({"success": False, "message": "ID do usuário é obrigatório"}), 400
+
+        if not especialidade_id:
+            return jsonify({"success": False, "message": "Especialidade é obrigatória"}), 400
+
+        if not respostas or not isinstance(respostas, list):
+            return jsonify({"success": False, "message": "Respostas do chatbot são obrigatórias"}), 400
+
+        # ───────────────────────────────
+        # MONTAR DESCRIÇÃO
+        # ───────────────────────────────
+        descricao = "\n".join(
+            [f"- {r.get('pergunta')}: {r.get('resposta')}" for r in respostas]
+        )
+
+        # ───────────────────────────────
+        # CRIAR TICKET COMO RASCUNHO
+        # ───────────────────────────────
+        ticket = Ticket.create(
+            id=str(uuid4()),
+            cliente=user_id,                 # campo correto no modelo
+            especialista=None,               # ainda não atribuído
+            triagem=None,                    # opcional
+            titulo=titulo if titulo else "Ticket Gerado pelo Chatbot",
+            descricao=descricao,
+            status="rascunho",               
+            especialidade_id=especialidade_id,
+            criado_em=datetime.now()
+        )
+
+        # ───────────────────────────────
+        # RESPOSTA
+        # ───────────────────────────────
+        return jsonify({
+            "success": True,
+            "message": "Rascunho gerado com sucesso!",
+            "ticket": {
+                "id": ticket.id,
+                "titulo": ticket.titulo,
+                "descricao": ticket.descricao,
+                "status": ticket.status,
+                "cliente": user_id,
+                "especialidade_id": especialidade_id,
+                "criado_em": ticket.criado_em.isoformat()
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro ao gerar rascunho: {str(e)}"
+        }), 500
+
+    
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
+    

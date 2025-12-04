@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Indicadores</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- BOOTSTRAP -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- ESTILO PRINCIPAL -->
+  <link rel="stylesheet" href="theme.css">
+
+  <!-- CHART.JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      background-color: #F7F7FB;
+      font-family: "Inter", sans-serif;
+    }
+
+    .header-main {
+      background-color: #6A1B9A;
+      padding: 18px 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-main h4 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .toggle-theme {
+      background: white;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #4A0072;
+    }
+
+    .menu-secondary {
+      background-color: #4A0072;
+      padding: 12px 30px;
+      display: flex;
+      gap: 40px;
+    }
+
+    .menu-secondary a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .menu-secondary a:hover {
+      text-decoration: underline;
+    }
+
+    .card-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 2px 7px rgba(0,0,0,0.1);
+    }
+
+    .card-box h6 {
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header-main">
+    <h4>Indicadores</h4>
+    <button class="toggle-theme" onclick="toggleTheme()">🌙 Tema</button>
+  </div>
+
+  <!-- MENU -->
+  <div class="menu-secondary">
+    <a href="telaticket.html">Tickets</a>
+    <a href="historico.html">Histórico</a>
+    <a href="indicadores.html">Indicadores</a>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="container my-4">
+    <div class="row g-4">
+
+      <!-- GRÁFICOS PRINCIPAIS -->
+      <div class="col-12 col-lg-8">
+
+        <!-- GRÁFICO 1 -->
+        <div class="card-box">
+          <h6>Atendimentos por mês</h6>
+          <canvas id="chartMes" height="140"></canvas>
+        </div>
+
+        <!-- GRÁFICO 2 -->
+        <div class="card-box mt-4">
+          <h6>Tempo médio de resposta (últimos 6 meses)</h6>
+          <canvas id="chartTempo" height="120"></canvas>
+        </div>
+      </div>
+
+      <!-- LADO DIREITO -->
+      <div class="col-12 col-lg-4">
+
+        <!-- GRÁFICO 3 -->
+        <div class="card-box">
+          <h6>Distribuição por status</h6>
+          <canvas id="chartStatus" height="180"></canvas>
+        </div>
+
+        <!-- RESUMO RÁPIDO -->
+        <div class="card-box mt-4">
+          <h6>Resumo rápido</h6>
+          <p><strong>Total atendimentos (mês):</strong> 124</p>
+          <p><strong>Tickets resolvidos no 1° contato:</strong> 87</p>
+          <p><strong>Taxa de SLA:</strong> 98%</p>
+          <p><strong>Tempo médio de resposta:</strong> 14 min</p>
+          <p><strong>Setor com maior demanda:</strong> Financeiro</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS DOS GRÁFICOS -->
+  <script>
+    // Gráfico de atendimentos por mês
+    new Chart(document.getElementById("chartMes"), {
+      type: "line",
+      data: {
+        labels: ["Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+        datasets: [{
+          label: "Atendimentos",
+          data: [85, 102, 94, 117, 124, 138],
+          borderColor: "#6A1B9A",
+          tension: 0.3,
+          fill: false
+        }]
+      }
+    });
+
+    // Gráfico de tempo médio (últimos 6 meses)
+    new Chart(document.getElementById("chartTempo"), {
+      type: "bar",
+      data: {
+        labels: ["Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+        datasets: [{
+          label: "Minutos",
+          data: [18, 16, 15, 17, 14, 13],
+          backgroundColor: "#8E24AA"
+        }]
+      }
+    });
+
+    // Gráfico de status
+    new Chart(document.getElementById("chartStatus"), {
+      type: "doughnut",
+      data: {
+        labels: ["Concluídos", "Em andamento", "Aguardando cliente", "Abertos"],
+        datasets: [{
+          data: [58, 22, 14, 9],
+          backgroundColor: ["#6A1B9A", "#8E24AA", "#BA68C8", "#D1C4E9"]
+        }]
+      }
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+
+</body>
+</html>
