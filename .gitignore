@@ -36,6 +36,9 @@ Thumbs.db
 *.sql.bkp
 *.sql~
 
+# Firebase
+smartticket-8bd4c-firebase-adminsdk-fbsvc-0c43228df1.json
+
 # ==== ARQUIVOS DE TESTE (opcional) ====
 # Se NÃO quiser subir para o Git:
 # test_connection.py

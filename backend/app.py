@@ -248,7 +248,7 @@ def listar_especialistas_pendentes():
         for u in especialistas
     ])
 
-# ROTAS DE TICKETS (mantidas do seu código original)
+# ROTAS DE TICKETS 
 @app.post("/tickets")
 def criar_ticket():
     data = request.json
