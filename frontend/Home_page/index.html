@@ -5,54 +5,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Ticket</title>
+    <link rel="icon" type="image/png" href="Logo básica branca.png">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header class="glass-capsule">
         <a href="/" class="logo-container">
-            <img src="logo1.png" alt="Logo Smart Ticket" class="logo-img">
+            <img src="Logo com balões.png" alt="Logo Smart Ticket" class="logo-img">
             <span class="logo-text">Smart Ticket</span>
         </a>
 
         <nav class="nav-menu">
             <ul>
-                <li><a href="#descubra">Descubra</a></li>
                 <li><a href="#categorias">Categorias</a></li>
+                <li><a href="#populares">Populares</a></li>
                 <li><a href="#passo-a-passo">Como Funciona</a></li>
-                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#sobre">Sobre Nós</a></li>
+                <li><a href="#feedbacks">Feedback</a></li>
                 <li><a href="#impacto">Alcance</a></li>
             </ul>
         </nav>
 
-        <div class="profile-toggle">
-            <button class="toggle-btn" id="btn-specialist" title="Sou Especialista">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
-                    <circle cx="12" cy="5" r="2"></circle>
-                    <path d="M12 7v4"></path>
-                    <line x1="8" y1="16" x2="8" y2="16"></line>
-                    <line x1="16" y1="16" x2="16" y2="16"></line>
-                </svg>
-            </button>
-
-            <button class="toggle-btn active" id="btn-user" title="Sou Cliente">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        <div class="profile-dropdown-container">
+            <a href="#perfil" class="profile-link" title="Meu Perfil">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-            </button>
+            </a>
+
+            <div class="profile-dropdown-menu">
+                <a href="#conta" class="dropdown-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    </svg>
+                    <span>Conta</span>
+                </a>
+                <a href="#solicitacoes" class="dropdown-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>Minhas Solicitações</span>
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="#sair" class="dropdown-item logout-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sair</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <section id="descubra" class="carousel-container">
+    <section class="carousel-container">
         <div class="carousel-wrapper" id="carouselWrapper">
             <img src="teste 4.jpg" alt="Destaque 1" class="carousel-image">
             <img src="teste 7.jpg" alt="Destaque 2" class="carousel-image">
             <img src="teste 8.jpg" alt="Destaque 3" class="carousel-image">
         </div>
+        <div class="hero-gradient-overlay"></div>
     </section>
 
     <div class="carousel-reflection-container">
@@ -66,7 +93,7 @@
 
                 <div class="tags-container">
                     <a href="#" class="tag-pill">Advocacia</a>
-                    <a href="#" class="tag-pill">Arquitetura</a>
+                    <a href="#" class="tag-pill">Nutrição</a>
                     <a href="#" class="tag-pill">Saúde</a>
                     <a href="#" class="tag-pill">Manutenção</a>
                     <a href="#" class="tag-pill">Engenharia</a>
@@ -87,36 +114,30 @@
             </div>
         </section>
 
-        <section class="popular-services-section">
+        <section id="populares" class="popular-services-section">
             <div class="section-header">
                 <h2 class="main-title">Principais serviços pedidos</h2>
                 <p class="sub-title">Os serviços mais realizados de cada categoria</p>
             </div>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="card-image"><img
-                            src="nutrição.jpg"
-                            alt="Móveis"></div>
+                    <div class="card-image"><img src="T.I.jpg" alt="T.I."></div>
                     <div class="card-content">
-                        <h3>Nutrição</h3>
+                        <h3>Tecnologia da Informação</h3>
                         <a href="#" class="service-link">Solicitar orçamento</a>
                     </div>
                 </div>
                 <div class="service-card">
-                    <div class="card-image"><img
-                            src="Direito.jpg"
-                            alt="Mudanças"></div>
+                    <div class="card-image"><img src="Direito.jpg" alt="Direito"></div>
                     <div class="card-content">
                         <h3>Direito</h3>
                         <a href="#" class="service-link">Solicitar orçamento</a>
                     </div>
                 </div>
                 <div class="service-card">
-                    <div class="card-image"><img
-                            src="T.I.jpg"
-                            alt="Pedreiro"></div>
+                    <div class="card-image"><img src="nutrição.jpg" alt="Nutrição"></div>
                     <div class="card-content">
-                        <h3><T class="I"></T></h3>
+                        <h3>Nutrição</h3>
                         <a href="#" class="service-link">Solicitar orçamento</a>
                     </div>
                 </div>
@@ -272,87 +293,103 @@
             </div>
         </section>
 
-        <section id="impacto" class="global-impact-section">
-            <div class="map-layer">
-                <div class="map-wrapper">
-                    <img src="Smart Ticket.jpg" alt="Mapa de Alcance" class="map-image">
-
-                    <div class="map-pin pin-1">
-                        <div class="pin-pulse"></div>
-                    </div>
-                    <div class="map-pin pin-2">
-                        <div class="pin-pulse"></div>
-                    </div>
-                    <div class="map-pin pin-3">
-                        <div class="pin-pulse"></div>
+        <section id="impacto" class="modern-impact-section">
+            <div class="horizon-glow"></div>
+            <div class="impact-container">
+                <div class="map-side">
+                    <div class="hologram-wrapper">
+                        <div class="tech-map-visual">
+                            <svg class="world-map-svg" viewBox="0 0 1000 500" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M860.2,228.3c-1.3-1.7-2.9-2.6-4.5-3.1c-2.4-0.8-4.7-0.3-6.5,1.2c-1.1,0.9-1.9,2.2-2.3,3.6c-0.2,0.7-0.3,1.4-0.3,2.1 c0,2.1,0.7,3.9,1.9,5.2c1.7,1.8,4.1,2.5,6.5,2.1c1.3-0.2,2.5-0.8,3.6-1.7c1.7-1.4,2.6-3.4,2.5-5.6C861,230.9,860.7,229.5,860.2,228.3z M247.5,130.8c-2.4-4.7-7.2-7.5-12.4-7.5c-5.3,0-10.1,2.9-12.4,7.6c-2.2,4.6-1.3,10,2.4,13.8c3.6,3.8,9.1,5.2,14,3.7 c2.3-0.7,4.3-2.1,5.9-3.9C247.9,141.2,249.2,135.9,247.5,130.8z M579.5,223c-1.6-3-4.6-4.8-7.9-4.8c-3.3,0-6.4,1.9-7.9,4.9 c-1.4,2.9-0.8,6.4,1.5,8.8c2.3,2.4,5.8,3.3,8.9,2.3c1.5-0.5,2.7-1.3,3.7-2.5C580.4,229.6,581.2,226.1,579.5,223z M718.5,160.5 c-2.4-0.8-4.9-0.3-6.9,1.2c-1.9,1.5-2.9,3.9-2.7,6.3c0.2,2.3,1.6,4.4,3.7,5.5c2.1,1.2,4.6,1.2,6.7,0c2.1-1.2,3.5-3.3,3.7-5.7 C723.2,165.4,721.4,162.7,718.5,160.5z M325.2,323.5c-4.6-1.5-9.6,0.1-12.4,3.9c-2.7,3.8-2.3,8.8,1.1,12.2c3.3,3.3,8.4,4.1,12.4,1.9 c4.1-2.2,6.1-7,5.1-11.5C330.6,326.8,328.2,324.5,325.2,323.5z M475.2,118.5c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10 c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C479.9,121.6,478,119.4,475.2,118.5z M825.2,365.5c-3.8-1.2-7.9,0.1-10.3,3.3 c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C829.9,368.6,828,366.4,825.2,365.5z M175.2,265.5 c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1 C179.9,268.6,178,266.4,175.2,265.5z M625.2,85.5c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9 c3.4-1.6,5.3-5.3,4.7-9.1C629.9,88.6,628,86.4,625.2,85.5z M375.2,185.5c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10 c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C379.9,188.6,378,186.4,375.2,185.5z M925.2,135.5c-3.8-1.2-7.9,0.1-10.3,3.3 c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C929.9,138.6,928,136.4,925.2,135.5z M75.2,105.5 c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C79.9,108.6,78,106.4,75.2,105.5z M235,120l5,5l-5,5l-5-5L235,120z M600,200l10,10l-10,10l-10-10L600,200z M800,300l8,8l-8,8l-8-8L800,300z M400,250l6,6l-6,6l-6-6L400,250z" />
+                                <circle cx="200" cy="150" r="3" />
+                                <circle cx="220" cy="160" r="3" />
+                                <circle cx="180" cy="170" r="3" />
+                                <circle cx="300" cy="120" r="3" />
+                                <circle cx="320" cy="140" r="3" />
+                                <circle cx="350" cy="130" r="3" />
+                                <circle cx="500" cy="100" r="3" />
+                                <circle cx="520" cy="110" r="3" />
+                                <circle cx="540" cy="90" r="3" />
+                                <circle cx="600" cy="180" r="3" />
+                                <circle cx="620" cy="200" r="3" />
+                                <circle cx="650" cy="190" r="3" />
+                                <circle cx="700" cy="150" r="3" />
+                                <circle cx="720" cy="160" r="3" />
+                                <circle cx="750" cy="140" r="3" />
+                                <circle cx="800" cy="300" r="3" />
+                                <circle cx="820" cy="320" r="3" />
+                                <circle cx="850" cy="310" r="3" />
+                                <circle cx="300" cy="300" r="3" />
+                                <circle cx="320" cy="320" r="3" />
+                                <circle cx="280" cy="340" r="3" />
+                            </svg>
+                            <div class="map-pin pin-1">
+                                <div class="pin-pulse"></div>
+                            </div>
+                            <div class="map-pin pin-2">
+                                <div class="pin-pulse"></div>
+                            </div>
+                            <div class="map-pin pin-3">
+                                <div class="pin-pulse"></div>
+                            </div>
+                        </div>
+                        <div class="map-floor-glow"></div>
                     </div>
                 </div>
-                <div class="map-overlay-gradient"></div>
-            </div>
-
-            <div class="content-layer">
-                <div class="text-content">
+                <div class="data-side">
                     <h2 class="impact-title">
                         Quebrando barreiras <br>
                         <span class="gradient-text">Globais.</span>
                     </h2>
                     <p class="impact-desc">
-                        A tecnologia encurta distâncias. Conectamos especialistas e clientes em uma rede única, onde o
-                        mapa é apenas o começo.
+                        A tecnologia encurta distâncias. Conectamos especialistas e clientes em uma rede única, segura e
+                        sem fronteiras.
                     </p>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg></div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">+1000</h3>
+                                <p class="stat-label">Clientes Satisfeitos</p>
+                            </div>
                         </div>
-                        <div class="stat-info">
-                            <h3 class="stat-number">+1000</h3>
-                            <p class="stat-label">Clientes Satisfeitos</p>
+                        <div class="stat-card">
+                            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                    <polyline points="17 6 23 6 23 12"></polyline>
+                                </svg></div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">75%</h3>
+                                <p class="stat-label">Crescimento de Renda</p>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                                <polyline points="17 6 23 6 23 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h3 class="stat-number">75%</h3>
-                            <p class="stat-label">Crescimento de Renda</p>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path
-                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h3 class="stat-number">100%</h3>
-                            <p class="stat-label">Cobertura Nacional</p>
+                        <div class="stat-card">
+                            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path
+                                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                    </path>
+                                </svg></div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">100%</h3>
+                                <p class="stat-label">Cobertura Nacional</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
     </main>
 
     <footer class="footer">
