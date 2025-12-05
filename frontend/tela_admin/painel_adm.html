@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART TICKET - Administrador</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style_painel_adm.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">
+        SMART TICKET
+    </div>
+
+    <ul class="menu">
+        <li class="active" id="btn-dashboard"><i class="fa fa-gauge"></i> Dashboard</li>
+        <li id="btn-validation"><i class="fa fa-user-check"></i> Validação de Especialistas</li>
+        <li><i class="fa fa-users"></i> Usuários</li>
+        <li><i class="fa fa-gear"></i> Configurações</li>
+    </ul>
+</div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="main">
+    
+    <!-- NAVBAR SUPERIOR -->
+    <nav class="navbar topbar shadow-sm">
+        <span class="ms-auto text-white">Bem-vindo, Administrador</span>
+        <a href="#" class="ms-3 logout"><i class="fa fa-right-from-bracket"></i> Sair</a>
+    </nav>
+
+    <div class="container-fluid mt-4">
+
+        <!-- DASHBOARD -->
+        <div id="dashboardContent">
+    <h2 class="page-title">Dashboard</h2>
+
+    <!-- CARDS DE VISÃO GERAL -->
+    <div class="row g-3 mt-2">
+        <div class="col-md-3">
+            <div class="card stats-card text-center">
+                <i class="fa fa-users fa-2x mt-2"></i>
+                <h3>203</h3>
+                <span>Usuários</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card text-center">
+                <i class="fa fa-user-clock fa-2x mt-2"></i>
+                <h3>17</h3>
+                <span>Especialistas Pendentes</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card text-center">
+                <i class="fa fa-check-circle fa-2x mt-2"></i>
+                <h3>152</h3>
+                <span>Especialistas Validados</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card text-center">
+                <i class="fa fa-chart-line fa-2x mt-2"></i>
+                <h3>12.334</h3>
+                <span>Visitantes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRÁFICO SIMPLIFICADO -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card graph-card p-3">
+                <h4>Métricas de Especialistas</h4>
+                <canvas id="especialistasChart" height="200"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card graph-card p-3">
+                <h4>Atividades Recentes</h4>
+                <ul class="list-unstyled mt-3">
+                    <li><i class="fa fa-user-plus text-success"></i> Novo especialista cadastrado: João Ribeiro</li>
+                    <li><i class="fa fa-user-check text-success"></i> Especialista validado: Marina Lopes</li>
+                    <li><i class="fa fa-file-alt text-warning"></i> Documento pendente: Ana Silva</li>
+                    <li><i class="fa fa-user-times text-danger"></i> Especialista rejeitado: Carlos Mendes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- VALIDAÇÃO DE ESPECIALISTAS -->
+        <div id="validationContent" style="display:none;">
+            <h2 class="page-title">Especialistas Pendentes de Validação</h2>
+
+            <div class="card mt-4 p-3 table-card">
+                <table class="table table-dark table-hover mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Data</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-pendentes">
+                        <tr>
+                            <td>João Ribeiro</td>
+                            <td>joao@gmail.com</td>
+                            <td>12/12/2025</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="abrirAnalise()">Analisar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Marina Lopes</td>
+                            <td>marina@yahoo.com</td>
+                            <td>13/12/2025</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="abrirAnalise()">Analisar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+function abrirAnalise() {
+    alert("Abrirá a tela de análise do especialista.\nAqui você implementará:\n - Visualizar documentos\n - Aprovar\n - Rejeitar\n - Solicitar complementação");
+}
+
+// Navegação dinâmica do painel
+document.addEventListener('DOMContentLoaded', function() {
+    const btnValidation = document.getElementById('btn-validation');
+    const btnDashboard = document.getElementById('btn-dashboard');
+    const dashboardContent = document.getElementById('dashboardContent');
+    const validationContent = document.getElementById('validationContent');
+    const menuItems = document.querySelectorAll('.sidebar .menu li');
+
+    btnValidation.addEventListener('click', function() {
+        menuItems.forEach(i => i.classList.remove('active'));
+        btnValidation.classList.add('active');
+        dashboardContent.style.display = 'none';
+        validationContent.style.display = 'block';
+    });
+
+    btnDashboard.addEventListener('click', function() {
+        menuItems.forEach(i => i.classList.remove('active'));
+        btnDashboard.classList.add('active');
+        dashboardContent.style.display = 'block';
+        validationContent.style.display = 'none';
+    });
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('especialistasChart').getContext('2d');
+const especialistasChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Pendentes', 'Validados', 'Rejeitados'],
+        datasets: [{
+            label: 'Quantidade',
+            data: [17, 152, 5],
+            backgroundColor: ['#fd7e14', '#28a745', '#dc3545']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMART TICKET - Status do Especialista</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style-status.css" />
+</head>
+<body>
+<div class="container py-5">
+    <a href="index.html" class="btn btn-secondary mb-4">
+        <i class="fa fa-arrow-left"></i> Voltar ao Painel
+    </a>
+
+    <div class="card status-card p-4 text-center">
+
+        <div id="statusIcon" class="mb-3"></div>
+
+        <h2 id="statusTitle"></h2>
+
+        <p id="statusMessage" class="lead my-4"></p>
+
+        <button class="btn btn-primary" onclick="voltarPainel()">
+            <i class="fa fa-arrow-left"></i> Voltar ao Painel
+        </button>
+    </div>
+</div>
+
+<script src="status.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+:root {
+    --black-deep: #060416;
+    --purple-dark: #130C49;
+    --purple-mid: #1F137D;
+    --purple-strong: #5C21C3;
+    --purple-soft: #874AD7;
+    --green: #28a745;
+    --red: #dc3545;
+    --orange: #fd7e14;
+}
+
+body {
+    background: var(--black-deep);
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+
+.status-card {
+    background: var(--purple-dark);
+    border-radius: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+#statusIcon {
+    font-size: 70px;
+}
+
+#statusIcon.validado {
+    color: var(--green);
+}
+
+#statusIcon.rejeitado {
+    color: var(--red);
+}
+
+#statusIcon.complemento {
+    color: var(--orange);
+}
+
+#statusTitle {
+    color: var(--purple-soft);
+    font-weight: 700;
+    font-size: 2.2rem;
+}
+
+#statusMessage {
+    font-size: 1.25rem;
+}
