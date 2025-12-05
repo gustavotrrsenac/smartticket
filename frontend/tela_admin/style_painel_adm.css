@@ -7,11 +7,17 @@
     --purple-soft: #874AD7;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* Reset */
 body {
     background: var(--black-deep);
     color: white;
     font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Sidebar */
@@ -21,6 +27,7 @@ body {
     position: fixed;
     background: var(--purple-dark);
     padding: 25px 0;
+    overflow-y: auto; /* ajuste */
 }
 
 .sidebar .logo {
@@ -41,7 +48,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     color: white;
-    transition: 0.3s;
+    transition: background 0.3s, padding-left 0.3s; /* ajuste */
 }
 
 .sidebar .menu li i {
@@ -52,6 +59,7 @@ body {
 .sidebar .menu li.active {
     background: var(--purple-mid);
     color: white;
+    padding-left: 35px; /* efeito de movimento */
 }
 
 /* Área principal */
@@ -87,6 +95,7 @@ body {
     border-radius: 12px;
     color: white;
     padding: 20px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4); /* ajuste */
 }
 
 .stats-card i {
@@ -97,6 +106,7 @@ body {
     background: var(--purple-mid);
     border-radius: 12px;
     color: white;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4); /* ajuste */
 }
 
 .graph-card h4 {
@@ -115,4 +125,37 @@ body {
 
 .table thead {
     background: var(--purple-mid);
+}
+
+.card-dark {
+    background: var(--purple-mid);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table-card {
+    background: var(--purple-dark);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table-card table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-card thead {
+    background: var(--purple-strong) !important;
+}
+
+.table-card tbody tr {
+    transition: 0.2s;
+}
+
+.table-card tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
 }

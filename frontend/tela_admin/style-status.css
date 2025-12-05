@@ -9,10 +9,16 @@
     --orange: #fd7e14;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: var(--black-deep);
     color: white;
     font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .status-card {
@@ -20,10 +26,14 @@ body {
     border-radius: 12px;
     max-width: 480px;
     margin: 0 auto;
+    padding: 40px 20px; /* ajuste */
 }
 
 #statusIcon {
     font-size: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* ajuste */
 }
 
 #statusIcon.validado {
