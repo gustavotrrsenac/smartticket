@@ -1,0 +1,69 @@
+:root {
+    --black-deep: #060416;
+    --purple-dark: #130C49;
+    --purple-mid: #1F137D;
+    --purple-strong: #5C21C3;
+    --purple-soft: #874AD7;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--black-deep);
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.main-card {
+    background: var(--purple-dark);
+    border-radius: 12px;
+}
+
+.detail-card {
+    background: var(--purple-mid);
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px; /* ajuste */
+}
+
+.detail-card h4 {
+    color: var(--purple-soft);
+}
+
+/* Imagens dos documentos responsivas */
+.doc-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 0px solid var(--purple-soft);
+}
+
+/* Botões mais responsivos */
+.action-btn {
+    margin: 10px;
+    padding: 12px 25px;
+    font-size: 17px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 260px; /* ajuste */
+}
+
+/* Modal personalizado */
+.modal-custom {
+    background: var(--purple-mid);
+    color: white;
+    border-radius: 10px;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--purple-dark);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--purple-dark);
+}

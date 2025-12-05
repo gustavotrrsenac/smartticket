@@ -6,6 +6,11 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+
+# ===========================
+# USUÁRIOS E PERFIS
+# ===========================
+
 class Usuario(BaseModel):
     id = CharField(primary_key=True, max_length=36)
     nome = CharField(max_length=150)
@@ -17,11 +22,13 @@ class Usuario(BaseModel):
     criado_em = DateTimeField(default=datetime.datetime.now)
     atualizado_em = DateTimeField(default=datetime.datetime.now)
 
+
 class PerfilCliente(BaseModel):
     id = CharField(primary_key=True, max_length=36)
     user = ForeignKeyField(Usuario, backref='perfil_cliente', on_delete='CASCADE')
     telefone = CharField(max_length=20, null=True)
     criado_em = DateTimeField(default=datetime.datetime.now)
+
 
 class PerfilEspecialista(BaseModel):
     id = CharField(primary_key=True, max_length=36)
@@ -33,18 +40,28 @@ class PerfilEspecialista(BaseModel):
     rating = DecimalField(max_digits=3, decimal_places=2, default=0.00)
     criado_em = DateTimeField(default=datetime.datetime.now)
 
+
 class Admin(BaseModel):
     id = CharField(primary_key=True, max_length=36)
     admin = ForeignKeyField(Usuario, backref='logs_admin', on_delete='CASCADE')
     acao = TextField()
     criado_em = DateTimeField(default=datetime.datetime.now)
 
+
+# ===========================
+# TRIAGEM
+# ===========================
+
 class Triagem(BaseModel):
     id = CharField(primary_key=True, max_length=36)
     cliente = ForeignKeyField(Usuario, backref='triagens', on_delete='CASCADE')
-    status_triagem_status = CharField(choices=[('iniciada', 'iniciada'), ('respondendo', 'respondendo'), ('concluida', 'concluida')], default='iniciada')
+    status_triagem_status = CharField(
+        choices=[('iniciada', 'iniciada'), ('respondendo', 'respondendo'), ('concluida', 'concluida')],
+        default='iniciada'
+    )
     resumo_problema = TextField(null=True)
     criado_em = DateTimeField(default=datetime.datetime.now)
+
 
 class PerguntaTriagem(BaseModel):
     id = CharField(primary_key=True, max_length=36)
@@ -54,6 +71,7 @@ class PerguntaTriagem(BaseModel):
     ordem_pergunta = IntegerField(null=True)
     ativo = BooleanField(default=True)
 
+
 class TriagemResposta(BaseModel):
     id = CharField(primary_key=True, max_length=36)
     triagem = ForeignKeyField(Triagem, backref='respostas', on_delete='CASCADE')
@@ -61,44 +79,27 @@ class TriagemResposta(BaseModel):
     resposta_cliente = TextField(null=True)
     respondido_em = DateTimeField(default=datetime.datetime.now)
 
-class Ticket(BaseModel):
-    id = CharField(primary_key=True, max_length=36)
-    cliente = ForeignKeyField(Usuario, backref='tickets_cliente', on_delete='CASCADE')
-    especialista = ForeignKeyField(Usuario, backref='tickets_especialista', null=True, on_delete='SET NULL')
-    triagem = ForeignKeyField(Triagem, backref='ticket', null=True, on_delete='SET NULL')
-    titulo = CharField(max_length=100)
-    descricao = TextField(null=True)
-    status = CharField(choices=[('aberto','aberto'),('aguardando','aguardando'),('em_atendimento','em_atendimento'),('concluido','concluido')], default='aberto')
-    criado_em = DateTimeField(default=datetime.datetime.now)
-    atualizado_em = DateTimeField(default=datetime.datetime.now)
 
-class Mensagem(BaseModel):
-    id = CharField(primary_key=True, max_length=36)
-    ticket = ForeignKeyField(Ticket, backref='mensagens', on_delete='CASCADE')
-    sender = ForeignKeyField(Usuario, backref='mensagens', on_delete='CASCADE')
-    mensagem = TextField()
-    tipo = CharField(choices=[('texto','texto'),('imagem','imagem'),('arquivo','arquivo'),('audio','audio')], default='texto')
-    enviado_em = DateTimeField(default=datetime.datetime.now)
+# ===========================
+# TICKET (AGORA NO LUGAR CERTO)
+# ===========================
 
 class Ticket(BaseModel):
     id = CharField(primary_key=True, max_length=36)
 
-    # quem criou o ticket
     cliente = ForeignKeyField(
-        Usuario, 
-        backref='tickets_cliente', 
+        Usuario,
+        backref='tickets_cliente',
         on_delete='CASCADE'
     )
 
-    # especialista só será definido após envio para a fila
     especialista = ForeignKeyField(
-        Usuario, 
+        Usuario,
         backref='tickets_especialista',
         null=True,
         on_delete='SET NULL'
     )
 
-    # triagem opcional (para quando o chatbot cria)
     triagem = ForeignKeyField(
         Triagem,
         backref='ticket',
@@ -109,7 +110,6 @@ class Ticket(BaseModel):
     titulo = CharField(max_length=100)
     descricao = TextField(null=True)
 
-    # status atualizado para permitir "rascunho"
     status = CharField(
         choices=[
             ('rascunho', 'rascunho'),
@@ -120,3 +120,27 @@ class Ticket(BaseModel):
         ],
         default='rascunho'
     )
+
+    criado_em = DateTimeField(default=datetime.datetime.now)
+    atualizado_em = DateTimeField(default=datetime.datetime.now)
+
+
+# ===========================
+# MENSAGENS DO TICKET
+# ===========================
+
+class Mensagem(BaseModel):
+    id = CharField(primary_key=True, max_length=36)
+    ticket = ForeignKeyField(Ticket, backref='mensagens', on_delete='CASCADE')
+    sender = ForeignKeyField(Usuario, backref='mensagens', on_delete='CASCADE')
+    mensagem = TextField()
+    tipo = CharField(
+        choices=[
+            ('texto', 'texto'),
+            ('imagem', 'imagem'),
+            ('arquivo', 'arquivo'),
+            ('audio', 'audio')
+        ],
+        default='texto'
+    )
+    enviado_em = DateTimeField(default=datetime.datetime.now)
