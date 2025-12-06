@@ -20,7 +20,7 @@ def check_mysql_service():
         connection = pymysql.connect(
             host='localhost',
             user='root',
-            password='',
+            password='senac',
             connect_timeout=5
         )
         connection.close()

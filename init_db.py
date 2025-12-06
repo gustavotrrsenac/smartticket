@@ -5,6 +5,7 @@ Executa uma única vez para criar todas as tabelas.
 """
 import sys
 import os
+import datetime
 
 # Adiciona diretório atual ao path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -69,17 +70,17 @@ def verificar_tabelas():
     """
     print(" Verificando tabelas...")
     
+    #alterando a tabela (atulizando os dados conforme no db)
     tabelas = [
-        'usuarios',
-        'perfis_cliente', 
-        'perfis_especialista',
-        'admins',
-        'triagens',
+        'admin',
+        'mensagens', 
+        'perfil_cliente',
+        'perfil_especialista',
         'perguntas_triagem',
-        'triagens_respostas',
-        'tickets',
-        'mensagens',
-        'documentos_especialista'
+        'ticket',
+        'triagem',
+        'triagem_resposta',
+        'usuario'
     ]
     
     try:
