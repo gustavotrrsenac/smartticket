@@ -33,7 +33,7 @@
 
       <button class="btn-login">Entrar</button>
 
-        <p class="cadastro">
+      <p class="cadastro">
         Ainda não tem conta? <a href="#" id="abrirCadastro">Cadastre-se</a>
       </p>
 
@@ -42,11 +42,11 @@
   </div>
 
   <!-- ------------------------------- -->
-  <!-- MODAL DE ESCOLHA DE CADASTRO -->
+  <!-- MODAL DE CADASTRO -->
   <!-- ------------------------------- -->
   <div id="modalCadastro" class="modal">
-    <div class="modal-contents">
-      <h3>Como deseja se cadastrar?</h3><br>
+    <div class="modal-content">
+      <h2>Como deseja se cadastrar?</h2><br>
 
       <button class="btn-opcao" onclick="window.location.href='../cadastro_usuario/cad_usu.html'">
         Sou Usuário
@@ -56,30 +56,40 @@
         Sou Especialista
       </button>
 
-
-      <p class="fechar" onclick="fecharModal()">Cancelar</p>
+      <p class="fechar" id="fecharCadastro">Cancelar</p>
     </div>
   </div>
 
-  <script>
-    const modal = document.getElementById("modalCadastro");
-    const linkCadastro = document.getElementById("abrirCadastro");
+  <!-- ------------------------------- -->
+  <!-- MODAL DE ESQUECI MINHA SENHA -->
+  <!-- ------------------------------- -->
+  <div id="modalSenha" class="modal">
+    <div class="modal-content">
+      <h2>Redefinir senha</h2>
 
-    linkCadastro.addEventListener("click", function (e) {
-      e.preventDefault();
-      modal.style.display = "flex";
-    });
+      <p style="color: #eee; font-size: 14px;">
+        Digite seu e-mail para enviarmos o link de recuperação.
+      </p>
 
-    function fecharModal() {
-      modal.style.display = "none";
-    }
+      <input type="email" id="emailRecuperar" placeholder="Seu e-mail" style="
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+      ">
 
-    window.onclick = function (event) {
-      if (event.target === modal) {
-        fecharModal();
-      }
-    };
-  </script>
+      <button class="btn-opcao" id="btnEnviarRecuperacao">
+        Enviar link de recuperação
+      </button>
+
+      <p class="fechar" id="fecharSenha">Cancelar</p>
+    </div>
+  </div>
+
+  <!-- LINK PARA O JAVASCRIPT EXTERNO -->
+  <script src="script.js"></script>
 
 </body>
 
