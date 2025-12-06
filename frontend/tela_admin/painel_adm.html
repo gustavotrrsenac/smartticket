@@ -113,7 +113,7 @@
                             <td>joao@gmail.com</td>
                             <td>12/12/2025</td>
                             <td>
-                                <button class="btn btn-sm btn-primary" onclick="abrirAnalise()">Analisar</button>
+                                <a class="btn btn-sm btn-primary" href="abrirAnalise('João Ribeiro')">Analisar</a>
                             </td>
                         </tr>
                         <tr>
@@ -121,7 +121,7 @@
                             <td>marina@yahoo.com</td>
                             <td>13/12/2025</td>
                             <td>
-                                <button class="btn btn-sm btn-primary" onclick="abrirAnalise()">Analisar</button>
+                                <a class="btn btn-sm btn-primary" onclick="abrirAnalise('Marina Lopes')">Analisar</a>
                             </td>
                         </tr>
                     </tbody>
@@ -137,9 +137,6 @@
 <script src="script.js"></script>
 
 <script>
-function abrirAnalise() {
-    window.location.href = "analysis.html";
-}
 
 
 document.addEventListener('DOMContentLoaded', function() {
