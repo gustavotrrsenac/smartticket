@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Ticket</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+  <div class="login-wrapper">
+
+    <div class="login-box">
+
+      <img src="logo_branco.png" class="logo" alt="Logo Smart Ticket">
+
+      <h3>Acesse sua conta</h3>
+      <p>Bem-vindo! Por favor, insira seus dados.</p>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail">
+      </div>
+
+      <div class="form-group">
+        <div class="senha-header">
+          <label for="senha">Senha</label>
+          <a href="#" class="esqueci">Esqueci minha senha</a>
+        </div>
+        <input type="password" id="senha" placeholder="Digite sua senha">
+      </div>
+
+      <button class="btn-login">Entrar</button>
+
+      <p class="cadastro">
+        Ainda não tem conta? <a href="#" id="abrirCadastro">Cadastre-se</a>
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- ------------------------------- -->
+  <!-- MODAL DE CADASTRO -->
+  <!-- ------------------------------- -->
+  <div id="modalCadastro" class="modal">
+    <div class="modal-content">
+      <h2>Como deseja se cadastrar?</h2><br>
+
+      <button class="btn-opcao" onclick="window.location.href='../cadastro_usuario/cad_usu.html'">
+        Sou Usuário
+      </button>
+
+      <button class="btn-opcao" onclick="window.location.href='../cadastro_especialista/tela_cad_especialista.html'">
+        Sou Especialista
+      </button>
+
+      <p class="fechar" id="fecharCadastro">Cancelar</p>
+    </div>
+  </div>
+
+  <!-- ------------------------------- -->
+  <!-- MODAL DE ESQUECI MINHA SENHA -->
+  <!-- ------------------------------- -->
+  <div id="modalSenha" class="modal">
+    <div class="modal-content">
+      <h2>Redefinir senha</h2>
+
+      <p style="color: #eee; font-size: 14px;">
+        Digite seu e-mail para enviarmos o link de recuperação.
+      </p>
+
+      <input type="email" id="emailRecuperar" placeholder="Seu e-mail" style="
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+      ">
+
+      <button class="btn-opcao" id="btnEnviarRecuperacao">
+        Enviar link de recuperação
+      </button>
+
+      <p class="fechar" id="fecharSenha">Cancelar</p>
+    </div>
+  </div>
+
+  <!-- LINK PARA O JAVASCRIPT EXTERNO -->
+  <script src="script.js"></script>
+
+</body>
+
+</html>

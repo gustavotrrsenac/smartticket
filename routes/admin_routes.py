@@ -53,9 +53,9 @@ def detalhes_especialista(id):
     })
 
 
-# --------------------------------------------------------
+
 # ADMIN APROVA O ESPECIALISTA (ATUALIZA ROLE)
-# --------------------------------------------------------
+
 @admin_bp.post("/admin/especialistas/<id>/aprovar")
 def aprovar_especialista(id):
     user = Usuario.get_or_none(Usuario.id == id)

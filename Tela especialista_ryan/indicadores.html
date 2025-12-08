@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Ticket - Indicadores</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: #0f0a1e;">
+
+    <header class="glass-capsule">
+        <a href="index.html" class="logo-container">
+            <i class="fa-solid fa-ticket logo-text" style="color:#a855f7;"></i>
+            <span class="logo-text">Smart Ticket</span>
+        </a>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="meus_chamados.html">Meus Chamados</a></li>
+                <li><a href="gerais.html">Chamados Gerais</a></li>
+                <li><a href="indicadores.html" class="active">Indicadores</a></li>
+                <li><a href="#">Base de Conhecimento</a></li>
+            </ul>
+        </nav>
+        <div class="user-profile">
+            <i class="fa-regular fa-bell" style="color:white; margin-right: 15px; cursor: pointer;"></i>
+            <div class="avatar-circle">TL</div>
+        </div>
+    </header>
+
+    <section class="main-content">
+        <div class="container-fluid" style="padding: 0 2rem;">
+            
+            <div class="dashboard-header">
+                <div>
+                    <h2 style="margin: 0; font-family: var(--title-font);">Visão Geral da Operação</h2>
+                    <p style="margin: 5px 0 0; opacity: 0.6; font-size: 0.9rem;">Métricas atualizadas em tempo real</p>
+                </div>
+                <div class="date-filter-box">
+                    <i class="fa-regular fa-calendar"></i>
+                    <select class="filter-select-transparent">
+                        <option>Últimos 7 dias</option>
+                        <option>Este Mês</option>
+                        <option>Este Ano</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-blue"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Total Chamados</span>
+                        <h3 class="kpi-value">1,248</h3>
+                        <span class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +12%</span>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-green"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Solucionados</span>
+                        <h3 class="kpi-value">1,102</h3>
+                        <span class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +8%</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-yellow"><i class="fa-regular fa-clock"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">SLA Médio</span>
+                        <h3 class="kpi-value">4h 12m</h3>
+                        <span class="kpi-trend trend-down"><i class="fa-solid fa-arrow-trend-down"></i> -15m (Bom)</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">SLA Estourado</span>
+                        <h3 class="kpi-value">14</h3>
+                        <span class="kpi-trend trend-bad"><i class="fa-solid fa-arrow-trend-up"></i> +2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                
+                <div class="chart-box big-chart">
+                    <div class="chart-header">
+                        <h4>Fluxo de Abertura (Semanal)</h4>
+                        <button class="action-btn-sm"><i class="fa-solid fa-download"></i></button>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-box small-chart">
+                    <div class="chart-header">
+                        <h4>Por Departamento</h4>
+                    </div>
+                    <div class="canvas-wrapper-doughnut">
+                        <canvas id="deptChart"></canvas>
+                    </div>
+                    <div class="chart-legend-custom">
+                        <div class="legend-item"><span class="dot-ti"></span> TI (45%)</div>
+                        <div class="legend-item"><span class="dot-jur"></span> Jurídico (30%)</div>
+                        <div class="legend-item"><span class="dot-arq"></span> Arq (25%)</div>
+                    </div>
+                </div>
+
+                <div class="chart-box small-chart">
+                    <div class="chart-header">
+                        <h4>Top Solucionadores 🏆</h4>
+                    </div>
+                    <div class="ranking-list">
+                        <div class="ranking-item">
+                            <div class="rank-avatar">Ana</div>
+                            <div class="rank-info">
+                                <div class="d-flex justify-content-between">
+                                    <span>Ana Pereira (TI)</span>
+                                    <span style="color: var(--neon-green)">98 pts</span>
+                                </div>
+                                <div class="xp-bar"><div class="xp-fill" style="width: 90%"></div></div>
+                            </div>
+                        </div>
+                         <div class="ranking-item">
+                            <div class="rank-avatar">Car</div>
+                            <div class="rank-info">
+                                <div class="d-flex justify-content-between">
+                                    <span>Carlos Eng. (Arq)</span>
+                                    <span style="color: var(--neon-yellow)">85 pts</span>
+                                </div>
+                                <div class="xp-bar"><div class="xp-fill" style="width: 80%; background: var(--neon-yellow);"></div></div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <div class="rank-avatar">Rob</div>
+                            <div class="rank-info">
+                                <div class="d-flex justify-content-between">
+                                    <span>Roberto (Jur)</span>
+                                    <span style="color: #60a5fa">72 pts</span>
+                                </div>
+                                <div class="xp-bar"><div class="xp-fill" style="width: 65%; background: #60a5fa;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script_indicadores.js"></script>
+</body>
+</html>

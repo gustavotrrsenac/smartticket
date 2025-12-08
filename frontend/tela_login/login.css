@@ -1,0 +1,230 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #b89bee, #774cb4, #5e3ea1);
+  background-size: 600% 600%;
+  animation: gradientAnim 12s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientAnim {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  width: 470px;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: aparecer 0.8s ease;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #f0ebeb;
+}
+
+p {
+  font-size: 14px;
+  color: #f0eaea;
+  margin: 10px 0 20px 0;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+
+.senha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.senha-header a {
+  font-size: 12px;
+  text-decoration: none;
+  color: #6f42c1;
+}
+
+input {
+  margin-top: 5px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 5px rgba(111, 66, 193, 0.3);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #5C21C3, #874AD7);
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 12px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.btn-login:hover {
+  transform: scale(1.02);
+  transition: 0.3s;
+}
+
+.cadastro {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.cadastro a {
+  color: #6f42c1;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ------------------------- */
+/*          MODAIS          */
+/* ------------------------- */
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(31, 19, 125, 0.9);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  width: 350px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: subir 0.35s ease;
+}
+
+@keyframes subir {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.btn-opcao {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+
+.btn-opcao:hover {
+  background: rgba(61, 84, 237, 0.35);
+}
+
+.fechar {
+  margin-top: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.fechar:hover {
+  opacity: 1;
+}

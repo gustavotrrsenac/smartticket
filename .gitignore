@@ -1,0 +1,46 @@
+# ==== ARQUIVOS SENSÍVEIS ====
+.env
+*.env
+.env.local
+.env.dev
+.env.prod
+
+# ==== PYTHON CACHE ====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# ==== AMBIENTE VIRTUAL ====
+venv/
+.env/
+.venv/
+
+# ==== LOGS ====
+*.log
+
+# ==== ARQUIVOS TEMPORÁRIOS ====
+*.tmp
+*.bak
+
+# ==== CONFIGURAÇÕES DO SISTEMA ====
+Thumbs.db
+.DS_Store
+
+# ==== CONFIGURAÇÕES DE IDE ====
+.vscode/
+.idea/
+
+# ==== SQL / BACKUPS ====
+*.sql.bkp
+*.sql~
+
+# Firebase (adiciona chave e conexão do Firebase)
+smartticket-8bd4c-firebase-adminsdk-fbsvc-0c43228df1.json
+backend/firebase_config.py
+
+# ==== ARQUIVOS DE TESTE (opcional) ====
+# Se NÃO quiser subir para o Git:
+# test_connection.py
+# test_insert.py
