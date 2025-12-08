@@ -87,7 +87,7 @@ header.glass-capsule {
 }
 
 .logo-img {
-    height: 50px;
+    height: 35px;
     width: auto;
 }
 
@@ -124,6 +124,12 @@ header.glass-capsule {
     left: 0;
     background: var(--gradient-start);
     box-shadow: 0 0 10px var(--gradient-start);
+}
+/* Adicione isso no seu style.css para forçar o centro absoluto */
+.nav-menu {
+    position: absolute;       /* Solta o elemento do fluxo normal */
+    left: 50%;                /* Empurra para o meio da tela */
+    transform: translateX(-50%); /* Corrige o alinhamento para o centro exato do próprio elemento */
 }
 
 /* =========================================
