@@ -25,6 +25,23 @@ body {
     overflow-x: hidden;
 }
 
+/* --- CORREÇÃO GERAL DO SCROLL (HEADER FIXO) --- */
+section {
+    /* Cria um espaço invisível acima da seção para o título não ficar atrás do menu */
+    scroll-margin-top: 120px;
+}
+
+/* O carrossel não precisa desse espaço pois já está no topo */
+.carousel-container {
+    scroll-margin-top: 0;
+}
+
+/* --- CORREÇÃO ESPECÍFICA: SEÇÃO ALCANCE (#IMPACTO) --- */
+/* Como esta seção tem um design "Full Screen" com mapa, o ajuste deve ser diferente */
+#impacto {
+    scroll-margin-top: 0px; /* Remove a margem extra pois ela já tem padding interno grande */
+}
+
 /* --- HEADER CÁPSULA --- */
 header.glass-capsule {
     position: fixed;
@@ -274,7 +291,7 @@ main {
     -webkit-text-fill-color: transparent;
 }
 
-/* --- CATEGORIAS --- */
+/* --- CATEGORIAS (ESTILO NEON) --- */
 .categories-section {
     text-align: center;
     padding: 0 0 4rem 0;
@@ -292,83 +309,130 @@ main {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 4rem;
-    max-width: 1400px;
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 1rem;
 }
 
 .tag-pill {
-    background: rgba(255, 255, 255, 0.01);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 1rem 3rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 400;
-    font-family: var(--title-font);
-    font-size: 1rem;
-    transition: all 0.3s;
-    flex-grow: 1;
-    max-width: 300px;
-    text-align: center;
-    background-image: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-}
-
-.tag-pill:hover {
-    transform: translateY(-4px);
-    border-color: var(--gradient-start);
-    background: rgba(255, 255, 255, 0.1);
-    background-clip: border-box;
-    -webkit-background-clip: border-box;
-    color: white;
-    -webkit-text-fill-color: white;
-}
-
-.cta-container {
-    margin-top: 5rem;
-}
-
-.btn-start {
+    /* Layout */
     display: inline-flex;
     align-items: center;
-    gap: 15px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    padding: 1rem 4rem;
+    gap: 10px;
+    padding: 0.8rem 1.8rem;
     border-radius: 50px;
     text-decoration: none;
-    font-weight: 400;
     font-family: var(--title-font);
-    font-size: 1.1rem;
+    font-weight: 500;
+    font-size: 1rem;
+    
+    /* Cores Base (Glass) */
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    
+    /* Transições suaves */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.tag-pill svg {
+    opacity: 0.7;
     transition: all 0.3s;
-    background-image: linear-gradient(45deg, white, #e0cffc);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
 }
 
-.btn-start:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: white;
-    background-clip: border-box;
-    -webkit-background-clip: border-box;
+/* --- VARIAÇÕES DE CORES (NEON) --- */
+.color-purple { --tag-color: #a855f7; }
+.color-green  { --tag-color: #22c55e; }
+.color-red    { --tag-color: #ef4444; }
+.color-orange { --tag-color: #f97316; }
+.color-yellow { --tag-color: #eab308; }
+.color-cyan   { --tag-color: #06b6d4; }
+.color-blue   { --tag-color: #3b82f6; }
+
+.tag-pill[class*="color-"] {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tag-pill[class*="color-"]:hover {
+    border-color: var(--tag-color);
+    background: color-mix(in srgb, var(--tag-color) 15%, transparent);
     color: white;
-    -webkit-text-fill-color: white;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--tag-color) 30%, transparent),
+                inset 0 0 10px color-mix(in srgb, var(--tag-color) 10%, transparent);
+    transform: translateY(-5px) scale(1.05);
 }
 
-.btn-start svg {
-    stroke: white;
-    transition: transform 0.3s;
+.tag-pill:hover svg {
+    opacity: 1;
+    stroke: var(--tag-color);
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px var(--tag-color));
 }
 
-.btn-start:hover svg {
-    transform: translateX(5px);
+/* --- BOTÃO COMECE AGORA (DESTAQUE) --- */
+.cta-container {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
 }
+
+.btn-start-highlight {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 1.2rem 4rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: white;
+    background: linear-gradient(90deg, #a855f7, #3b82f6);
+    background-size: 200% auto;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+    transition: all 0.4s ease;
+    border: 2px solid rgba(255,255,255,0.1);
+    z-index: 1;
+}
+
+.btn-start-highlight:hover {
+    background-position: right center; 
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.7);
+}
+
+.btn-start-highlight svg {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-start-highlight:hover svg {
+    transform: translateX(8px) scale(1.2);
+}
+
+.btn-start-highlight::before {
+    content: '';
+    position: absolute;
+    top: -5px; left: -5px; right: -5px; bottom: -5px;
+    border-radius: 50px;
+    border: 2px solid rgba(168, 85, 247, 0.5);
+    opacity: 0;
+    z-index: -1;
+    animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+    0% { transform: scale(0.95); opacity: 0.7; }
+    100% { transform: scale(1.15); opacity: 0; }
+}
+
 
 /* --- SERVIÇOS (POPULARES) --- */
 .popular-services-section {
@@ -861,26 +925,31 @@ main {
     border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
-/* --- SEÇÃO ALCANCE / IMPACTO (SEM GRADE, APENAS DEGRADÊ) --- */
+/* --- SEÇÃO ALCANCE / IMPACTO (ATUALIZADA) --- */
 .modern-impact-section {
-    padding: 8rem 0;
+    padding: 0; /* Removido padding excessivo */
     
     /* TRUQUE PARA LARGURA TOTAL (FULL BLEED) */
-    width: 100vw;          /* Largura da viewport inteira */
+    width: 100vw;
     position: relative;
     left: 50%;
     right: 50%;
-    margin-left: -50vw;    /* Puxa para a esquerda */
-    margin-right: -50vw;   /* Puxa para a direita */
+    margin-left: -50vw;
+    margin-right: -50vw;
     
     overflow: hidden;
     
     /* Degradê suave Transparente -> Preto */
     background: linear-gradient(to bottom, rgba(5, 5, 17, 0) 0%, #050511 25%, #050511 100%);
     
-    /* Ajuste de margem superior para fusão */
     margin-top: -100px;
-    padding-top: 15rem;
+    
+    /* Ajustes de Centralização */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10rem; /* Padding ajustado para o mapa aparecer inteiro */
     
     box-shadow: none;
 }
@@ -934,7 +1003,8 @@ main {
     width: 100%;
     height: auto;
     opacity: 0.8;
-    filter: invert(1) sepia(1) saturate(3) hue-rotate(180deg) brightness(1.2);
+    fill: white !important; 
+    color: white !important;
 }
 
 .map-pin {
@@ -1078,33 +1148,77 @@ main {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* FOOTER */
+/* FOOTER ATUALIZADO */
 .footer {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
-    padding: 4rem 2rem;
+    padding: 3rem 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: auto;
+    position: relative;
+    z-index: 10;
 }
 
-.footer-links {
-    list-style: none;
-    padding: 0;
+.contato-footer {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contato-footer h4 {
+    margin: 0 0 25px 0;
+    font-size: 1.6rem;
+    color: white;
+    font-family: var(--title-font);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.footer-links-container {
     display: flex;
-    justify-content: center;
-    gap: 4rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
-.footer-links a {
-    color: rgba(255, 255, 255, 0.6);
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #a6b1e1;
+    font-size: 1.1rem;
     text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s;
+    font-family: var(--title-font);
+    padding: 8px 16px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
 
-.footer-links a:hover {
-    color: var(--gradient-start);
+.footer-link svg {
+    transition: transform 0.3s;
 }
+
+/* Efeito Hover Geral (E-mail) */
+.footer-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Efeito Específico para o Instagram */
+.instagram-highlight:hover {
+    color: white;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4);
+    border-color: transparent;
+}
+
+.footer-link:hover svg {
+    transform: scale(1.1);
+}
+
 
 /* MOBILE */
 @media (max-width: 900px) {
@@ -1179,6 +1293,7 @@ main {
 
     .modern-impact-section {
         padding: 4rem 0;
+        min-height: auto; /* No mobile pode ter altura automática */
     }
 
     .impact-container {
