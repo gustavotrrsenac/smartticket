@@ -26,14 +26,14 @@ body {
     border-radius: 12px;
     max-width: 480px;
     margin: 0 auto;
-    padding: 40px 20px; /* ajuste */
+    padding: 40px 20px; 
 }
 
 #statusIcon {
     font-size: 70px;
     display: flex;
     justify-content: center;
-    align-items: center; /* ajuste */
+    align-items: center; 
 }
 
 #statusIcon.validado {
@@ -56,4 +56,12 @@ body {
 
 #statusMessage {
     font-size: 1.25rem;
+}
+
+.msg-validado {
+    color: white; 
+}
+
+.msg-solicitacao-validacao {
+    color: white; 
 }
