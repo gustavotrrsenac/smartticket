@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Ticket</title>
+    <link rel="icon" type="image/png" href="Logo básica branca.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="glass-capsule">
+        <a href="/" class="logo-container">
+            <img src="Logo com balões.png" alt="Logo Smart Ticket" class="logo-img">
+            <span class="logo-text">Smart Ticket</span>
+        </a>
+
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#categorias">Categorias</a></li>
+                <li><a href="#populares">Populares</a></li>
+                <li><a href="#passo-a-passo">Como Funciona</a></li>
+                <li><a href="#sobre">Sobre Nós</a></li>
+                <li><a href="#feedbacks">Feedback</a></li>
+                <li><a href="#impacto">Alcance</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-dropdown-container">
+            <a href="#perfil" class="profile-link" title="Meu Perfil">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </a>
+
+            <div class="profile-dropdown-menu">
+                <a href="#conta" class="dropdown-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    </svg>
+                    <span>Conta</span>
+                </a>
+                <a href="#solicitacoes" class="dropdown-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>Minhas Solicitações</span>
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="#sair" class="dropdown-item logout-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="carousel-container">
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <img src="teste 4.jpg" alt="Destaque 1" class="carousel-image">
+            <img src="teste 7.jpg" alt="Destaque 2" class="carousel-image">
+            <img src="teste 8.jpg" alt="Destaque 3" class="carousel-image">
+        </div>
+        <div class="hero-gradient-overlay"></div>
+    </section>
+
+    <div class="carousel-reflection-container">
+        <div class="carousel-reflection" id="carouselReflection"></div>
+    </div>
+
+    <main>
+        <section id="categorias" class="categories-section">
+            <div class="categories-card">
+                <h3 class="section-title">Escolha o Assunto e Explore</h3>
+
+                <div class="tags-container">
+                    <a href="#" class="tag-pill color-purple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        Advocacia
+                    </a>
+                    
+                    <a href="#" class="tag-pill color-green">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path><path d="M8.5 8.5a4 4 0 0 1-5 5"></path></svg>
+                        Nutrição
+                    </a>
+
+                    <a href="#" class="tag-pill color-red">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        Saúde
+                    </a>
+
+                    <a href="#" class="tag-pill color-orange">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                        Manutenção
+                    </a>
+
+                    <a href="#" class="tag-pill color-yellow">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"></path><path d="M6 20V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12"></path><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                        Engenharia
+                    </a>
+
+                    <a href="#" class="tag-pill color-cyan">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                        Educação
+                    </a>
+
+                    <a href="#" class="tag-pill color-blue">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        Tecnologia
+                    </a>
+                </div>
+
+                <div class="cta-container">
+                    <a href="#" class="btn-start-highlight">
+                        COMECE AGORA
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="populares" class="popular-services-section">
+            <div class="section-header">
+                <h2 class="main-title">Principais serviços pedidos</h2>
+                <p class="sub-title">Os serviços mais realizados de cada categoria</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="card-image"><img src="T.I.jpg" alt="T.I."></div>
+                    <div class="card-content">
+                        <h3>Tecnologia da Informação</h3>
+                        <a href="#" class="service-link">Solicitar orçamento</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="card-image"><img src="Direito.jpg" alt="Direito"></div>
+                    <div class="card-content">
+                        <h3>Direito</h3>
+                        <a href="#" class="service-link">Solicitar orçamento</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="card-image"><img src="nutrição.jpg" alt="Nutrição"></div>
+                    <div class="card-content">
+                        <h3>Nutrição</h3>
+                        <a href="#" class="service-link">Solicitar orçamento</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="passo-a-passo" class="how-it-works-section">
+            <div class="hiw-container">
+                <div class="hiw-visual">
+                    <div class="visual-content">
+                        <h2 class="hiw-title">Conecte-se<br>ao profissional<br>ideal em<br><span
+                                class="highlight-text">minutos</span></h2>
+                        <p class="hiw-desc">Resolva seu problema seguindo apenas 4 passos simples.</p>
+                        <div class="floating-shape"></div>
+                    </div>
+                </div>
+                <div class="hiw-steps">
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg></div>
+                        <div class="step-text">
+                            <h3>Encontre seu Nicho</h3>
+                            <p>Use nossa busca inteligente.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            </svg></div>
+                        <div class="step-text">
+                            <h3>Escolha o Especialista</h3>
+                            <p>Compare perfis e avaliações.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg></div>
+                        <div class="step-text">
+                            <h3>Solicite Orçamento</h3>
+                            <p>Negocie valores sem compromisso.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg></div>
+                        <div class="step-text">
+                            <h3>Feche o Negócio</h3>
+                            <p>Aproveite o serviço com segurança.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobre" class="about-us-section">
+            <div class="about-container">
+                <div class="about-header">
+                    <h2 class="about-title">Quem Somos Nós</h2>
+                    <p class="about-subtitle">Transformando conexões em resultados reais.</p>
+                </div>
+                <div class="features-row">
+                    <div class="feature-item">
+                        <h3 class="feature-title">Inovação</h3>
+                        <p class="feature-desc">Tecnologia para <span class="highlight">otimizar</span> encontros
+                            profissionais.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title">Segurança</h3>
+                        <p class="feature-desc">Ambiente seguro com perfis <span class="highlight">verificados</span>.
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <h3 class="feature-title text-gradient">Eficiência</h3>
+                        <p class="feature-desc">Experiência <span class="highlight">fluida</span> e sem burocracia.</p>
+                    </div>
+                </div>
+                <div class="about-cta">
+                    <a href="arquivo-empresa.pdf" target="_blank" class="btn-download">
+                        <span>Conheça nossa história completa</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="feedbacks" class="feedback-section">
+            <h2 class="section-title" style="text-align:center;">O que dizem sobre nós</h2>
+            <div class="feedback-grid">
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="user-info">
+                            <div class="user-avatar"><img
+                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop"
+                                    alt="Ana"></div>
+                            <span class="user-name">Ana Souza</span>
+                        </div>
+                        <div class="menu-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="social-body">
+                        <p class="feedback-text">"Nunca foi tão fácil encontrar um encanador. Em 10 minutos resolvi um
+                            problema de semanas!"</p>
+                        <span class="post-tag">#agilidade</span>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="user-info">
+                            <div class="user-avatar"><img
+                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop"
+                                    alt="Carlos"></div>
+                            <span class="user-name">Carlos M.</span>
+                        </div>
+                        <div class="menu-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="social-body">
+                        <p class="feedback-text">"A plataforma é super intuitiva. Consegui comparar orçamentos e
+                            escolher o melhor custo."</p>
+                        <span class="post-tag">#economia</span>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="user-info">
+                            <div class="user-avatar"><img
+                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop"
+                                    alt="Julia"></div>
+                            <span class="user-name">Julia Lima</span>
+                        </div>
+                        <div class="menu-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="social-body">
+                        <p class="feedback-text">"Sou prestadora de serviços e minha agenda lotou depois que entrei no
+                            Smart Ticket. Recomendo!"</p>
+                        <span class="post-tag">#parceria</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impacto" class="modern-impact-section">
+            <div class="horizon-glow"></div>
+            <div class="impact-container">
+                <div class="map-side">
+                    <div class="hologram-wrapper">
+                        <div class="tech-map-visual">
+                            <svg class="world-map-svg" viewBox="0 0 1000 500" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M860.2,228.3c-1.3-1.7-2.9-2.6-4.5-3.1c-2.4-0.8-4.7-0.3-6.5,1.2c-1.1,0.9-1.9,2.2-2.3,3.6c-0.2,0.7-0.3,1.4-0.3,2.1 c0,2.1,0.7,3.9,1.9,5.2c1.7,1.8,4.1,2.5,6.5,2.1c1.3-0.2,2.5-0.8,3.6-1.7c1.7-1.4,2.6-3.4,2.5-5.6C861,230.9,860.7,229.5,860.2,228.3z M247.5,130.8c-2.4-4.7-7.2-7.5-12.4-7.5c-5.3,0-10.1,2.9-12.4,7.6c-2.2,4.6-1.3,10,2.4,13.8c3.6,3.8,9.1,5.2,14,3.7 c2.3-0.7,4.3-2.1,5.9-3.9C247.9,141.2,249.2,135.9,247.5,130.8z M579.5,223c-1.6-3-4.6-4.8-7.9-4.8c-3.3,0-6.4,1.9-7.9,4.9 c-1.4,2.9-0.8,6.4,1.5,8.8c2.3,2.4,5.8,3.3,8.9,2.3c1.5-0.5,2.7-1.3,3.7-2.5C580.4,229.6,581.2,226.1,579.5,223z M718.5,160.5 c-2.4-0.8-4.9-0.3-6.9,1.2c-1.9,1.5-2.9,3.9-2.7,6.3c0.2,2.3,1.6,4.4,3.7,5.5c2.1,1.2,4.6,1.2,6.7,0c2.1-1.2,3.5-3.3,3.7-5.7 C723.2,165.4,721.4,162.7,718.5,160.5z M325.2,323.5c-4.6-1.5-9.6,0.1-12.4,3.9c-2.7,3.8-2.3,8.8,1.1,12.2c3.3,3.3,8.4,4.1,12.4,1.9 c4.1-2.2,6.1-7,5.1-11.5C330.6,326.8,328.2,324.5,325.2,323.5z M475.2,118.5c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10 c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C479.9,121.6,478,119.4,475.2,118.5z M825.2,365.5c-3.8-1.2-7.9,0.1-10.3,3.3 c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C829.9,368.6,828,366.4,825.2,365.5z M175.2,265.5 c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1 C179.9,268.6,178,266.4,175.2,265.5z M625.2,85.5c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9 c3.4-1.6,5.3-5.3,4.7-9.1C629.9,88.6,628,86.4,625.2,85.5z M375.2,185.5c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10 c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C379.9,188.6,378,186.4,375.2,185.5z M925.2,135.5c-3.8-1.2-7.9,0.1-10.3,3.3 c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C929.9,138.6,928,136.4,925.2,135.5z M75.2,105.5 c-3.8-1.2-7.9,0.1-10.3,3.3c-2.3,3.1-1.9,7.3,0.9,10c2.7,2.7,7,3.5,10.3,1.9c3.4-1.6,5.3-5.3,4.7-9.1C79.9,108.6,78,106.4,75.2,105.5z M235,120l5,5l-5,5l-5-5L235,120z M600,200l10,10l-10,10l-10-10L600,200z M800,300l8,8l-8,8l-8-8L800,300z M400,250l6,6l-6,6l-6-6L400,250z" />
+                                <circle cx="200" cy="150" r="3" />
+                                <circle cx="220" cy="160" r="3" />
+                                <circle cx="180" cy="170" r="3" />
+                                <circle cx="300" cy="120" r="3" />
+                                <circle cx="320" cy="140" r="3" />
+                                <circle cx="350" cy="130" r="3" />
+                                <circle cx="500" cy="100" r="3" />
+                                <circle cx="520" cy="110" r="3" />
+                                <circle cx="540" cy="90" r="3" />
+                                <circle cx="600" cy="180" r="3" />
+                                <circle cx="620" cy="200" r="3" />
+                                <circle cx="650" cy="190" r="3" />
+                                <circle cx="700" cy="150" r="3" />
+                                <circle cx="720" cy="160" r="3" />
+                                <circle cx="750" cy="140" r="3" />
+                                <circle cx="800" cy="300" r="3" />
+                                <circle cx="820" cy="320" r="3" />
+                                <circle cx="850" cy="310" r="3" />
+                                <circle cx="300" cy="300" r="3" />
+                                <circle cx="320" cy="320" r="3" />
+                                <circle cx="280" cy="340" r="3" />
+                            </svg>
+                            <div class="map-pin pin-1">
+                                <div class="pin-pulse"></div>
+                            </div>
+                            <div class="map-pin pin-2">
+                                <div class="pin-pulse"></div>
+                            </div>
+                            <div class="map-pin pin-3">
+                                <div class="pin-pulse"></div>
+                            </div>
+                        </div>
+                        <div class="map-floor-glow"></div>
+                    </div>
+                </div>
+                <div class="data-side">
+                    <h2 class="impact-title">
+                        Quebrando barreiras <br>
+                        <span class="gradient-text">Globais.</span>
+                    </h2>
+                    <p class="impact-desc">
+                        A tecnologia encurta distâncias. Conectamos especialistas e clientes em uma rede única, segura e
+                        sem fronteiras.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg></div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">+1000</h3>
+                                <p class="stat-label">Clientes Satisfeitos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                    <polyline points="17 6 23 6 23 12"></polyline>
+                                </svg></div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">75%</h3>
+                                <p class="stat-label">Crescimento de Renda</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path
+                                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                    </path>
+                                </svg></div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">100%</h3>
+                                <p class="stat-label">Cobertura Nacional</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="contato-footer">
+            <h4>Entre em contato conosco</h4>
+
+            <div class="footer-links-container">
+                <a href="mailto:smartticketcorporation@gmail.com" class="footer-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    smartticketcorporation@gmail.com
+                </a>
+
+                <a href="https://www.instagram.com/smartticket_corp" target="_blank"
+                    class="footer-link instagram-highlight">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    @smartticket
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
