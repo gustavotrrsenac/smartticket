@@ -1,92 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil – Smart Ticket</title>
-    <link rel="icon" type="image/png" href="Logo básica branca.png">
-    <link rel="stylesheet" href="perfil.css">
+
+    <link rel="stylesheet" href="Perfil.css">
 </head>
 
 <body>
-    <header class="glass-capsule">
-        <a href="/" class="logo-container">
-            <img src="Logo com balões.png" alt="Logo Smart Ticket" class="logo-img">
-            <span class="logo-text">Smart Ticket</span>
-        </a>
 
-        <div class="profile-dropdown-container">
-            <a href="/perfil.html" class="profile-link" title="Meu Perfil">
-                <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="7" r="4"></circle>
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                </svg>
-            </a>
-        </div>
-    </header>
+    <main class="container">
 
-    <!-- CONTEÚDO -->
-    <main class="profile-container">
-
-        <!-- Card principal -->
-        <section class="profile-card glass-card">
-
-            <div class="profile-left">
-                <div class="avatar-wrapper">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300"
-                        alt="Foto do usuário" class="avatar-img">
-                </div>
-
-                <h2 class="user-name">Ana Souza</h2>
-                <p class="user-email">ana.souza@gmail.com</p>
-
-                <a href="#" class="edit-profile-btn">Editar Perfil</a>
+        <!-- CARD DE PERFIL -->
+        <section class="profile-header glass-card">
+            <div class="avatar-frame">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300"
+                    class="avatar-img" alt="Foto do usuário">
             </div>
 
-            <div class="profile-right">
-                <h3 class="section-title">Minhas Informações</h3>
+            <h2 class="user-name">Ana Souza</h2>
+            <p class="user-email">ana.souza@gmail.com</p>
 
-                <div class="info-grid">
-                    <div class="info-item">
-                        <label>Telefone</label>
-                        <p>(61) 99999-0000</p>
-                    </div>
+            <a href="#" class="edit-btn">Editar Perfil</a>
+        </section>
 
-                    <div class="info-item">
-                        <label>Cidade</label>
-                        <p>Brasília – DF</p>
-                    </div>
+        <!-- INFORMAÇÕES -->
+        <section class="info-section glass-card">
+            <h3 class="section-title">Informações Pessoais</h3>
 
-                    <div class="info-item">
-                        <label>Conta criada em</label>
-                        <p>12/08/2023</p>
-                    </div>
-
-                    <div class="info-item">
-                        <label>Tipo de Usuário</label>
-                        <p>Cliente</p>
-                    </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Telefone</label>
+                    <p>(61) 99999-0000</p>
                 </div>
+
+                <div class="info-item">
+                    <label>Cidade</label>
+                    <p>Brasília – DF</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Conta criada em</label>
+                    <p>12/08/2023</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Tipo de Usuário</label>
+                    <p>Cliente</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTATÍSTICAS -->
+        <section class="stats-grid">
+
+            <div class="stat-box glass-card emphasis-hover">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Solicitações feitas</span>
+            </div>
+
+            <div class="stat-box glass-card emphasis-hover">
+                <span class="stat-number">7</span>
+                <span class="stat-label">Orçamentos respondidos</span>
+            </div>
+
+            <div class="stat-box glass-card emphasis-hover">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Serviços concluídos</span>
             </div>
 
         </section>
 
-        <!-- Resumo -->
-        <section class="stats-grid">
-            <div class="stat-card glass-card">
-                <h3>12</h3>
-                <p>Solicitações feitas</p>
-            </div>
+    </main>
 
-            <div class="stat-card glass-card">
-                <h3>7</h3>
-                <p>Orçamentos respondidos</p>
-            </div>
-
-            <div class="stat-card glass-card">
-                <h3>5</h3>
-                <p>Serviços concluídos</p>
-            </div>
-        </s
+</body>
+</html>
