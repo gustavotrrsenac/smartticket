@@ -1,131 +1,161 @@
-from flask import Flask, request, jsonify, render_template
-from flask_login import LoginManager, login_required, current_user
-from models import Usuario, Ticket, Mensagem
+from flask import Blueprint, request, jsonify
+from models import Ticket, Usuario
 from uuid import uuid4
 from datetime import datetime
-from database import db
-
-app = Flask(__name__)
-app.secret_key = "sua-chave-secreta"
-
-# ==============================
-# Flask-Login
-# ==============================
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "login"
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return Usuario.get_or_none(Usuario.id == user_id)
 
 
-# ==============================
-# Página do Chat (somente logado)
-# ==============================
-@app.route("/chat", methods=["GET"])
-@login_required
-def chat_page():
-    return render_template("chat.html", usuario=current_user)
+chat_tickets_bp = Blueprint("chat_tickets", __name__)
 
+# ─────────────────────────────────────────────
+# CRIAR TICKET DIRETO
+# ─────────────────────────────────────────────
+@chat_tickets_bp.post("/tickets")
+def criar_ticket():
+    data = request.json
 
-# ==============================
-# API do Chat (somente logado)
-# ==============================
-@app.route("/chat/message", methods=["POST"])
-@login_required
-def chat_message():
-    data = request.get_json()
-    mensagem_texto = data.get("mensagem")
-
-    if not mensagem_texto:
-        return jsonify({"erro": "Mensagem é obrigatória"}), 400
-
-    usuario = current_user
-
-    # ==============================
-    # Busca ticket em criação
-    # ==============================
-    ticket = Ticket.get_or_none(
-        Ticket.cliente == usuario,
-        Ticket.status == "em_criacao"
+    ticket = Ticket.create(
+        id=str(uuid4()),
+        titulo=data["titulo"],
+        descricao=data["descricao"],
+        criado_por=data["criado_por"],
+        atribuido_para=data.get("atribuido_para"),
+        criado_em=datetime.now()
     )
 
-    # Se não existir, cria um novo ticket inicial
-    if not ticket:
-        ticket = Ticket.create(
-            id=str(uuid4()),
-            cliente=usuario,
-            status="em_criacao",
-            passo=1,
-            criado_em=datetime.now(),
-            atualizado_em=datetime.now()
+    return jsonify({
+        "success": True,
+        "msg": "Ticket criado",
+        "id": ticket.id
+    }), 201
+
+
+# ─────────────────────────────────────────────
+# LISTAR TICKETS
+# ─────────────────────────────────────────────
+@chat_tickets_bp.get("/tickets")
+def listar_tickets():
+    tickets = Ticket.select()
+
+    return jsonify([
+        {
+            "id": t.id,
+            "titulo": t.titulo,
+            "status": t.status,
+            "criado_por": t.criado_por.id,
+            "atribuido_para": t.atribuido_para.id if t.atribuido_para else None
+        }
+        for t in tickets
+    ])
+
+
+# ─────────────────────────────────────────────
+# GERAR RASCUNHO PELO CHATBOT
+# ─────────────────────────────────────────────
+@chat_tickets_bp.post("/tickets/draft")
+def gerar_ticket():
+    try:
+        data = request.json
+
+        user_id = data.get("user_id")
+        especialidade_id = data.get("especialidade_id")
+        respostas = data.get("respostas_chat")
+        titulo = data.get("titulo")
+
+        if not user_id:
+            return jsonify({"success": False, "message": "ID do usuário é obrigatório"}), 400
+
+        if not especialidade_id:
+            return jsonify({"success": False, "message": "Especialidade é obrigatória"}), 400
+
+        if not respostas or not isinstance(respostas, list):
+            return jsonify({"success": False, "message": "Respostas do chatbot são obrigatórias"}), 400
+
+        try:
+            cliente = Usuario.get_by_id(user_id)
+        except Usuario.DoesNotExist:
+            return jsonify({"success": False, "message": "Usuário não encontrado"}), 404
+
+        descricao = "\n".join(
+            [f"- {r.get('pergunta')}: {r.get('resposta')}" for r in respostas]
         )
 
-    # ==============================
-    # Salva mensagem do usuário
-    # ==============================
-    Mensagem.create(
-        id=str(uuid4()),
-        ticket=ticket,
-        sender=usuario,
-        mensagem=mensagem_texto,
-        tipo="texto",
-        enviado_em=datetime.now()
-    )
+        ticket = Ticket.create(
+            id=str(uuid4()),
+            cliente=cliente,
+            especialista=None,
+            triagem=None,
+            titulo=titulo or "Ticket Gerado pelo Chatbot",
+            descricao=descricao,
+            status="rascunho"
+        )
 
-    # ==============================
-    # Fluxo do chat controlado pelo ticket
-    # ==============================
+        return jsonify({
+            "success": True,
+            "message": "Rascunho gerado com sucesso!",
+            "ticket": {
+                "id": ticket.id,
+                "titulo": ticket.titulo,
+                "descricao": ticket.descricao,
+                "status": ticket.status,
+                "cliente": cliente.id,
+                "especialidade_id": especialidade_id
+            }
+        }), 201
 
-    # PASSO 1 – Área
-    if ticket.passo == 1:
-        ticket.area = mensagem_texto
-        ticket.passo = 2
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro ao gerar rascunho: {str(e)}"
+        }), 500
+
+
+# ─────────────────────────────────────────────
+# ENVIAR TICKET PARA FILA
+# ─────────────────────────────────────────────
+@chat_tickets_bp.post("/tickets/send")
+def enviar_ticket_para_fila():
+    try:
+        data = request.json
+
+        ticket_id = data.get("ticket_id")
+        especialidade_id = data.get("especialidade_id")
+
+        if not ticket_id:
+            return jsonify({"success": False, "message": "ID do ticket é obrigatório"}), 400
+
+        if not especialidade_id:
+            return jsonify({"success": False, "message": "Especialidade é obrigatória"}), 400
+
+        try:
+            ticket = Ticket.get_by_id(ticket_id)
+        except Ticket.DoesNotExist:
+            return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
+
+        if ticket.status != "rascunho":
+            return jsonify({
+                "success": False,
+                "message": "Este ticket já foi enviado ou já está em atendimento"
+            }), 409
+
+        ticket.status = "pendente"
+        ticket.especialidade_id = especialidade_id
+        ticket.enviado_em = datetime.now()
         ticket.save()
 
-        resposta = "Digite a descrição da sua dúvida:"
+        return jsonify({
+            "success": True,
+            "message": "Ticket enviado para a fila com sucesso!",
+            "ticket": {
+                "id": ticket.id,
+                "status": ticket.status,
+                "especialidade_id": especialidade_id
+            }
+        }), 200
 
-    # PASSO 2 – Descrição
-    elif ticket.passo == 2:
-        ticket.descricao = mensagem_texto
-        ticket.passo = 3
-        ticket.save()
-
-        resposta = "Qual o nível de urgência? (baixa, média, alta)"
-
-    # PASSO 3 – Urgência → finaliza ticket
-    elif ticket.passo == 3:
-        ticket.urgencia = mensagem_texto
-        ticket.titulo = f"Dúvida - {ticket.area}"
-        ticket.status = "aberto"
-        ticket.atualizado_em = datetime.now()
-        ticket.save()
-
-        resposta = f"✅ Ticket criado com sucesso! ID: {ticket.id}"
-
-    else:
-        resposta = "✅ Seu ticket já foi criado. Aguarde atendimento."
-
-    # ==============================
-    # Salva resposta do bot
-    # ==============================
-    Mensagem.create(
-        id=str(uuid4()),
-        ticket=ticket,
-        sender=usuario,  # futuramente pode ser um usuário BOT
-        mensagem=resposta,
-        tipo="texto",
-        enviado_em=datetime.now()
-    )
-
-    return jsonify({"resposta": resposta})
-
-
-# ==============================
-# Inicialização
-# ==============================
-if __name__ == "__main__":
-    db.connect()
-    app.run(debug=True)
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro ao enviar ticket: {str(e)}"
+        }), 500
