@@ -15,9 +15,15 @@ def login():
 def home():
     return render_template('index.html')
 
+<<<<<<< HEAD
 @app.get("/Perfil")
 def Perfil():
     return render_template('Perfil.html')
+=======
+@app.get("/indicadores")
+def indicadores():
+    return render_template('indicadores.html')
+>>>>>>> b9e2d4d25a84bdbdd04cdc030959b647d1e4c5fd
 
 ###################################################
 
