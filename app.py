@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models import db, Usuario, Ticket, DocumentoEspecialista
+from models import db, Usuario, Ticket
 from uuid import uuid4
 from datetime import datetime
 import re
