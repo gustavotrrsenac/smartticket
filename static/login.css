@@ -7,7 +7,7 @@
 
 body {
   min-height: 100vh;
-  background: linear-gradient(270deg, #5f31b3, #774cb4, #5e3ea1);
+  background: linear-gradient(270deg, #6736c2, #774cb4, #5e3ea1);
   background-size: 600% 600%;
   animation: gradientAnim 12s ease infinite;
   display: flex;
@@ -26,7 +26,8 @@ body {
 
   100% {
     background-position: 0% 50%;
-  }
+  }0
+  
 }
 
 .login-wrapper {

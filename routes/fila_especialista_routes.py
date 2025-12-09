@@ -1,73 +1,72 @@
 from flask import Blueprint, request, jsonify
-from uuid import uuid4
 from datetime import datetime
 from models import Ticket, Usuario
-from database import db
 
 fila_especialista_bp = Blueprint("fila_especialista", __name__)
-
 
 # ------------------------------------------------------------
 # 1. Enviar ticket para a fila do especialista
 # ------------------------------------------------------------
 @fila_especialista_bp.post("/tickets/<ticket_id>/enviar-fila")
 def enviar_ticket_para_fila(ticket_id):
-    try:
-        data = request.json
-        especialista_id = data.get("especialista_id")
+    data = request.json or {}
+    especialista_id = data.get("especialista_id")
 
-        if not especialista_id:
-            return jsonify({"success": False, "message": "ID do especialista é obrigatório"}), 400
+    if not especialista_id:
+        return jsonify({"success": False, "message": "ID do especialista é obrigatório"}), 400
 
-        ticket = Ticket.get_or_none(Ticket.id == ticket_id)
-        especialista = Usuario.get_or_none(Usuario.id == especialista_id)
+    ticket = Ticket.get_or_none(Ticket.id == ticket_id)
+    especialista = Usuario.get_or_none(Usuario.id == especialista_id)
 
-        if not ticket:
-            return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
+    if not ticket:
+        return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
 
-        if not especialista:
-            return jsonify({"success": False, "message": "Especialista não encontrado"}), 404
+    if not especialista:
+        return jsonify({"success": False, "message": "Especialista não encontrado"}), 404
 
-        ticket.especialista = especialista
-        ticket.status = "aguardando"
-        ticket.atualizado_em = datetime.now()
-        ticket.save()
-
+    if ticket.status != "pendente":
         return jsonify({
-            "success": True,
-            "message": "Ticket enviado para a fila do especialista",
-            "ticket_id": ticket.id
-        }), 200
+            "success": False,
+            "message": "Ticket não está disponível para envio à fila"
+        }), 409
 
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+    ticket.especialista = especialista
+    ticket.status = "aguardando"
+    ticket.atualizado_em = datetime.now()
+    ticket.save()
+
+    return jsonify({
+        "success": True,
+        "message": "Ticket enviado para a fila do especialista",
+        "ticket_id": ticket.id
+    }), 200
 
 
 # ------------------------------------------------------------
-# 2. Listar fila do especialista (status: aguardando)
+# 2. Listar fila do especialista
 # ------------------------------------------------------------
 @fila_especialista_bp.get("/especialistas/<especialista_id>/fila")
 def listar_fila_especialista(especialista_id):
-    try:
-        tickets = Ticket.select().where(
-            (Ticket.especialista == especialista_id) &
-            (Ticket.status == "aguardando")
-        )
+    especialista = Usuario.get_or_none(Usuario.id == especialista_id)
+    if not especialista:
+        return jsonify({"success": False, "message": "Especialista não encontrado"}), 404
 
-        return jsonify([
-            {
-                "id": t.id,
-                "titulo": t.titulo,
-                "descricao": t.descricao,
-                "status": t.status,
-                "cliente": t.cliente.id,
-                "atualizado_em": t.atualizado_em.isoformat() if t.atualizado_em else None
-            }
-            for t in tickets
-        ]), 200
+    tickets = Ticket.select().where(
+        (Ticket.especialista == especialista) &
+        (Ticket.status == "aguardando")
+    )
 
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+    return jsonify([
+        {
+            "id": t.id,
+            "titulo": t.titulo,
+            "descricao": t.descricao,
+            "status": t.status,
+            "cliente": t.cliente.id,
+            "atualizado_em": t.atualizado_em.isoformat() if t.atualizado_em else None
+        }
+        for t in tickets
+    ]), 200
 
 
 # ------------------------------------------------------------
@@ -75,30 +74,31 @@ def listar_fila_especialista(especialista_id):
 # ------------------------------------------------------------
 @fila_especialista_bp.post("/tickets/<ticket_id>/assumir")
 def assumir_ticket(ticket_id):
-    try:
-        data = request.json
-        especialista_id = data.get("especialista_id")
+    data = request.json or {}
+    especialista_id = data.get("especialista_id")
 
-        ticket = Ticket.get_or_none(Ticket.id == ticket_id)
+    ticket = Ticket.get_or_none(Ticket.id == ticket_id)
+    if not ticket:
+        return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
 
-        if not ticket:
-            return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
+    if not ticket.especialista or str(ticket.especialista.id) != str(especialista_id):
+        return jsonify({"success": False, "message": "Ticket não pertence a este especialista"}), 403
 
-        if ticket.especialista.id != especialista_id:
-            return jsonify({"success": False, "message": "Ticket não pertence a este especialista"}), 403
-
-        ticket.status = "em_atendimento"
-        ticket.atualizado_em = datetime.now()
-        ticket.save()
-
+    if ticket.status != "aguardando":
         return jsonify({
-            "success": True,
-            "message": "Ticket assumido com sucesso",
-            "ticket_id": ticket.id
-        }), 200
+            "success": False,
+            "message": "Ticket não pode ser assumido neste estado"
+        }), 409
 
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+    ticket.status = "em_atendimento"
+    ticket.atualizado_em = datetime.now()
+    ticket.save()
+
+    return jsonify({
+        "success": True,
+        "message": "Ticket assumido com sucesso",
+        "ticket_id": ticket.id
+    }), 200
 
 
 # ------------------------------------------------------------
@@ -106,30 +106,31 @@ def assumir_ticket(ticket_id):
 # ------------------------------------------------------------
 @fila_especialista_bp.post("/tickets/<ticket_id>/finalizar")
 def finalizar_ticket(ticket_id):
-    try:
-        data = request.json
-        especialista_id = data.get("especialista_id")
+    data = request.json or {}
+    especialista_id = data.get("especialista_id")
 
-        ticket = Ticket.get_or_none(Ticket.id == ticket_id)
+    ticket = Ticket.get_or_none(Ticket.id == ticket_id)
+    if not ticket:
+        return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
 
-        if not ticket:
-            return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
+    if not ticket.especialista or str(ticket.especialista.id) != str(especialista_id):
+        return jsonify({"success": False, "message": "Ticket não pertence a este especialista"}), 403
 
-        if ticket.especialista.id != especialista_id:
-            return jsonify({"success": False, "message": "Ticket não pertence a este especialista"}), 403
-
-        ticket.status = "concluido"
-        ticket.atualizado_em = datetime.now()
-        ticket.save()
-
+    if ticket.status != "em_atendimento":
         return jsonify({
-            "success": True,
-            "message": "Ticket concluído com sucesso",
-            "ticket_id": ticket.id
-        }), 200
+            "success": False,
+            "message": "Ticket não está em atendimento"
+        }), 409
 
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+    ticket.status = "concluido"
+    ticket.atualizado_em = datetime.now()
+    ticket.save()
+
+    return jsonify({
+        "success": True,
+        "message": "Ticket concluído com sucesso",
+        "ticket_id": ticket.id
+    }), 200
 
 
 # ------------------------------------------------------------
@@ -137,24 +138,24 @@ def finalizar_ticket(ticket_id):
 # ------------------------------------------------------------
 @fila_especialista_bp.get("/especialistas/<especialista_id>/finalizados")
 def atendimentos_finalizados(especialista_id):
-    try:
-        tickets = Ticket.select().where(
-            (Ticket.especialista == especialista_id) &
-            (Ticket.status == "concluido")
-        )
+    especialista = Usuario.get_or_none(Usuario.id == especialista_id)
+    if not especialista:
+        return jsonify({"success": False, "message": "Especialista não encontrado"}), 404
 
-        return jsonify([
-            {
-                "id": t.id,
-                "titulo": t.titulo,
-                "cliente": t.cliente.id,
-                "finalizado_em": t.atualizado_em.isoformat() if t.atualizado_em else None
-            }
-            for t in tickets
-        ])
+    tickets = Ticket.select().where(
+        (Ticket.especialista == especialista) &
+        (Ticket.status == "concluido")
+    )
 
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+    return jsonify([
+        {
+            "id": t.id,
+            "titulo": t.titulo,
+            "cliente": t.cliente.id,
+            "finalizado_em": t.atualizado_em.isoformat() if t.atualizado_em else None
+        }
+        for t in tickets
+    ]), 200
 
 
 # ------------------------------------------------------------
@@ -162,30 +163,22 @@ def atendimentos_finalizados(especialista_id):
 # ------------------------------------------------------------
 @fila_especialista_bp.get("/especialistas/<especialista_id>/indicadores")
 def indicadores_especialista(especialista_id):
-    try:
-        total_recebidos = Ticket.select().where(Ticket.especialista == especialista_id).count()
-        total_aguardando = Ticket.select().where(
-            (Ticket.especialista == especialista_id) &
-            (Ticket.status == "aguardando")
-        ).count()
-        total_em_atendimento = Ticket.select().where(
-            (Ticket.especialista == especialista_id) &
-            (Ticket.status == "em_atendimento")
-        ).count()
-        total_concluidos = Ticket.select().where(
-            (Ticket.especialista == especialista_id) &
-            (Ticket.status == "concluido")
-        ).count()
+    especialista = Usuario.get_or_none(Usuario.id == especialista_id)
+    if not especialista:
+        return jsonify({"success": False, "message": "Especialista não encontrado"}), 404
 
-        return jsonify({
-            "success": True,
-            "indicadores": {
-                "total_recebidos": total_recebidos,
-                "total_aguardando": total_aguardando,
-                "total_em_atendimento": total_em_atendimento,
-                "total_concluidos": total_concluidos
-            }
-        })
-
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+    return jsonify({
+        "success": True,
+        "indicadores": {
+            "total_recebidos": Ticket.select().where(Ticket.especialista == especialista).count(),
+            "total_aguardando": Ticket.select().where(
+                (Ticket.especialista == especialista) & (Ticket.status == "aguardando")
+            ).count(),
+            "total_em_atendimento": Ticket.select().where(
+                (Ticket.especialista == especialista) & (Ticket.status == "em_atendimento")
+            ).count(),
+            "total_concluidos": Ticket.select().where(
+                (Ticket.especialista == especialista) & (Ticket.status == "concluido")
+            ).count(),
+        }
+    }), 200
