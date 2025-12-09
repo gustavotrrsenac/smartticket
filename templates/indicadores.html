@@ -1,184 +1,153 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8">
-  <title>Indicadores</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <!-- BOOTSTRAP -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- ESTILO PRINCIPAL -->
-  <link rel="stylesheet" href="theme.css">
-
-  <!-- CHART.JS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    body {
-      background-color: #F7F7FB;
-      font-family: "Inter", sans-serif;
-    }
-
-    .header-main {
-      background-color: #6A1B9A;
-      padding: 18px 30px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-main h4 {
-      margin: 0;
-      font-weight: 600;
-    }
-
-    .toggle-theme {
-      background: white;
-      border: none;
-      padding: 7px 14px;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #4A0072;
-    }
-
-    .menu-secondary {
-      background-color: #4A0072;
-      padding: 12px 30px;
-      display: flex;
-      gap: 40px;
-    }
-
-    .menu-secondary a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .menu-secondary a:hover {
-      text-decoration: underline;
-    }
-
-    .card-box {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0px 2px 7px rgba(0,0,0,0.1);
-    }
-
-    .card-box h6 {
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Ticket - Indicadores</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body style="background-color: #0f0a1e;">
 
-<body>
+    <header class="glass-capsule">
+        <a href="index.html" class="logo-container">
+            <span class="logo-text">Smart Ticket</span>
+        </a>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="meus_chamados.html">Meus Chamados</a></li>
+                <li><a href="gerais.html">Chamados Gerais</a></li>
+                <li><a href="indicadores.html" class="active">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <!-- HEADER -->
-  <div class="header-main">
-    <h4>Indicadores</h4>
-    <button class="toggle-theme" onclick="toggleTheme()">🌙 Tema</button>
-  </div>
+    <section class="main-content">
+        <div class="container-fluid" style="padding: 0 2rem;">
+            
+            <div class="dashboard-header">
+                <div>
+                    <h2 style="margin: 0; font-family: var(--title-font);">Visão Geral da Operação</h2>
+                    <p style="margin: 5px 0 0; opacity: 0.6; font-size: 0.9rem;">Métricas atualizadas em tempo real</p>
+                </div>
+                <div class="date-filter-box">
+                    <i class="fa-regular fa-calendar"></i>
+                    <select class="filter-select-transparent">
+                        <option>Últimos 7 dias</option>
+                        <option>Este Mês</option>
+                        <option>Este Ano</option>
+                    </select>
+                </div>
+            </div>
 
-  <!-- MENU -->
-  <div class="menu-secondary">
-    <a href="telaticket.html">Tickets</a>
-    <a href="historico.html">Histórico</a>
-    <a href="indicadores.html">Indicadores</a>
-  </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-blue"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Total Chamados</span>
+                        <h3 class="kpi-value">1,248</h3>
+                        <span class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +12%</span>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-green"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Solucionados</span>
+                        <h3 class="kpi-value">1,102</h3>
+                        <span class="kpi-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> +8%</span>
+                    </div>
+                </div>
 
-  <!-- CONTEÚDO -->
-  <div class="container my-4">
-    <div class="row g-4">
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-yellow"><i class="fa-regular fa-clock"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">SLA Médio</span>
+                        <h3 class="kpi-value">4h 12m</h3>
+                        <span class="kpi-trend trend-down"><i class="fa-solid fa-arrow-trend-down"></i> -15m (Bom)</span>
+                    </div>
+                </div>
 
-      <!-- GRÁFICOS PRINCIPAIS -->
-      <div class="col-12 col-lg-8">
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">SLA Estourado</span>
+                        <h3 class="kpi-value">14</h3>
+                        <span class="kpi-trend trend-bad"><i class="fa-solid fa-arrow-trend-up"></i> +2</span>
+                    </div>
+                </div>
+            </div>
 
-        <!-- GRÁFICO 1 -->
-        <div class="card-box">
-          <h6>Atendimentos por mês</h6>
-          <canvas id="chartMes" height="140"></canvas>
+            <div class="charts-grid">
+                
+                <div class="chart-box big-chart">
+                    <div class="chart-header">
+                        <h4>Fluxo de Abertura (Semanal)</h4>
+                        <button class="action-btn-sm"><i class="fa-solid fa-download"></i></button>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-box small-chart">
+                    <div class="chart-header">
+                        <h4>Por Departamento</h4>
+                    </div>
+                    <div class="canvas-wrapper-doughnut">
+                        <canvas id="deptChart"></canvas>
+                    </div>
+                    <div class="chart-legend-custom">
+                        <div class="legend-item"><span class="dot-ti"></span> TI (45%)</div>
+                        <div class="legend-item"><span class="dot-jur"></span> Jurídico (30%)</div>
+                        <div class="legend-item"><span class="dot-arq"></span> Arq (25%)</div>
+                    </div>
+                </div>
+
+                <div class="chart-box small-chart">
+                    <div class="chart-header">
+                        <h4>Top Solucionadores 🏆</h4>
+                    </div>
+                    <div class="ranking-list">
+                        <div class="ranking-item">
+                            <div class="rank-avatar">Ana</div>
+                            <div class="rank-info">
+                                <div class="d-flex justify-content-between">
+                                    <span>Ana Pereira (TI)</span>
+                                    <span style="color: var(--neon-green)">98 pts</span>
+                                </div>
+                                <div class="xp-bar"><div class="xp-fill" style="width: 90%"></div></div>
+                            </div>
+                        </div>
+                         <div class="ranking-item">
+                            <div class="rank-avatar">Car</div>
+                            <div class="rank-info">
+                                <div class="d-flex justify-content-between">
+                                    <span>Carlos Eng. (Arq)</span>
+                                    <span style="color: var(--neon-yellow)">85 pts</span>
+                                </div>
+                                <div class="xp-bar"><div class="xp-fill" style="width: 80%; background: var(--neon-yellow);"></div></div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <div class="rank-avatar">Rob</div>
+                            <div class="rank-info">
+                                <div class="d-flex justify-content-between">
+                                    <span>Roberto (Jur)</span>
+                                    <span style="color: #60a5fa">72 pts</span>
+                                </div>
+                                <div class="xp-bar"><div class="xp-fill" style="width: 65%; background: #60a5fa;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
+    </section>
 
-        <!-- GRÁFICO 2 -->
-        <div class="card-box mt-4">
-          <h6>Tempo médio de resposta (últimos 6 meses)</h6>
-          <canvas id="chartTempo" height="120"></canvas>
-        </div>
-      </div>
-
-      <!-- LADO DIREITO -->
-      <div class="col-12 col-lg-4">
-
-        <!-- GRÁFICO 3 -->
-        <div class="card-box">
-          <h6>Distribuição por status</h6>
-          <canvas id="chartStatus" height="180"></canvas>
-        </div>
-
-        <!-- RESUMO RÁPIDO -->
-        <div class="card-box mt-4">
-          <h6>Resumo rápido</h6>
-          <p><strong>Total atendimentos (mês):</strong> 124</p>
-          <p><strong>Tickets resolvidos no 1° contato:</strong> 87</p>
-          <p><strong>Taxa de SLA:</strong> 98%</p>
-          <p><strong>Tempo médio de resposta:</strong> 14 min</p>
-          <p><strong>Setor com maior demanda:</strong> Financeiro</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- SCRIPTS DOS GRÁFICOS -->
-  <script>
-    // Gráfico de atendimentos por mês
-    new Chart(document.getElementById("chartMes"), {
-      type: "line",
-      data: {
-        labels: ["Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-        datasets: [{
-          label: "Atendimentos",
-          data: [85, 102, 94, 117, 124, 138],
-          borderColor: "#6A1B9A",
-          tension: 0.3,
-          fill: false
-        }]
-      }
-    });
-
-    // Gráfico de tempo médio (últimos 6 meses)
-    new Chart(document.getElementById("chartTempo"), {
-      type: "bar",
-      data: {
-        labels: ["Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-        datasets: [{
-          label: "Minutos",
-          data: [18, 16, 15, 17, 14, 13],
-          backgroundColor: "#8E24AA"
-        }]
-      }
-    });
-
-    // Gráfico de status
-    new Chart(document.getElementById("chartStatus"), {
-      type: "doughnut",
-      data: {
-        labels: ["Concluídos", "Em andamento", "Aguardando cliente", "Abertos"],
-        datasets: [{
-          data: [58, 22, 14, 9],
-          backgroundColor: ["#6A1B9A", "#8E24AA", "#BA68C8", "#D1C4E9"]
-        }]
-      }
-    });
-
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-    }
-  </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script_indicadores.js"></script>
 </body>
 </html>
