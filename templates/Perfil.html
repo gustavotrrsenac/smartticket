@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil – Smart Ticket</title>
+
+    <link rel="stylesheet" href="Perfil.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- CARD DE PERFIL -->
+        <section class="profile-header glass-card">
+            <div class="avatar-frame">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300"
+                    class="avatar-img" alt="Foto do usuário">
+            </div>
+
+            <h2 class="user-name">{{nomeUsuario}}</h2>
+            <p class="user-email">{{emailUsuario}}</p>
+
+            <a href="#" class="edit-btn">Editar Perfil</a>
+        </section>
+
+        <!-- INFORMAÇÕES -->
+        <section class="info-section glass-card">
+            <h3 class="section-title">Informações Pessoais</h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Telefone</label>
+                    <p>(61) 99999-0000</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Cidade</label>
+                    <p>Brasília – DF</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Conta criada em</label>
+                    <p>12/08/2023</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Tipo de Usuário</label>
+                    <p>Cliente</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTATÍSTICAS -->
+        <section class="stats-grid">
+
+            <div class="stat-box glass-card emphasis-hover">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Solicitações feitas</span>
+            </div>
+
+            <div class="stat-box glass-card emphasis-hover">
+                <span class="stat-number">7</span>
+                <span class="stat-label">Orçamentos respondidos</span>
+            </div>
+
+            <div class="stat-box glass-card emphasis-hover">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Serviços concluídos</span>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

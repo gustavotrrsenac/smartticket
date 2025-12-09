@@ -1,4 +1,4 @@
-/* Cores da paleta */
+
 :root {
     --black-deep: #060416;
     --purple-dark: #130C49;
@@ -11,7 +11,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Reset */
+
 body {
     background: var(--black-deep);
     color: white;
@@ -20,14 +20,14 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Sidebar */
+
 .sidebar {
     width: 250px;
     height: 100vh;
     position: fixed;
     background: var(--purple-dark);
     padding: 25px 0;
-    overflow-y: auto; /* ajuste */
+    overflow-y: auto;
 }
 
 .sidebar .logo {

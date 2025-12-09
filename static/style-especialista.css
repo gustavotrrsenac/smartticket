@@ -14,7 +14,7 @@ body {
     background: var(--black-deep);
     color: white;
     font-family: "Poppins", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -27,33 +27,29 @@ body {
     background: var(--purple-mid);
     border-radius: 10px;
     color: white;
-    margin-bottom: 20px; /* ajuste */
+    margin-bottom: 20px;
 }
 
 .detail-card h4 {
     color: var(--purple-soft);
 }
 
-/* Imagens dos documentos responsivas */
 .doc-img {
-    width: 100%;
-    max-height: 300px;
+    width: 60%;
+    max-height: 350px;
     object-fit: cover;
     border-radius: 10px;
-    border: 0px solid var(--purple-soft);
 }
 
-/* Botões mais responsivos */
 .action-btn {
     margin: 10px;
     padding: 12px 25px;
     font-size: 17px;
     font-weight: bold;
     width: 100%;
-    max-width: 260px; /* ajuste */
+    max-width: 260px; 
 }
 
-/* Modal personalizado */
 .modal-custom {
     background: var(--purple-mid);
     color: white;
@@ -66,4 +62,8 @@ body {
 
 .modal-footer {
     border-top: 1px solid var(--purple-dark);
+}
+
+.titulo-analise {
+    color: white;
 }

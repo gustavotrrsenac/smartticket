@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from models import db, Usuario, Ticket, DocumentoEspecialista
 from uuid import uuid4
 from datetime import datetime
@@ -15,6 +15,13 @@ def _db_connect():
 def _db_close(exc):
     if not db.is_closed():
         db.close()
+
+
+
+@app.route('/')
+def index():
+    return render_template('')
+
 
 # VALIDAÇÕES
 def validar_email(email):
