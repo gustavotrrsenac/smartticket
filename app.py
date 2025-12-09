@@ -7,9 +7,10 @@ from routes.usuarios_routes import usuarios_bp
 from routes.especialista_routes import especialista_bp
 from routes.admin_routes import admin_bp
 from routes.fila_especialista_routes import fila_especialista_bp
+from routes.home import home_bp
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='', static_folder='static')
 
     # ==============================
     # Configurações básicas
@@ -24,6 +25,7 @@ def create_app():
     app.register_blueprint(especialista_bp, url_prefix="/api")
     app.register_blueprint(admin_bp, url_prefix="/api")
     app.register_blueprint(fila_especialista_bp, url_prefix="/api")
+    app.register_blueprint(home_bp, url_prefix="/api")
 
     # ==============================
     # Conexão com banco (Peewee)
