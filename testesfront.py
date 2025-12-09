@@ -15,6 +15,10 @@ def login():
 def home():
     return render_template('index.html')
 
+@app.get("/indicadores")
+def indicadores():
+    return render_template('indicadores.html')
+
 ###################################################
 
 if __name__ == "__main__":
