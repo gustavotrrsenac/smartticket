@@ -15,6 +15,10 @@ def login():
 def home():
     return render_template('index.html')
 
+@app.get("/Perfil")
+def Perfil():
+    return render_template('Perfil.html')
+
 ###################################################
 
 if __name__ == "__main__":
