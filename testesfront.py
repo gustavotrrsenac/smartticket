@@ -43,6 +43,10 @@ def indicadores_link():
 def meus_chamados():
     return render_template('tickets_pessoais.html')
 
+@app.get("/chat")
+def chat_user():
+    return render_template('chat_user.html')
+
 ###################################################
 
 if __name__ == "__main__":
