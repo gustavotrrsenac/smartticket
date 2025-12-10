@@ -36,9 +36,9 @@ def cadastro_especialista():
 def indicadores():
     return render_template('indicadores.html')
 
-@app.get("/indicadores_link")
-def indicadores_link():
-    return render_template('gerais.html')
+@app.get("/tickets-gerais")
+def tela_de_tickets():
+    return render_template('tickets_gerais.html')
 
 @app.get("/meus_chamados")
 def meus_chamados():
