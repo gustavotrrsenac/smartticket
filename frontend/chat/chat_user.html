@@ -1,219 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Smart Ticket</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="chat_user.css">
-
-    <style>
-        /* ESTILOS ESPECÍFICOS DO CHAT (Para garantir que funcione isolado) */
-        body {
-            background-color: #0f172a; /* Fundo escuro */
-            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header Simplificado */
-        .chat-navbar {
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo-area {
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-voltar {
-            text-decoration: none;
-            color: #94a3b8;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .btn-voltar:hover { color: #fff; }
-
-        /* Container do Chat Centralizado */
-        .chat-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .chat-card {
-            width: 100%;
-            max-width: 500px;
-            height: 600px; /* Altura fixa */
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Cabeçalho do Card */
-        .card-header {
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #22c55e;
-        }
-
-        .agent-info h3 { margin: 0; font-size: 1rem; }
-        .agent-info span { font-size: 0.8rem; opacity: 0.7; }
-
-        /* Área de Mensagens */
-        .message-area {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            scroll-behavior: smooth;
-        }
-
-        /* Scrollbar personalizada */
-        .message-area::-webkit-scrollbar { width: 6px; }
-        .message-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-
-        /* Balões de Mensagem */
-        .message {
-            display: flex;
-            align-items: flex-end;
-            max-width: 80%;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .message.received { align-self: flex-start; }
-        .message.sent { align-self: flex-end; flex-direction: row-reverse; }
-
-        .msg-avatar {
-            width: 30px;
-            height: 30px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            font-size: 0.8rem;
-        }
-
-        .msg-bubble {
-            background: rgba(255,255,255,0.05);
-            padding: 12px 16px;
-            border-radius: 12px;
-            border-bottom-left-radius: 2px;
-            line-height: 1.4;
-            font-size: 0.95rem;
-            position: relative;
-        }
-
-        .sent .msg-bubble {
-            background: #3b82f6; /* Cor padrão do usuario (azul) */
-            color: white;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 2px;
-            margin-right: 10px;
-        }
-
-        .msg-time {
-            display: block;
-            font-size: 0.7rem;
-            opacity: 0.5;
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        /* Área de Input */
-        .input-area {
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            display: flex;
-            gap: 10px;
-        }
-
-        #chatInput {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 25px;
-            color: white;
-            outline: none;
-        }
-        
-        #chatInput::placeholder { color: rgba(255,255,255,0.3); }
-
-        .btn-send {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: none;
-            background: #3b82f6;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-send:hover { transform: scale(1.1); }
-
-        /* Animação */
-        @keyframes popIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* Card de Relatório Final */
-        .ticket-report {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="chat-page">
 
     <nav class="chat-navbar">
         <div class="logo-area">
@@ -226,7 +22,7 @@
 
     <div class="chat-wrapper">
         <div class="chat-card">
-            
+
             <div class="card-header">
                 <div class="status-dot"></div>
                 <div class="agent-info">
@@ -236,7 +32,7 @@
             </div>
 
             <div class="message-area" id="messageArea">
-                </div>
+            </div>
 
             <div class="input-area">
                 <input type="text" id="chatInput" placeholder="Digite sua resposta..." autocomplete="off">
@@ -247,51 +43,47 @@
     </div>
 
     <script>
-        /* 1. Configuração das Áreas (Cores e Nomes) */
+        /* 1. Configuração das Áreas (Sincronizada com a Home Page) */
         const areas = {
-            'ti':         { nome: 'Suporte de TI', cor: '#3b82f6' }, // Azul
-            'advocacia':  { nome: 'Jurídico',      cor: '#a855f7' }, // Roxo
-            'nutricao':   { nome: 'Nutrição',      cor: '#22c55e' }, // Verde
-            'saude':      { nome: 'Saúde',         cor: '#ef4444' }, // Vermelho
-            'manutencao': { nome: 'Manutenção',    cor: '#f97316' }, // Laranja
-            'engenharia': { nome: 'Engenharia',    cor: '#eab308' }, // Amarelo
-            'educacao':   { nome: 'Educação',      cor: '#06b6d4' }  // Ciano
+            'ti': { nome: 'Suporte de TI', cor: '#3b82f6' }, // Azul
+            'advocacia': { nome: 'Jurídico', cor: '#a855f7' }, // Roxo
+            'nutricao': { nome: 'Nutrição', cor: '#22c55e' }, // Verde
+            'saude': { nome: 'Saúde', cor: '#ef4444' }, // Vermelho
+            'manutencao': { nome: 'Manutenção', cor: '#f97316' }, // Laranja
+            'engenharia': { nome: 'Engenharia', cor: '#eab308' }, // Amarelo
+            'educacao': { nome: 'Educação', cor: '#06b6d4' }  // Ciano
         };
 
-        /* 2. Captura o parâmetro da URL (?area=...) */
+        /* 2. Captura o parâmetro da URL */
         const urlParams = new URLSearchParams(window.location.search);
-        const areaKey = urlParams.get('area') || 'ti'; // Se não achar, usa TI
+        const areaKey = urlParams.get('area') || 'ti'; // Se não vier nada, abre TI
+
+        // Verifica se a área existe, senão usa TI como padrão de segurança
         const areaAtual = areas[areaKey] || areas['ti'];
 
-        /* 3. Variáveis de Estado (Memória do Chat) */
-        let passoAtual = 0; 
-        let ticketData = {
-            area: areaAtual.nome,
-            titulo: '',
-            descricao: '',
-            contato: ''
-        };
+        /* 3. Variáveis de Estado */
+        let passoAtual = 0;
+        let ticketData = { area: areaAtual.nome, titulo: '', descricao: '', contato: '' };
 
-        /* 4. Inicialização ao carregar a página */
+        /* 4. Inicialização */
         document.addEventListener('DOMContentLoaded', () => {
-            // Atualiza Título e Cores da UI
             const tituloEl = document.getElementById('areaTitle');
             const btnSend = document.querySelector('.btn-send');
             const statusDot = document.querySelector('.status-dot');
 
+            // Aplica as cores da área selecionada
             tituloEl.innerText = areaAtual.nome;
             tituloEl.style.color = areaAtual.cor;
             btnSend.style.backgroundColor = areaAtual.cor;
             statusDot.style.boxShadow = `0 0 10px ${areaAtual.cor}`;
             statusDot.style.backgroundColor = areaAtual.cor;
-            
-            // Sequência de Boas Vindas
+
+            // Mensagens iniciais
+            setTimeout(() => { addBotMessage(`Olá! Sou o assistente virtual do <b>Smart Ticket</b>.`); }, 500);
+
             setTimeout(() => {
-                addBotMessage(`Olá! Sou o assistente virtual do <b>Smart Ticket</b>.`);
-            }, 500);
-            
-            setTimeout(() => {
-                addBotMessage(`Vi que você precisa de ajuda com <b style="color:${areaAtual.cor}">${areaAtual.nome}</b>.<br>Para abrir seu chamado, primeiro me diga: <br><br>Qual um <b>título curto</b> para o seu problema?`);
+                // Personaliza a mensagem com a cor da área
+                addBotMessage(`Vi que você selecionou <b style="color:${areaAtual.cor}">${areaAtual.nome}</b>.<br>Para abrir seu chamado, primeiro me diga: <br><br>Qual um <b>título curto</b> para o seu problema?`);
             }, 1500);
         });
 
@@ -299,84 +91,57 @@
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
-            if(text === "") return;
-
-            // Adiciona mensagem do usuário
+            if (text === "") return;
             addUserMessage(text);
             input.value = "";
-
-            // Processa a resposta (Delay para parecer que está pensando)
-            setTimeout(() => {
-                processarFluxo(text);
-            }, 800);
+            setTimeout(() => { processarFluxo(text); }, 800);
         }
 
-        /* 6. Máquina de Estados (O Cérebro do Bot) */
+        /* 6. Máquina de Estados (Roteiro do Chat) */
         function processarFluxo(respostaUsuario) {
-            switch(passoAtual) {
-                case 0: // Recebeu Título
+            switch (passoAtual) {
+                case 0:
                     ticketData.titulo = respostaUsuario;
                     addBotMessage("Certo. Agora, por favor, faça uma <b>descrição detalhada</b> da sua solicitação.");
                     passoAtual++;
                     break;
-
-                case 1: // Recebeu Descrição
+                case 1:
                     ticketData.descricao = respostaUsuario;
-                    addBotMessage("Entendido. Para finalizar, qual seu <b>e-mail ou telefone</b> para que o profissional entre em contato?");
+                    addBotMessage("Entendido. Para finalizar, qual seu <b>e-mail ou telefone</b>?");
                     passoAtual++;
                     break;
-
-                case 2: // Recebeu Contato
+                case 2:
                     ticketData.contato = respostaUsuario;
                     addBotMessage("Perfeito! Estou gerando seu ticket no sistema...");
-                    
-                    // Gera o relatório final após 1.5s
-                    setTimeout(() => {
-                        gerarRelatorioFinal();
-                    }, 1500);
-                    passoAtual++; 
-                    
-                    // Desabilita input no final
+                    setTimeout(() => { gerarRelatorioFinal(); }, 1500);
+                    passoAtual++;
                     document.getElementById('chatInput').disabled = true;
                     document.getElementById('chatInput').placeholder = "Atendimento finalizado.";
                     break;
-
                 default:
                     addBotMessage("Seu ticket já foi gerado! Aguarde um atendente humano.");
             }
         }
 
-        /* 7. Funções Visuais (Criar HTML das mensagens) */
+        /* 7. Funções Visuais */
         function addUserMessage(text) {
             const area = document.getElementById('messageArea');
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            // Cor do balão do usuário combinando com a área
+            // Balão do usuário ganha a cor da área também
             const bubbleStyle = `background: ${areaAtual.cor}`;
-
-            area.insertAdjacentHTML('beforeend', `
-                <div class="message sent">
-                    <div class="msg-bubble" style="${bubbleStyle}"><p>${text}</p><span class="msg-time">${time}</span></div>
-                </div>
-            `);
+            area.insertAdjacentHTML('beforeend', `<div class="message sent"><div class="msg-bubble" style="${bubbleStyle}"><p>${text}</p><span class="msg-time">${time}</span></div></div>`);
             area.scrollTop = area.scrollHeight;
         }
 
         function addBotMessage(htmlText) {
             const area = document.getElementById('messageArea');
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            area.insertAdjacentHTML('beforeend', `
-                <div class="message received">
-                    <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
-                    <div class="msg-bubble"><p>${htmlText}</p><span class="msg-time">${time}</span></div>
-                </div>
-            `);
+            area.insertAdjacentHTML('beforeend', `<div class="message received"><div class="msg-avatar"><i class="fa-solid fa-robot"></i></div><div class="msg-bubble"><p>${htmlText}</p><span class="msg-time">${time}</span></div></div>`);
             area.scrollTop = area.scrollHeight;
         }
 
         function gerarRelatorioFinal() {
             const area = document.getElementById('messageArea');
-            // Card visual do relatório
             const relatorioHTML = `
                 <div class="ticket-report" style="border-left: 4px solid ${areaAtual.cor}">
                     <h4 style="margin: 0 0 10px 0; color: ${areaAtual.cor}"><i class="fa-solid fa-check-circle"></i> Ticket Criado com Sucesso</h4>
@@ -391,11 +156,10 @@
             addBotMessage(relatorioHTML);
         }
 
-        // Enviar com Enter
         document.getElementById('chatInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') sendMessage();
         });
-
     </script>
 </body>
+
 </html>
