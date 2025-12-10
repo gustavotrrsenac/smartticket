@@ -21,7 +21,7 @@ def _db_close(exc):
 
 @app.route('/')
 def index():
-    return render_template('')
+    return render_template('index.html')
 
 @app.get('/login')
 def login():
@@ -34,7 +34,7 @@ def realizarLogin():
     senha = request.form.get('senha')
 
     #busca o usuario no banco de dados cujo email e senha sejam iguais às variáveis email e senha
-    ....
+    
 
     #se não encontroiu, responde com mensagem de erro
 
@@ -43,6 +43,11 @@ def realizarLogin():
 
     return render_template('login.html')
 
+
+@app.get('/chat')
+def telaChat():
+    return render_template('chat_user.html')
+
 @app.get('/perfil')
 def perfil():
 
@@ -50,6 +55,36 @@ def perfil():
     emailUsuario = 'hxfghfgh' 
     return render_template('Perfil.html', nomeUsuario = nomeUsuario, emailUsuario = emailUsuario)
 
+
+
+#Adicionando rotas adicionais do sistema (continuar implementando a lógica)
+@app.get('/indicadores')
+def indicadores():
+    return render_template ('indicadores.html')
+
+@app.get('/painel')
+def painel():
+    return render_template('painel_adm.html')
+
+@app.get('/status')
+def status():
+    return render_template('status.html')
+
+@app.get('/cadastroespecialista')
+def cadEspecialista():
+    return render_template('tela_cad_especialista.html')
+
+@app.get('/ticketsgerais')
+def ticketGeral():
+    return render_template('tickets_gerais.html')
+
+@app.get('/ticketspessoais')
+def ticketpessoal():
+    return render_template('tickets_pessoais.html')
+
+@app.get('/validacaoespecialista')
+def validEsp():
+    return render_template('vali_esp_adm.html')
 
 
 
@@ -209,7 +244,7 @@ def criar_especialista():
 
             # Salvar documentos
             for doc_data in documentos:
-                DocumentoEspecialista.create(
+                DocumentoEspecialista = DocumentoEspecialista.create(
                     id=str(uuid4()),
                     especialista=especialista,
                     tipo_documento=doc_data['tipo_documento'],
