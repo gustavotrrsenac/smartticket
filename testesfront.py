@@ -56,8 +56,9 @@ def painel_adm():
     return render_template('vali_esp_adm.html')
 
 @app.get("/admin")
-def tela admin():
+def tela_admin():
     return render_template('admin.html')
+
 
 ###################################################
 
