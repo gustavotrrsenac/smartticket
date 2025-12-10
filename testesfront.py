@@ -55,9 +55,9 @@ def chat_user():
 def painel_adm():
     return render_template('vali_esp_adm.html')
 
-@app.get("/admin")
-def tela admin():
-    return render_template('admin.html')
+@app.get("/tickets")
+def tickets():
+    return render_template('tickets_gerais.html')
 
 ###################################################
 
