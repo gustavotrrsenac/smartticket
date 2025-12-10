@@ -25,7 +25,12 @@ def index():
 
 @app.get('/login')
 def login():
+
     return render_template('login.html')
+
+
+
+
 
 @app.post('/login')
 def realizarLogin():
@@ -42,6 +47,10 @@ def realizarLogin():
     
 
     return render_template('login.html')
+
+    
+
+    
 
 
 @app.get('/chat')
@@ -64,7 +73,7 @@ def indicadores():
 
 @app.get('/painel')
 def painel():
-    return render_template('painel_adm.html')
+    return render_template('admin.html')
 
 @app.get('/status')
 def status():
@@ -85,6 +94,10 @@ def ticketpessoal():
 @app.get('/validacaoespecialista')
 def validEsp():
     return render_template('vali_esp_adm.html')
+
+@app.get('/cadastrousuario')
+def cadastroUser():
+    return render_template('cad_usu.html')
 
 
 
