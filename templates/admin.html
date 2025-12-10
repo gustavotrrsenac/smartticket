@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Ticket - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/admin.css"> 
+</head>
+<body>
+
+    <div class="admin-layout">
+        
+        <aside class="sidebar glass-panel">
+            <div class="logo-area" onclick="location.reload()" style="cursor:pointer">
+                <i class="fa-solid fa-ticket logo-icon"></i>
+                <span>Smart Ticket<br><small>Admin Console</small></span>
+            </div>
+
+            <nav class="side-menu">
+                <button class="menu-btn active" onclick="showSection('dashboard')">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </button>
+                <button class="menu-btn" onclick="showSection('especialistas')">
+                    <i class="fa-solid fa-user-tie"></i> Especialistas
+                    <span class="badge-count" id="count-pendentes">0</span>
+                </button>
+                <button class="menu-btn" onclick="showSection('usuarios')">
+                    <i class="fa-solid fa-users"></i> Usuários
+                </button>
+            </nav>
+
+            <div class="logout-area">
+                <a href="/home-page" class="menu-btn logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </a>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            
+            <section id="dashboard" class="view-section active">
+                <header class="section-header">
+                    <h2>Visão Geral</h2>
+                    <p>Métricas da plataforma em tempo real.</p>
+                </header>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon color-purple"><i class="fa-solid fa-user-tie"></i></div>
+                        <div><h3 id="kpi-ativos">0</h3><span>Especialistas Ativos</span></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon color-blue"><i class="fa-solid fa-users"></i></div>
+                        <div><h3>1,890</h3><span>Usuários Totais</span></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon color-orange"><i class="fa-solid fa-clock"></i></div>
+                        <div><h3 id="kpi-pendentes">0</h3><span>Aguardando Aprovação</span></div>
+                    </div>
+                </div>
+
+                <div class="chart-container glass-panel">
+                    <h4>Crescimento da Plataforma</h4>
+                    <div style="height: 300px; width: 100%;">
+                        <canvas id="adminChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="especialistas" class="view-section" style="display: none;">
+                <header class="section-header">
+                    <h2>Gestão de Especialistas</h2>
+                    <p>Gerencie as solicitações e a base de profissionais.</p>
+                </header>
+
+                <div class="tabs-wrapper">
+                    <button class="tab-btn active" onclick="filtrarTabela('pendente', this)">
+                        <i class="fa-solid fa-clock"></i> Pendentes
+                    </button>
+                    <button class="tab-btn" onclick="filtrarTabela('aprovado', this)">
+                        <i class="fa-solid fa-check-circle"></i> Aprovados
+                    </button>
+                    <button class="tab-btn" onclick="filtrarTabela('rejeitado', this)">
+                        <i class="fa-solid fa-ban"></i> Rejeitados
+                    </button>
+                </div>
+
+                <div class="table-wrapper glass-panel">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome (Clique para ver)</th>
+                                <th>Área</th>
+                                <th>Registro</th>
+                                <th>Status</th>
+                                <th style="width: 150px;">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-especialistas">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="usuarios" class="view-section" style="display: none;">
+                <header class="section-header">
+                    <h2>Base de Usuários</h2>
+                    <p>Gerenciamento de clientes cadastrados.</p>
+                </header>
+                <div class="table-wrapper glass-panel">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome (Clique para ver)</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-usuarios">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="modalAnalise" class="modal-overlay">
+        <div class="modal-box glass-panel">
+            <div class="modal-header">
+                <h3>Analisar Candidato</h3>
+                <button onclick="fecharModal('modalAnalise')" class="close-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="candidato-header">
+                    <h4 id="analiseNome" style="color: var(--primary); margin-bottom: 2px;">Nome Completo</h4>
+                    <p id="analiseArea" style="opacity: 0.8; font-size: 0.9rem;">Área de Atuação</p>
+                </div>
+
+                <hr class="divider">
+
+                <div class="data-grid">
+                    <div class="data-item">
+                        <strong>CPF:</strong> <span id="analiseCPF">...</span>
+                    </div>
+                    <div class="data-item">
+                        <strong>RG:</strong> <span id="analiseRG">...</span>
+                    </div>
+                    <div class="data-item">
+                        <strong>Celular:</strong> <span id="analiseCelular">...</span>
+                    </div>
+                    <div class="data-item">
+                        <strong>Telefone:</strong> <span id="analiseTelefone">...</span>
+                    </div>
+                    <div class="data-item full-width">
+                        <strong>Email:</strong> <span id="analiseEmail">...</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="doc-preview">
+                    <div class="doc-item">
+                        <span>Carteira Profissional</span>
+                        <div class="fake-img"><i class="fa-solid fa-id-card"></i></div>
+                    </div>
+                    <div class="doc-item">
+                        <span>Certificado</span>
+                        <div class="fake-img"><i class="fa-solid fa-file-certificate"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-reject" onclick="processarDecisao('rejeitado')">Rejeitar</button>
+                <button class="btn-approve" onclick="processarDecisao('aprovado')">Aprovar Cadastro</button>
+            </div>
+        </div>
+    </div>
+
+   <div id="modalPerfil" class="modal-overlay">
+        <div class="modal-box glass-panel">
+            <div class="modal-header">
+                <h3>Dados do Cadastro</h3>
+                <button onclick="fecharModal('modalPerfil')" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div class="avatar-big">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 id="perfilNome" style="margin-top:10px;">Nome</h3>
+                    <span id="perfilTipo" class="status">Tipo</span>
+                </div>
+                
+                <div class="data-grid">
+                    <div class="data-item full-width">
+                        <strong>Email:</strong> <span id="perfilEmail">...</span>
+                    </div>
+
+                    <div class="data-item campos-especialista">
+                        <strong>CPF:</strong> <span id="perfilCPF">...</span>
+                    </div>
+                    <div class="data-item campos-especialista">
+                        <strong>RG:</strong> <span id="perfilRG">...</span>
+                    </div>
+                    <div class="data-item campos-especialista">
+                        <strong>Celular:</strong> <span id="perfilCelular">...</span>
+                    </div>
+                    <div class="data-item campos-especialista">
+                        <strong>Telefone:</strong> <span id="perfilTelefone">...</span>
+                    </div>
+                    <div class="data-item full-width campos-especialista">
+                        <strong>Registro Profissional:</strong> <span id="perfilRegistro">...</span>
+                    </div>
+                </div>
+
+                <div class="info-row mt-3">
+                    <strong>Status no Sistema:</strong> <span id="perfilStatusText">Ativo</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="fecharModal('modalPerfil')">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>
