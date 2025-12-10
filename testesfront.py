@@ -23,7 +23,6 @@ def Perfil():
 def cad_usu():
     return render_template('cad_usu.html')
 
-<<<<<<< HEAD
 @app.get("/painel_adm")
 def adm():
     return render_template('painel_adm.html')
@@ -51,19 +50,19 @@ def meus_chamados():
 @app.get("/chat")
 def chat_user():
     return render_template('chat_user.html')
->>>>>>> e5c4b76c03214975eea4e0f6d8ad73a701d6d734
 
 @app.get("/adm")
 def painel_adm():
     return render_template('vali_esp_adm.html')
 
 @app.get("/admin")
-def tela admin():
+def tela_admin():
     return render_template('admin.html')
+
 
 ###################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
     
-    x
+    
