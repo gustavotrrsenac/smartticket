@@ -23,6 +23,10 @@ def Perfil():
 def cad_usu():
     return render_template('cad_usu.html')
 
+@app.get("/painel_adm")
+def adm():
+    return render_template('painel_adm.html')
+
 ###################################################
 
 if __name__ == "__main__":
