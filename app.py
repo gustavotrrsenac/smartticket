@@ -23,6 +23,35 @@ def _db_close(exc):
 def index():
     return render_template('')
 
+@app.get('/login')
+def login():
+    return render_template('login.html')
+
+@app.post('/login')
+def realizarLogin():
+    #pega os dados enviados pelo usuario no form de loghin
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+
+    #busca o usuario no banco de dados cujo email e senha sejam iguais às variáveis email e senha
+    ....
+
+    #se não encontroiu, responde com mensagem de erro
+
+    #se encontrou, pega o id retornado pela consulta e salva em uma sessão
+    
+
+    return render_template('login.html')
+
+@app.get('/perfil')
+def perfil():
+
+    nomeUsuario = 'moises' #teste 
+    emailUsuario = 'hxfghfgh' 
+    return render_template('Perfil.html', nomeUsuario = nomeUsuario, emailUsuario = emailUsuario)
+
+
+
 
 
 # ROTAS DE USUÁRIOS
