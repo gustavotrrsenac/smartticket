@@ -5,7 +5,7 @@ from datetime import datetime
 import re
 from utils import validar_email, validar_senha, validar_documentos_especialista
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static')
 
 @app.before_request
 def _db_connect():
