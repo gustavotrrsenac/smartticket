@@ -51,6 +51,14 @@ def meus_chamados():
 def chat_user():
     return render_template('chat_user.html')
 
+@app.get("/adm")
+def painel_adm():
+    return render_template('vali_esp_adm.html')
+
+@app.get("/admin")
+def tela admin():
+    return render_template('admin.html')
+
 ###################################################
 
 if __name__ == "__main__":
