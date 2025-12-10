@@ -19,6 +19,14 @@ def home():
 def indicadores():
     return render_template('indicadores.html')
 
+@app.get("/cadastro usuario")
+def cadastro_usuario():
+    return render_template('cad_usu.html')
+
+@app.get("/cadastro especialista")
+def cadastro_especialista():
+    return render_template('tela_cad_especialista.html')
+
 ###################################################
 
 if __name__ == "__main__":
