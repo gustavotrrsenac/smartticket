@@ -27,7 +27,7 @@ def cad_usu():
 @app.get("/painel_adm")
 def adm():
     return render_template('painel_adm.html')
-=======
+
 @app.get("/cadastro usuario")
 def cadastro_usuario():
     return render_template('cad_usu.html')
