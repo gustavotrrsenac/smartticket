@@ -15,9 +15,13 @@ def login():
 def home():
     return render_template('index.html')
 
-@app.get("/indicadores")
-def indicadores():
-    return render_template('indicadores.html')
+@app.get("/Perfil")
+def Perfil():
+    return render_template('Perfil.html')
+
+@app.get("/cad_usu")
+def cad_usu():
+    return render_template('cad_usu.html')
 
 @app.get("/cadastro usuario")
 def cadastro_usuario():
