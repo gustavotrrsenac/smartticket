@@ -1,9 +1,9 @@
 /* =========================================
-   ESTILOS ESPECÍFICOS DO CHAT (INTERATIVO)
+   ESTILOS ESPECÍFICOS DO CHAT
    ========================================= */
 
-/* Garante que o corpo do chat não tenha rolagem dupla */
-body.chat-page {
+/* Classe aplicada no body do chat.html */
+.chat-page {
     background-color: #0f172a;
     background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
     height: 100vh;
@@ -12,7 +12,7 @@ body.chat-page {
     flex-direction: column;
 }
 
-/* --- HEADER SIMPLIFICADO DO CHAT --- */
+/* Header Simplificado */
 .chat-navbar {
     padding: 15px 30px;
     display: flex;
@@ -22,7 +22,6 @@ body.chat-page {
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     flex-shrink: 0;
-    /* Impede que o header encolha */
     z-index: 100;
 }
 
@@ -52,22 +51,19 @@ body.chat-page {
     transform: translateX(-5px);
 }
 
-/* --- CONTAINER CENTRAL --- */
+/* Container Central */
 .chat-wrapper {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    height: 100%;
-    /* Ocupa altura restante */
 }
 
 .chat-card {
     width: 100%;
     max-width: 500px;
-    height: 90%;
-    /* Altura do cartão na tela */
+    height: 100%;
     max-height: 700px;
     background: rgba(30, 41, 59, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -80,7 +76,7 @@ body.chat-page {
     position: relative;
 }
 
-/* --- TOPO DO CARTÃO (AVATAR DO ROBÔ) --- */
+/* Cabeçalho do Card */
 .card-header {
     padding: 15px 20px;
     background: rgba(0, 0, 0, 0.2);
@@ -111,7 +107,7 @@ body.chat-page {
     color: #cbd5e1;
 }
 
-/* --- ÁREA DE MENSAGENS (SCROLL) --- */
+/* Mensagens */
 .message-area {
     flex: 1;
     padding: 20px;
@@ -122,13 +118,8 @@ body.chat-page {
     scroll-behavior: smooth;
 }
 
-/* Scrollbar Personalizada */
 .message-area::-webkit-scrollbar {
     width: 6px;
-}
-
-.message-area::-webkit-scrollbar-track {
-    background: transparent;
 }
 
 .message-area::-webkit-scrollbar-thumb {
@@ -136,16 +127,12 @@ body.chat-page {
     border-radius: 3px;
 }
 
-.message-area::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* --- BALÕES DE MENSAGEM --- */
+/* Balões */
 .message {
     display: flex;
     align-items: flex-end;
     max-width: 85%;
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: popIn 0.3s ease;
 }
 
 .message.received {
@@ -179,13 +166,11 @@ body.chat-page {
     line-height: 1.5;
     font-size: 0.95rem;
     color: #e2e8f0;
-    position: relative;
-    word-wrap: break-word;
 }
 
 .message.sent .msg-bubble {
     background: #3b82f6;
-    /* Cor padrão azul (será sobrescrita pelo JS dependendo da área) */
+    /* Será sobrescrito pelo JS */
     color: white;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 2px;
@@ -201,7 +186,7 @@ body.chat-page {
     text-align: right;
 }
 
-/* --- ÁREA DE INPUT --- */
+/* Input */
 .input-area {
     padding: 15px 20px;
     background: rgba(0, 0, 0, 0.2);
@@ -218,18 +203,13 @@ body.chat-page {
     padding: 12px 20px;
     border-radius: 25px;
     color: white;
-    font-family: var(--body-font, sans-serif);
     outline: none;
-    transition: 0.3s;
+    font-family: var(--body-font, sans-serif);
 }
 
 #chatInput:focus {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.3);
-}
-
-#chatInput::placeholder {
-    color: rgba(255, 255, 255, 0.3);
 }
 
 #chatInput:disabled {
@@ -243,7 +223,6 @@ body.chat-page {
     border-radius: 50%;
     border: none;
     background: #3b82f6;
-    /* Sobrescrito pelo JS */
     color: white;
     cursor: pointer;
     transition: 0.2s;
@@ -259,7 +238,7 @@ body.chat-page {
     filter: brightness(1.1);
 }
 
-/* --- CARD DE RELATÓRIO FINAL --- */
+/* Relatório */
 .ticket-report {
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -300,7 +279,6 @@ body.chat-page {
     text-align: center;
 }
 
-/* --- ANIMAÇÕES --- */
 @keyframes popIn {
     from {
         opacity: 0;

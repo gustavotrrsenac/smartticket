@@ -125,11 +125,10 @@ header.glass-capsule {
     background: var(--gradient-start);
     box-shadow: 0 0 10px var(--gradient-start);
 }
-/* Adicione isso no seu style.css para forçar o centro absoluto */
 .nav-menu {
-    position: absolute;       /* Solta o elemento do fluxo normal */
-    left: 50%;                /* Empurra para o meio da tela */
-    transform: translateX(-50%); /* Corrige o alinhamento para o centro exato do próprio elemento */
+    position: absolute;      
+    left: 50%;                
+    transform: translateX(-50%); 
 }
 
 /* =========================================

@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Ticket</title>
     <link rel="icon" type="image/png" href="img/Logo básica branca.png">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 
-<body>
+<body style="background-color: #0f0a1e;">
     <header class="glass-capsule">
-        <a href="/" class="logo-container">
-            <img src="img/Logo com balões.png" alt="Logo Smart Ticket" class="logo-img">
+        <a href="index.html" class="logo-container">
+            <img src="img/Logo com balões.png" alt="Logo Smart Ticket" class="logo-img"
+                onerror="this.style.display='none';">
             <span class="logo-text">Smart Ticket</span>
         </a>
 
@@ -28,48 +29,13 @@
         </nav>
 
         <div class="profile-dropdown-container">
-            <a href="#perfil" class="profile-link" title="Meu Perfil">
+            <a href="meus_chamados.html" class="profile-link" title="Meu Perfil">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
             </a>
-
-            <div class="profile-dropdown-menu">
-                <a href="#conta" class="dropdown-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                    </svg>
-                    <span>Conta</span>
-                </a>
-                <a href="#solicitacoes" class="dropdown-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    <span>Minhas Solicitações</span>
-                </a>
-
-                <div class="dropdown-divider"></div>
-
-                <a href="#sair" class="dropdown-item logout-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    <span>Sair</span>
-                </a>
-            </div>
         </div>
     </header>
 
@@ -92,44 +58,75 @@
                 <h3 class="section-title">Escolha o Assunto e Explore</h3>
 
                 <div class="tags-container">
-                    <a href="#" class="tag-pill color-purple">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <a href="/chat?area=advocacia" class="tag-pill color-purple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                        </svg>
                         Advocacia
                     </a>
-                    
-                    <a href="#" class="tag-pill color-green">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path><path d="M8.5 8.5a4 4 0 0 1-5 5"></path></svg>
+
+                    <a href="/chat?area=nutricao" class="tag-pill color-green">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                            <path d="M8.5 8.5a4 4 0 0 1-5 5"></path>
+                        </svg>
                         Nutrição
                     </a>
 
-                    <a href="#" class="tag-pill color-red">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <a href="/chat?area=saude" class="tag-pill color-red">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                            </path>
+                        </svg>
                         Saúde
                     </a>
 
-                    <a href="#" class="tag-pill color-orange">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                    <a href="/chat?area=manutencao" class="tag-pill color-orange">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                            </path>
+                        </svg>
                         Manutenção
                     </a>
 
-                    <a href="#" class="tag-pill color-yellow">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"></path><path d="M6 20V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12"></path><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                    <a href="/chat?area=engenharia" class="tag-pill color-yellow">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 20h20"></path>
+                            <path d="M6 20V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12"></path>
+                            <line x1="10" y1="12" x2="14" y2="12"></line>
+                        </svg>
                         Engenharia
                     </a>
 
-                    <a href="#" class="tag-pill color-cyan">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                    <a href="/chat?area=educacao" class="tag-pill color-cyan">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
                         Educação
                     </a>
 
-                    <a href="#" class="tag-pill color-blue">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <a href="/chat?area=ti" class="tag-pill color-blue">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
                         Tecnologia
                     </a>
                 </div>
 
                 <div class="cta-container">
-                    <a href="#" class="btn-start-highlight">
+                    <a href="chat.html" class="btn-start-highlight">
                         COMECE AGORA
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -151,21 +148,21 @@
                     <div class="card-image"><img src="img/T.I.jpg" alt="T.I."></div>
                     <div class="card-content">
                         <h3>Tecnologia da Informação</h3>
-                        <a href="#" class="service-link">Solicitar orçamento</a>
+                        <a href="chat.html?area=ti" class="service-link">Solicitar orçamento</a>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="card-image"><img src="img/Direito.jpg" alt="Direito"></div>
                     <div class="card-content">
                         <h3>Direito</h3>
-                        <a href="#" class="service-link">Solicitar orçamento</a>
+                        <a href="chat.html?area=advocacia" class="service-link">Solicitar orçamento</a>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="card-image"><img src="img/nutrição.jpg" alt="Nutrição"></div>
                     <div class="card-content">
                         <h3>Nutrição</h3>
-                        <a href="#" class="service-link">Solicitar orçamento</a>
+                        <a href="chat.html?area=nutricao" class="service-link">Solicitar orçamento</a>
                     </div>
                 </div>
             </div>
@@ -183,11 +180,13 @@
                 </div>
                 <div class="hiw-steps">
                     <div class="step-item">
-                        <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="step-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg></div>
+                            </svg>
+                        </div>
                         <div class="step-text">
                             <h3>Encontre seu Nicho</h3>
                             <p>Use nossa busca inteligente.</p>
@@ -230,6 +229,8 @@
             </div>
         </section>
 
+
+
         <section id="sobre" class="about-us-section">
             <div class="about-container">
                 <div class="about-header">
@@ -251,17 +252,6 @@
                         <h3 class="feature-title text-gradient">Eficiência</h3>
                         <p class="feature-desc">Experiência <span class="highlight">fluida</span> e sem burocracia.</p>
                     </div>
-                </div>
-                <div class="about-cta">
-                    <a href="arquivo-empresa.pdf" target="_blank" class="btn-download">
-                        <span>Conheça nossa história completa</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                    </a>
                 </div>
             </div>
         </section>
@@ -320,7 +310,7 @@
             </div>
         </section>
 
-        <section id="impacto" class="modern-impact-section">
+         <section id="impacto" class="modern-impact-section">
             <div class="horizon-glow"></div>
             <div class="impact-container">
                 <div class="map-side">
@@ -418,30 +408,15 @@
         </section>
     </main>
 
+
     <footer class="footer">
         <div class="contato-footer">
             <h4>Entre em contato conosco</h4>
-
             <div class="footer-links-container">
-                <a href="mailto:smartticketcorporation@gmail.com" class="footer-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                    smartticketcorporation@gmail.com
-                </a>
-
+                <a href="mailto:smartticketcorporation@gmail.com"
+                    class="footer-link">smartticketcorporation@gmail.com</a>
                 <a href="https://www.instagram.com/smartticket_corp" target="_blank"
-                    class="footer-link instagram-highlight">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                    @smartticket
-                </a>
+                    class="footer-link instagram-highlight">@smartticket</a>
             </div>
         </div>
     </footer>
