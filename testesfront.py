@@ -15,7 +15,7 @@ def login():
 def home():
     return render_template('index.html')
 
-@app.get("/Perfil")
+@app.get("/perfil")
 def Perfil():
     return render_template('Perfil.html')
 
