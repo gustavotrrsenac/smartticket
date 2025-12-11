@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
-from models import db, Usuario, Ticket
+from models import db, Usuario, Ticket, PerfilCliente
+import uuid
 from uuid import uuid4
 from datetime import datetime
 import re
@@ -458,7 +459,68 @@ def enviar_ticket_para_fila():
             "success": False,
             "message": f"Erro ao enviar ticket: {str(e)}"
         }), 500       
+    
+
+########################################################################################################
+# Adicione no seu app.py:
+
+@app.route('/api/chat/ticket', methods=['POST'])
+def criar_ticket_chat_simples():
+    """
+    Rota ultra-simplificada para o chat
+    Não cria usuário, não requer login, só salva os dados
+    """
+    try:
+        data = request.json
         
+        # Dados obrigatórios do seu frontend
+        campos_obrigatorios = ['area', 'titulo', 'descricao', 'contato']
+        for campo in campos_obrigatorios:
+            if not data.get(campo):
+                return jsonify({
+                    'success': False,
+                    'message': f'Campo {campo} é obrigatório'
+                }), 400
+
+        # Criar ticket diretamente
+        ticket = Ticket.create(
+            id=str(uuid4()),  # <-- CORRIGIDO: usa uuid4() já importado
+            # Campos do chat
+            area=data['area'],
+            titulo=data['titulo'],
+            descricao=data['descricao'],
+            contato=data['contato'],
+            origem='chat',
+            
+            # Campos padrão do Ticket
+            cliente=None,  # Sem usuário vinculado
+            especialista=None,
+            triagem=None,
+            status='aberto',  # Já vai direto para aberto
+            criado_em=datetime.now(),
+            atualizado_em=datetime.now()
+        )
+
+        return jsonify({
+            'success': True,
+            'message': 'Ticket registrado com sucesso!',
+            'ticket_id': ticket.id,
+            'protocolo': f"CHAT-{ticket.id[:8].upper()}",  # Protocolo mais amigável
+            'dados_recebidos': {
+                'area': ticket.area,
+                'titulo': ticket.titulo,
+                'descricao_curta': ticket.descricao[:50] + '...' if len(ticket.descricao) > 50 else ticket.descricao,
+                'contato': ticket.contato,
+                'data_hora': ticket.criado_em.strftime('%d/%m/%Y %H:%M')
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Erro ao salvar ticket: {str(e)}'
+        }), 500
+#########################################################################################################        
         
 
 
