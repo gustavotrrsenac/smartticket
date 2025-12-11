@@ -3,9 +3,6 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-
-
-
 ###################################################
 @app.get("/login")
 def login():
@@ -55,10 +52,9 @@ def chat_user():
 def painel_adm():
     return render_template('vali_esp_adm.html')
 
-@app.get("/admin")
-def tela_admin():
-    return render_template('admin.html')
-
+@app.get("/tickets")
+def tickets():
+    return render_template('tickets_gerais.html')
 
 ###################################################
 
