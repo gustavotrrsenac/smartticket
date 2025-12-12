@@ -1,11 +1,17 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash
+from flask_session import Session
 from models import db, Usuario, Ticket
 from uuid import uuid4
 from datetime import datetime
 import re
 from utils import validar_email, validar_senha, validar_documentos_especialista
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__, static_url_path='', static_folder='static')
+app.config['SECRET_KEY'] = 'sua-chave-secreta-aqui'  # Troque em produção
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 @app.before_request
 def _db_connect():
@@ -23,34 +29,93 @@ def _db_close(exc):
 def index():
     return render_template('index.html')
 
-@app.get('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-
+    """Rota de login - processa POST com email e senha"""
+    
+    # Se for uma requisição POST (formulário enviado)
+    if request.method == 'POST':
+        # 1. Pegar os dados do formulário
+        email = request.form.get('email', '').strip().lower()
+        senha = request.form.get('senha', '')
+        
+        # 2. Validações básicas
+        if not email:
+            flash('O campo email é obrigatório!', 'error')
+            return render_template('login.html')
+        
+        if not senha:
+            flash('O campo senha é obrigatório!', 'error')
+            return render_template('login.html')
+        
+        # 3. Verificar se o usuário existe no banco
+        try:
+            # Buscar usuário pelo email
+            usuario = Usuario.get_or_none(Usuario.email == email)
+            
+            if usuario:
+                # 4. Verificar a senha (IMPORTANTE: Use check_password_hash em produção!)
+                # Se você estiver salvando senhas sem hash, use:
+                # if usuario.password_hash == senha:
+                
+                # Método recomendado (com hash):
+                if check_password_hash(usuario.password_hash, senha):
+                    
+                    # 5. Salvar dados do usuário na sessão
+                    session['usuario_id'] = usuario.id
+                    session['usuario_email'] = usuario.email
+                    session['usuario_nome'] = usuario.nome
+                    session['usuario_role'] = usuario.role
+                    
+                    # Se tiver status_aprovacao na tabela, salve também
+                    if hasattr(usuario, 'status_aprovacao'):
+                        session['usuario_status'] = usuario.status_aprovacao
+                    
+                    # 6. Log de sucesso (opcional, para debug)
+                    print(f"Login bem-sucedido: {email}")
+                    
+                    # 7. Redirecionar baseado no tipo de usuário
+                    flash('Login realizado com sucesso!', 'success')
+                    
+                    # Verificar para onde redirecionar
+                    next_page = request.args.get('next')
+                    if next_page:
+                        return redirect(next_page)
+                    
+                    # Redirecionamento baseado no role
+                    if usuario.role == 'admin':
+                        return redirect(url_for('paineladmin'))
+                    elif usuario.role == 'especialista':
+                        # Verificar se especialista está aprovado
+                        if hasattr(usuario, 'status_aprovacao') and usuario.status_aprovacao == 'aprovado':
+                            return redirect(url_for('ticketsgerais.html'))
+                        else:
+                            flash('Seu cadastro está aguardando aprovação.', 'warning')
+                            return redirect(url_for('index.html'))
+                    else:  # cliente
+                        return redirect(url_for('index.html'))
+                
+                else:
+                    # Senha incorreta
+                    flash('Email ou senha incorretos!', 'error')
+                    return render_template('login.html')
+            
+            else:
+                # Usuário não encontrado
+                flash('Email ou senha incorretos!', 'error')
+                return render_template('login.html')
+                
+        except Exception as e:
+            # Erro no banco de dados
+            print(f"Erro no login: {str(e)}")
+            flash('Erro interno no servidor. Tente novamente mais tarde.', 'error')
+            return render_template('login.html')
+    
+    # Se for GET, apenas mostrar o formulário
     return render_template('login.html')
 
 
 
-
-
-@app.post('/login')
-def realizarLogin():
-    #pega os dados enviados pelo usuario no form de loghin
-    email = request.form.get('email')
-    senha = request.form.get('senha')
-
-    #busca o usuario no banco de dados cujo email e senha sejam iguais às variáveis email e senha
-    
-
-    #se não encontroiu, responde com mensagem de erro
-
-    #se encontrou, pega o id retornado pela consulta e salva em uma sessão
-    
-
-    return render_template('login.html')
-
-    
-
-    
 
 
 @app.get('/chat')
@@ -71,13 +136,10 @@ def perfil():
 def indicadores():
     return render_template ('indicadores.html')
 
-@app.get('/painel')
+@app.get('/paineladmin')
 def painel():
     return render_template('admin.html')
 
-@app.get('/status')
-def status():
-    return render_template('status.html')
 
 @app.get('/cadastroespecialista')
 def cadEspecialista():
@@ -96,8 +158,66 @@ def validEsp():
     return render_template('vali_esp_adm.html')
 
 @app.get('/cadastrousuario')
-def cadastroUser():
+def exibirTelaCadastroUsuario():
     return render_template('cad_usu.html')
+
+@app.post('/cadastrousuario')
+def cadastrarUsuario():
+    nome = request.form.get('nome')
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+    confirmacao_senha = request.form.get('confirmacao_senha')
+
+    if(senha == confirmacao_senha):
+
+    # Validar email
+        if not validar_email(email):
+            return jsonify({
+                'success': False,
+                'message': 'Formato de email inválido'
+            }), 400
+
+        # Validar senha
+        senha_valida, msg_senha = validar_senha(senha)
+        if not senha_valida:
+            return jsonify({
+                'success': False,
+                'message': msg_senha
+            }), 400
+
+        # Verificar se email já existe
+        if Usuario.select().where(Usuario.email == email).exists():
+            return jsonify({
+                'success': False,
+                'message': 'Já existe um usuário com este email'
+            }), 409
+        
+        user = Usuario.create(
+            id=str(uuid4()),
+            nome=nome,
+            email=email,
+            password_hash=senha,  # Em produção, usar hash!
+            role='cliente',
+            telefone='telefone',
+            foto_url='foto_url',
+            criado_em=datetime.now()
+        )
+
+        return user
+
+    return render_template('index.html')
+
+
+
+
+@app.get('/gerais')
+def gerais():
+    return render_template('gerais.html')
+
+@app.get('/detalhes')
+def detalhes():
+    return render_template('ticket-details.html')
+
 
 
 
