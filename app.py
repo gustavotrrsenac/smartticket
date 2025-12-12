@@ -459,7 +459,66 @@ def enviar_ticket_para_fila():
             "message": f"Erro ao enviar ticket: {str(e)}"
         }), 500       
         
-        
+# ================================
+# BACKEND SIMPLES PARA CHAT USER
+# ================================
+@app.post("/chat/ticket")
+def criar_ticket_chat():
+    """
+    Recebe os dados do chat e cria um ticket simples.
+    Espera JSON:
+    {
+        "titulo": "Título do problema",
+        "descricao": "Descrição detalhada",
+        "contato": "Email ou telefone",
+        "area": "TI, Jurídico, etc.",
+        "user_id": "opcional, id do usuário logado"
+    }
+    """
+    try:
+        data = request.json
+        titulo = data.get("titulo")
+        descricao = data.get("descricao")
+        contato = data.get("contato")
+        area = data.get("area")
+        user_id = data.get("user_id")  # opcional
+
+        if not titulo or not descricao or not contato or not area:
+            return jsonify({"success": False, "message": "Todos os campos são obrigatórios"}), 400
+
+        # Buscar usuário logado (opcional)
+        usuario = None
+        if user_id:
+            try:
+                usuario = Usuario.get_by_id(user_id)
+            except Usuario.DoesNotExist:
+                return jsonify({"success": False, "message": "Usuário não encontrado"}), 404
+
+        # Criar ticket
+        ticket = Ticket.create(
+            id=str(uuid4()),
+            cliente=usuario,
+            titulo=titulo,
+            descricao=f"{descricao}\nContato: {contato}\nÁrea: {area}",
+            status="rascunho",
+            criado_em=datetime.now()
+        )
+
+        return jsonify({
+            "success": True,
+            "message": "Ticket criado com sucesso",
+            "ticket": {
+                "id": ticket.id,
+                "titulo": ticket.titulo,
+                "descricao": ticket.descricao,
+                "status": ticket.status
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Erro interno: {str(e)}"}), 500
+
+
 
 
     

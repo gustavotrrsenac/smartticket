@@ -43,51 +43,41 @@
     </div>
 
     <script>
-        /* 1. Configuração das Áreas (Sincronizada com a Home Page) */
+        /* 1. Configuração das Áreas */
         const areas = {
-            'ti': { nome: 'Suporte de TI', cor: '#3b82f6' }, // Azul
-            'advocacia': { nome: 'Jurídico', cor: '#a855f7' }, // Roxo
-            'nutricao': { nome: 'Nutrição', cor: '#22c55e' }, // Verde
-            'saude': { nome: 'Saúde', cor: '#ef4444' }, // Vermelho
-            'manutencao': { nome: 'Manutenção', cor: '#f97316' }, // Laranja
-            'engenharia': { nome: 'Engenharia', cor: '#eab308' }, // Amarelo
-            'educacao': { nome: 'Educação', cor: '#06b6d4' }  // Ciano
+            'ti': { nome: 'Suporte de TI', cor: '#3b82f6' },
+            'advocacia': { nome: 'Jurídico', cor: '#a855f7' },
+            'nutricao': { nome: 'Nutrição', cor: '#22c55e' },
+            'saude': { nome: 'Saúde', cor: '#ef4444' },
+            'manutencao': { nome: 'Manutenção', cor: '#f97316' },
+            'engenharia': { nome: 'Engenharia', cor: '#eab308' },
+            'educacao': { nome: 'Educação', cor: '#06b6d4' }
         };
 
-        /* 2. Captura o parâmetro da URL */
         const urlParams = new URLSearchParams(window.location.search);
-        const areaKey = urlParams.get('area') || 'ti'; // Se não vier nada, abre TI
-
-        // Verifica se a área existe, senão usa TI como padrão de segurança
+        const areaKey = urlParams.get('area') || 'ti';
         const areaAtual = areas[areaKey] || areas['ti'];
 
-        /* 3. Variáveis de Estado */
         let passoAtual = 0;
         let ticketData = { area: areaAtual.nome, titulo: '', descricao: '', contato: '' };
 
-        /* 4. Inicialização */
         document.addEventListener('DOMContentLoaded', () => {
             const tituloEl = document.getElementById('areaTitle');
             const btnSend = document.querySelector('.btn-send');
             const statusDot = document.querySelector('.status-dot');
 
-            // Aplica as cores da área selecionada
             tituloEl.innerText = areaAtual.nome;
             tituloEl.style.color = areaAtual.cor;
             btnSend.style.backgroundColor = areaAtual.cor;
             statusDot.style.boxShadow = `0 0 10px ${areaAtual.cor}`;
             statusDot.style.backgroundColor = areaAtual.cor;
 
-            // Mensagens iniciais
             setTimeout(() => { addBotMessage(`Olá! Sou o assistente virtual do <b>Smart Ticket</b>.`); }, 500);
-
             setTimeout(() => {
-                // Personaliza a mensagem com a cor da área
                 addBotMessage(`Vi que você selecionou <b style="color:${areaAtual.cor}">${areaAtual.nome}</b>.<br>Para abrir seu chamado, primeiro me diga: <br><br>Qual um <b>título curto</b> para o seu problema?`);
             }, 1500);
         });
 
-        /* 5. Função de Envio */
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
@@ -97,7 +87,6 @@
             setTimeout(() => { processarFluxo(text); }, 800);
         }
 
-        /* 6. Máquina de Estados (Roteiro do Chat) */
         function processarFluxo(respostaUsuario) {
             switch (passoAtual) {
                 case 0:
@@ -123,11 +112,9 @@
             }
         }
 
-        /* 7. Funções Visuais */
         function addUserMessage(text) {
             const area = document.getElementById('messageArea');
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            // Balão do usuário ganha a cor da área também
             const bubbleStyle = `background: ${areaAtual.cor}`;
             area.insertAdjacentHTML('beforeend', `<div class="message sent"><div class="msg-bubble" style="${bubbleStyle}"><p>${text}</p><span class="msg-time">${time}</span></div></div>`);
             area.scrollTop = area.scrollHeight;
@@ -154,6 +141,27 @@
                 </div>
             `;
             addBotMessage(relatorioHTML);
+
+            // === ENVIO PARA O BACKEND ===
+            fetch("/chat/ticket", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    titulo: ticketData.titulo,
+                    descricao: ticketData.descricao,
+                    contato: ticketData.contato,
+                    area: ticketData.area,
+                    user_id: 1 // Substitua pelo ID real do usuário autenticado
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success){
+                    console.log("Ticket ID:", data.ticket.id);
+                } else {
+                    console.error(data.message);
+                }
+            });
         }
 
         document.getElementById('chatInput').addEventListener('keypress', function (e) {
