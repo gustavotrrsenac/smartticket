@@ -1,14 +1,20 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash
+from flask_session import Session
 from models import db, Usuario, Ticket
 from uuid import uuid4
 from datetime import datetime
 import re
 from utils import validar_email, validar_senha, validar_documentos_especialista
+from werkzeug.security import generate_password_hash, check_password_hash
 from routes.admin_routes import admin_bp
 from routes.especialista_routes import especialista_bp
+import json
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
+app.config['SECRET_KEY'] = 'sua-chave-secreta-aqui'  # Troque em produção
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 @app.before_request
 def _db_connect():
@@ -26,65 +32,320 @@ def _db_close(exc):
 def index():
     return render_template('index.html')
 
-@app.get('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-
+    """Rota de login - processa POST com email e senha"""
+    
+    # Se for uma requisição POST (formulário enviado)
+    if request.method == 'POST':
+        # 1. Pegar os dados do formulário
+        email = request.form.get('email', '').strip().lower()
+        senha = request.form.get('senha', '')
+        
+        # 2. Validações básicas
+        if not email:
+            flash('O campo email é obrigatório!', 'error')
+            return render_template('login.html')
+        
+        if not senha:
+            flash('O campo senha é obrigatório!', 'error')
+            return render_template('login.html')
+        
+        # 3. Verificar se o usuário existe no banco
+        try:
+            # Buscar usuário pelo email
+            usuario = Usuario.get_or_none(Usuario.email == email)
+            
+            if usuario:
+                # 4. Verificar a senha (IMPORTANTE: Use check_password_hash em produção!)
+                # Se você estiver salvando senhas sem hash, use:
+                # if usuario.password_hash == senha:
+                
+                # Método recomendado (com hash):
+                if check_password_hash(usuario.password_hash, senha):
+                    
+                    # 5. Salvar dados do usuário na sessão
+                    session['usuario_id'] = usuario.id
+                    session['usuario_email'] = usuario.email
+                    session['usuario_nome'] = usuario.nome
+                    session['usuario_role'] = usuario.role
+                    
+                    # Se tiver status_aprovacao na tabela, salve também
+                    if hasattr(usuario, 'status_aprovacao'):
+                        session['usuario_status'] = usuario.status_aprovacao
+                    
+                    # 6. Log de sucesso (opcional, para debug)
+                    print(f"Login bem-sucedido: {email}")
+                    
+                    # 7. Redirecionar baseado no tipo de usuário
+                    flash('Login realizado com sucesso!', 'success')
+                    
+                    # Verificar para onde redirecionar
+                    next_page = request.args.get('next')
+                    if next_page:
+                        return redirect(next_page)
+                    
+                    # Redirecionamento baseado no role
+                    if usuario.role == 'admin':
+                        return redirect(url_for('paineladmin'))
+                    elif usuario.role == 'especialista':
+                        # Verificar se especialista está aprovado
+                        if hasattr(usuario, 'status_aprovacao') and usuario.status_aprovacao == 'aprovado':
+                            return redirect(url_for('ticketsgerais.html'))
+                        else:
+                            flash('Seu cadastro está aguardando aprovação.', 'warning')
+                            return redirect(url_for('index.html'))
+                    else:  # cliente
+                        return redirect(url_for('index.html'))
+                
+                else:
+                    # Senha incorreta
+                    flash('Email ou senha incorretos!', 'error')
+                    return render_template('login.html')
+            
+            else:
+                # Usuário não encontrado
+                flash('Email ou senha incorretos!', 'error')
+                return render_template('login.html')
+                
+        except Exception as e:
+            # Erro no banco de dados
+            print(f"Erro no login: {str(e)}")
+            flash('Erro interno no servidor. Tente novamente mais tarde.', 'error')
+            return render_template('login.html')
+    
+    # Se for GET, apenas mostrar o formulário
     return render_template('login.html')
 
 
+# Cadastro de usuário
+@app.get('/cadastrousuario')
+def exibirTelaCadastroUsuario():
+    return render_template('cad_usu.html')
 
-
-
-@app.post('/login')
-def realizarLogin():
-    #pega os dados enviados pelo usuario no form de loghin
+@app.post('/cadastrousuario')
+def cadastrarUsuario():
+    nome = request.form.get('nome')
     email = request.form.get('email')
     senha = request.form.get('senha')
+    confirmacao_senha = request.form.get('confirmacao_senha')
 
-    #busca o usuario no banco de dados cujo email e senha sejam iguais às variáveis email e senha
-    
+    if(senha == confirmacao_senha):
 
-    #se não encontroiu, responde com mensagem de erro
+    # Validar email
+        if not validar_email(email):
+            return jsonify({
+                'success': False,
+                'message': 'Formato de email inválido'
+            }), 400
 
-    #se encontrou, pega o id retornado pela consulta e salva em uma sessão
-    
+        # Validar senha
+        senha_valida, msg_senha = validar_senha(senha)
+        if not senha_valida:
+            return jsonify({
+                'success': False,
+                'message': msg_senha
+            }), 400
 
-    return render_template('login.html')
+        # Verificar se email já existe
+        if Usuario.select().where(Usuario.email == email).exists():
+            return jsonify({
+                'success': False,
+                'message': 'Já existe um usuário com este email'
+            }), 409
+        
+        user = Usuario.create(
+            id=str(uuid4()),
+            nome=nome,
+            email=email,
+            password_hash=senha,  # Em produção, usar hash!
+            role='cliente',
+            telefone='telefone',
+            foto_url='foto_url',
+            criado_em=datetime.now()
+        )
 
-    
+        return user
 
-    
+    return render_template('index.html')
 
 
+
+
+# ROTA GET SEPARADA PARA EXIBIR O FORMULÁRIO
+@app.get('/cadastroespecialista')
+def exibir_formulario_especialista():
+    """Rota GET para exibir o formulário de cadastro"""
+    return render_template('tela_cad_especialista.html')
+
+
+# CADASTRO DE ESPECIALISTA - 
+@app.post('/cadastroespecialista')
+def criar_especialista():
+    """Rota POST para cadastro de especialista"""
+    try:
+        # Pegar dados do formulário
+        nome = request.form.get('nome', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        senha = request.form.get('senha', '')
+        confirmar_senha = request.form.get('confirmar_senha', '')
+        telefone = request.form.get('telefone', '').strip()
+        
+        # Validações básicas
+        if not nome or not email or not senha:
+            flash('Todos os campos são obrigatórios!', 'error')
+            return redirect(url_for('cadEspecialistaForm'))  # Você precisa criar uma rota GET separada
+        
+        if senha != confirmar_senha:
+            flash('As senhas não coincidem!', 'error')
+            return redirect(url_for('cadEspecialistaForm'))
+        
+        # Validar email
+        if not validar_email(email):
+            flash('Formato de email inválido!', 'error')
+            return redirect(url_for('cadEspecialistaForm'))
+        
+        # Validar senha
+        senha_valida, msg_senha = validar_senha(senha)
+        if not senha_valida:
+            flash(msg_senha, 'error')
+            return redirect(url_for('cadEspecialistaForm'))
+        
+        # Verificar se email já existe
+        if Usuario.select().where(Usuario.email == email).exists():
+            flash('Já existe um usuário com este email!', 'error')
+            return redirect(url_for('cadEspecialistaForm'))
+        
+        # CRIAR USUÁRIO COM SENHA HASH
+        senha_hash = generate_password_hash(senha)
+        
+        especialista = Usuario.create(
+            id=str(uuid4()),
+            nome=nome,
+            email=email,
+            password_hash=senha_hash,  # AGORA COM HASH!
+            role='especialista',
+            status_aprovacao='aguardando_validacao',
+            telefone=telefone,
+            criado_em=datetime.now()
+        )
+        
+        flash('Cadastro realizado com sucesso! Seu perfil está em análise.', 'success')
+        return redirect(url_for('login'))
+        
+    except Exception as e:
+        print(f"Erro no cadastro: {str(e)}")
+        flash('Erro ao cadastrar. Tente novamente.', 'error')
+        return redirect(url_for('tela_cad_especialista.html'))
+
+
+
+# Versão JSON para API (mantenha se precisar) - com nome diferente
+@app.post("/api/cadastroespecialista")
+def criar_especialista_api():
+    """API para cadastro de especialista via JSON"""
+    try:
+        data = request.json
+        
+        campos_obrigatorios = ['nome', 'email', 'password']
+        for campo in campos_obrigatorios:
+            if not data.get(campo):
+                return jsonify({
+                    'success': False,
+                    'message': f'O campo {campo} é obrigatório'
+                }), 400
+        
+        nome = data["nome"].strip()
+        email = data["email"].strip().lower()
+        password = data["password"]
+        telefone = data.get("telefone", "")
+        documentos = data.get("documentos", [])  # Opcional
+        
+        if not validar_email(email):
+            return jsonify({
+                'success': False,
+                'message': 'Formato de email inválido'
+            }), 400
+        
+        senha_valida, msg_senha = validar_senha(password)
+        if not senha_valida:
+            return jsonify({
+                'success': False,
+                'message': msg_senha
+            }), 400
+        
+        if Usuario.select().where(Usuario.email == email).exists():
+            return jsonify({
+                'success': False,
+                'message': 'Já existe um usuário com este email'
+            }), 409
+        
+        # USAR HASH
+        senha_hash = generate_password_hash(password)
+        
+        with db.atomic():
+            especialista = Usuario.create(
+                id=str(uuid4()),
+                nome=nome,
+                email=email,
+                password_hash=senha_hash,
+                role='especialista',
+                status_aprovacao='aguardando_validacao',
+                telefone=telefone,
+                criado_em=datetime.now()
+            )
+            
+            # Se houver documentos, salvá-los
+            if documentos:
+                for doc_data in documentos:
+                    documentos_especialista = documentos_especialista.create(
+                        id=str(uuid4()),
+                        especialista=especialista,
+                        tipo_documento=doc_data.get('tipo_documento', ''),
+                        arquivo_url=doc_data.get('arquivo_url', ''),
+                        nome_arquivo=doc_data.get('nome_arquivo', ''),
+                        criado_em=datetime.now()
+                    )
+        
+        return jsonify({
+            "success": True,
+            "msg": "Cadastro realizado! Seu perfil está em análise.",
+            "id": especialista.id
+        }), 201
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Erro interno: {str(e)}'
+        }), 500
+
+
+
+
+
+#Chat para soluções
 @app.get('/chat')
 def telaChat():
     return render_template('chat_user.html')
 
+#Perfil dos usuários
 @app.get('/perfil')
 def perfil():
-
-    nomeUsuario = 'moises' #teste 
-    emailUsuario = 'hxfghfgh' 
-    return render_template('Perfil.html', nomeUsuario = nomeUsuario, emailUsuario = emailUsuario)
+ 
+    return render_template('Perfil.html')
 
 
-
-#Adicionando rotas adicionais do sistema (continuar implementando a lógica)
+#Painel de indicadores
 @app.get('/indicadores')
 def indicadores():
     return render_template ('indicadores.html')
 
-@app.get('/painel')
+
+#Painel do Administrador
+@app.get('/paineladmin')
 def painel():
     return render_template('admin.html')
 
-@app.get('/status')
-def status():
-    return render_template('status.html')
-
-@app.get('/cadastroespecialista')
-def cadEspecialista():
-    return render_template('tela_cad_especialista.html')
 
 @app.get('/ticketsgerais')
 def ticketGeral():
@@ -94,17 +355,24 @@ def ticketGeral():
 def ticketpessoal():
     return render_template('tickets_pessoais.html')
 
-@app.get('/validacaoespecialista')
-def validEsp():
-    return render_template('vali_esp_adm.html')
 
-@app.get('/cadastrousuario')
-def cadastroUser():
-    return render_template('cad_usu.html')
+@app.get('/gerais')
+def gerais():
+    return render_template('gerais.html')
+
+@app.get('/detalhes')
+def detalhes():
+    return render_template('ticket-details.html')
 
 
 
 
+
+
+
+"""LÓGICA USADA PARA O CADASTRO DO ESPECIALISTA 
+(OBS*: Testar a lógica e após finalizar o teste. Se for bem sucedido,)
+Apagar.)"""
 # ROTAS DE USUÁRIOS
 @app.post("/usuarios")
 def criar_usuario():
@@ -192,96 +460,12 @@ def criar_usuario():
             'success': False,
             'message': f'Erro interno: {str(e)}'
         }), 500
-
-@app.post("/especialistas")
-def criar_especialista():
-    try:
-        data = request.json
         
-        # Campos obrigatórios
-        campos_obrigatorios = ['nome', 'email', 'password', 'documentos']
-        for campo in campos_obrigatorios:
-            if not data.get(campo):
-                return jsonify({
-                    'success': False,
-                    'message': f'O campo {campo} é obrigatório'
-                }), 400
+"""Apagar após finalizar o teste do DB."""
 
-        nome = data["nome"].strip()
-        email = data["email"].strip().lower()
-        password = data["password"]
-        telefone = data.get("telefone")
-        foto_url = data.get("foto_url")
-        documentos = data["documentos"]
 
-        # Validar email
-        if not validar_email(email):
-            return jsonify({
-                'success': False,
-                'message': 'Formato de email inválido'
-            }), 400
 
-        # Validar senha
-        senha_valida, msg_senha = validar_senha(password)
-        if not senha_valida:
-            return jsonify({
-                'success': False,
-                'message': msg_senha
-            }), 400
-
-        # Validar documentos
-        documentos_validos, msg_documentos = validar_documentos_especialista(documentos)
-        if not documentos_validos:
-            return jsonify({
-                'success': False,
-                'message': msg_documentos
-            }), 400
-
-        # Verificar se email já existe
-        if Usuario.select().where(Usuario.email == email).exists():
-            return jsonify({
-                'success': False,
-                'message': 'Já existe um usuário com este email'
-            }), 409
-
-        # Criar especialista com status pendente
-        with db.atomic():
-            especialista = Usuario.create(
-                id=str(uuid4()),
-                nome=nome,
-                email=email,
-                password_hash=password,
-                role='especialista',
-                status_aprovacao='aguardando_validacao',
-                telefone=telefone,
-                foto_url=foto_url,
-                criado_em=datetime.now()
-            )
-
-            # Salvar documentos
-            for doc_data in documentos:
-                DocumentoEspecialista = DocumentoEspecialista.create(
-                    id=str(uuid4()),
-                    especialista=especialista,
-                    tipo_documento=doc_data['tipo_documento'],
-                    arquivo_url=doc_data['arquivo_url'],
-                    nome_arquivo=doc_data['nome_arquivo'],
-                    criado_em=datetime.now()
-                )
-
-        return jsonify({
-            "success": True,
-            "msg": "Cadastro de especialista realizado! Seu perfil está em análise e você será notificado quando for aprovado.",
-            "id": especialista.id,
-            "status_aprovacao": "aguardando_validacao"
-        }), 201
-
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': f'Erro interno: {str(e)}'
-        }), 500
-
+#Select na rota "/usuarios"
 @app.get("/usuarios")
 def listar_usuarios():
     usuarios = Usuario.select()
@@ -297,7 +481,9 @@ def listar_usuarios():
         for u in usuarios
     ])
 
-@app.get("/especialistas/pendentes")
+
+#Select na rota "/especialistas/pendentes"
+@app.get("/especialistas/pendentes")    #OBS*: Criar a rota do html da página para atualizar o status.
 def listar_especialistas_pendentes():
     especialistas = Usuario.select().where(
         (Usuario.role == 'especialista') & 
@@ -314,6 +500,10 @@ def listar_especialistas_pendentes():
         for u in especialistas
     ])
     
+
+
+
+# rota para criar ticket .)
 @app.post("/tickets")
 def criar_ticket():
     data = request.json
@@ -327,6 +517,10 @@ def criar_ticket():
     )
     return jsonify({"msg": "Ticket criado", "id": ticket.id})
 
+
+
+#Select na rota "/tickets" (listar tickets). 
+#OBS*: Criar a rota do html da página para atualizar o status.
 @app.get("/tickets")
 def listar_tickets():
     tickets = Ticket.select()
@@ -341,7 +535,11 @@ def listar_tickets():
         for t in tickets
     ])
     
-    
+
+
+
+# rota para gerar ticket.
+# OBS*: Criar a rota do html da página para atualizar o status.    
 @app.post("/tickets/draft")
 def gerar_ticket():
     try:
@@ -468,6 +666,80 @@ def enviar_ticket_para_fila():
 app.register_blueprint(admin_bp)
 app.register_blueprint(especialista_bp)
 
+# ====================================================================================================
+
+# ROTA DO CHAT PARA O FRONTEND 
+@app.route('/api/chat/ticket', methods=['POST'])
+def criar_ticket_via_chat():
+    """
+    Rota CORRIGIDA para o chat
+    """
+    try:
+        data = request.json
+        
+        # Verificar campos obrigatórios
+        campos_obrigatorios = ['area', 'titulo', 'descricao', 'contato']
+        for campo in campos_obrigatorios:
+            if not data.get(campo):
+                return jsonify({
+                    'success': False,
+                    'message': f'Campo {campo} é obrigatório'
+                }), 400
+        
+        # Buscar usuário se tiver user_id
+        user_id = data.get('user_id')
+        usuario = None
+        
+        if user_id:
+            try:
+                usuario = Usuario.get_by_id(user_id)
+                print(f"✅ Ticket vinculado ao usuário: {usuario.email}")
+            except Usuario.DoesNotExist:
+                print(f"⚠️ User_id {user_id} não encontrado")
+                usuario = None  # Mantém como None se não encontrar
+        
+        # Descrição formatada SEM JSON complexo (simples)
+        descricao_formatada = f"""ÁREA: {data['area']}
+CONTATO: {data['contato']}
+ORIGEM: Chat (via assistente virtual)
+
+DESCRIÇÃO DO PROBLEMA:
+{data['descricao']}"""
+        
+        # Criar ticket - AGORA ACEITA cliente=None
+        ticket = Ticket.create(
+            id=str(uuid4()),
+            titulo=f"[CHAT] {data['titulo']}",
+            descricao=descricao_formatada,
+            cliente=usuario,      # ← Pode ser None (anônimo)
+            especialista=None,
+            triagem=None,
+            status='aberto',
+            criado_em=datetime.now(),
+            atualizado_em=datetime.now()
+        )
+        
+        print(f"✅ Ticket criado: {ticket.id}")
+
+        return jsonify({
+            'success': True,
+            'message': 'Ticket criado com sucesso via chat!',
+            'ticket_id': ticket.id,
+            'protocolo': f"CHAT-{ticket.id[:8].upper()}",
+            'vinculado_a_usuario': bool(usuario),
+            'dados': {
+                'area': data['area'],
+                'titulo': data['titulo'],
+                'contato': data['contato'],
+                'data_hora': datetime.now().strftime('%d/%m/%Y %H:%M')
+            }
+        }), 201
+
+    except Exception as e:
+        print(f"❌ Erro ao criar ticket: {str(e)}")
+        return jsonify({'success': False, 'message': f'Erro: {str(e)}'}), 500
+
+# ==========================================================================================================
     
     
 
