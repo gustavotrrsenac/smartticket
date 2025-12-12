@@ -2,12 +2,12 @@ from flask import Blueprint, jsonify
 from models import Usuario, PerfilEspecialista
 from datetime import datetime
 
-admin_bp = Blueprint("admin", __name__)
+admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 # --------------------------------------------------------
 # LISTAR USUÁRIOS QUE SOLICITARAM SER ESPECIALISTAS
 # --------------------------------------------------------
-@admin_bp.get("/admin/especialistas/pendentes")
+@admin_bp.get("/especialistas/pendentes")
 def listar_pendentes():
     pendentes = Usuario.select().where(
         Usuario.role == "cliente"
@@ -28,7 +28,7 @@ def listar_pendentes():
 # --------------------------------------------------------
 # DETALHES DO USUÁRIO A SER PROMOVIDO A ESPECIALISTA
 # --------------------------------------------------------
-@admin_bp.get("/admin/especialistas/<string:user_id>/detalhes")
+@admin_bp.get("/especialistas/<string:user_id>/detalhes")
 def detalhes_especialista(user_id):
     user = Usuario.get_or_none(Usuario.id == user_id)
 
@@ -57,7 +57,7 @@ def detalhes_especialista(user_id):
 # --------------------------------------------------------
 # ADMIN APROVA O ESPECIALISTA
 # --------------------------------------------------------
-@admin_bp.post("/admin/especialistas/<string:user_id>/aprovar")
+@admin_bp.post("/especialistas/<string:user_id>/aprovar")
 def aprovar_especialista(user_id):
     user = Usuario.get_or_none(Usuario.id == user_id)
 

@@ -3,12 +3,12 @@ from models import Usuario, Ticket, PerfilEspecialista, Mensagem
 from uuid import uuid4
 from datetime import datetime
 
-especialista_bp = Blueprint("especialista", __name__)
+especialista_bp = Blueprint("especialista", __name__, url_prefix="/especialista")
 
 # =====================================================================
 # 1. Especialista envia documentação (salva em PerfilEspecialista)
 # =====================================================================
-@especialista_bp.post("/especialista/<user_id>/documentos")
+@especialista_bp.post("/<user_id>/documentos")
 def enviar_documentos(user_id):
     data = request.json
     
@@ -16,19 +16,17 @@ def enviar_documentos(user_id):
     if not user:
         return jsonify({"success": False, "message": "Usuário não encontrado"}), 404
     
-    perfil = PerfilEspecialista.get_or_none(PerfilEspecialista.user == user_id)
+    perfil = PerfilEspecialista.get_or_none(PerfilEspecialista.user == user)
     if not perfil:
         perfil = PerfilEspecialista.create(
             id=str(uuid4()),
-            user=user_id
+            user=user
         )
 
-    # Campos existentes no model
     perfil.area_profissional = data.get("area_profissional")
     perfil.bio = data.get("bio")
     perfil.formacao = data.get("formacao")
     perfil.registro_prof = data.get("registro_prof")
-    
     perfil.save()
 
     return jsonify({"success": True, "message": "Documentação enviada e aguardando aprovação"}), 200
@@ -37,10 +35,13 @@ def enviar_documentos(user_id):
 # =====================================================================
 # 2. Especialista verifica status da validação
 # =====================================================================
-@especialista_bp.get("/especialista/<user_id>/validacao")
+@especialista_bp.get("/<user_id>/validacao")
 def status_validacao(user_id):
-    perfil = PerfilEspecialista.get_or_none(PerfilEspecialista.user == user_id)
+    user = Usuario.get_or_none(Usuario.id == user_id)
+    if not user:
+        return jsonify({"success": False, "message": "Usuário não encontrado"}), 404
 
+    perfil = PerfilEspecialista.get_or_none(PerfilEspecialista.user == user)
     if not perfil:
         return jsonify({"success": False, "message": "Perfil não encontrado"}), 404
     
@@ -55,7 +56,7 @@ def status_validacao(user_id):
 # =====================================================================
 # 3. Listar tickets disponíveis para o especialista
 # =====================================================================
-@especialista_bp.get("/especialista/<user_id>/fila")
+@especialista_bp.get("/<user_id>/fila")
 def fila_especialista(user_id):
     especialista = Usuario.get_or_none(Usuario.id == user_id)
 
@@ -85,7 +86,7 @@ def fila_especialista(user_id):
 # =====================================================================
 # 4. Especialista assume um ticket
 # =====================================================================
-@especialista_bp.post("/especialista/<user_id>/assumir/<ticket_id>")
+@especialista_bp.post("/<user_id>/assumir/<ticket_id>")
 def assumir_ticket(user_id, ticket_id):
     especialista = Usuario.get_or_none(Usuario.id == user_id)
     if not especialista:
@@ -109,9 +110,13 @@ def assumir_ticket(user_id, ticket_id):
 # =====================================================================
 # 5. Enviar mensagens dentro do ticket
 # =====================================================================
-@especialista_bp.post("/especialista/<user_id>/mensagem/<ticket_id>")
+@especialista_bp.post("/<user_id>/mensagem/<ticket_id>")
 def enviar_mensagem(user_id, ticket_id):
     data = request.json
+
+    user = Usuario.get_or_none(Usuario.id == user_id)
+    if not user:
+        return jsonify({"success": False, "message": "Usuário não encontrado"}), 404
 
     ticket = Ticket.get_or_none(Ticket.id == ticket_id)
     if not ticket:
@@ -119,8 +124,8 @@ def enviar_mensagem(user_id, ticket_id):
 
     Mensagem.create(
         id=str(uuid4()),
-        ticket=ticket_id,
-        sender=user_id,
+        ticket=ticket,
+        sender=user,
         mensagem=data.get("mensagem"),
         tipo="texto"
     )
@@ -132,23 +137,25 @@ def enviar_mensagem(user_id, ticket_id):
 
 
 # =====================================================================
-# 6. Especialista finaliza o ticket (gera mensagem final)
+# 6. Especialista finaliza o ticket
 # =====================================================================
-@especialista_bp.post("/especialista/<user_id>/finalizar/<ticket_id>")
+@especialista_bp.post("/<user_id>/finalizar/<ticket_id>")
 def finalizar_ticket(user_id, ticket_id):
     data = request.json
     resposta_final = data.get("resposta")
 
-    ticket = Ticket.get_or_none(Ticket.id == ticket_id)
+    user = Usuario.get_or_none(Usuario.id == user_id)
+    if not user:
+        return jsonify({"success": False, "message": "Usuário não encontrado"}), 404
 
+    ticket = Ticket.get_or_none(Ticket.id == ticket_id)
     if not ticket:
         return jsonify({"success": False, "message": "Ticket não encontrado"}), 404
 
-    # Registrar a resposta final como mensagem
     Mensagem.create(
         id=str(uuid4()),
-        ticket=ticket_id,
-        sender=user_id,
+        ticket=ticket,
+        sender=user,
         mensagem=f"[FINALIZAÇÃO]\n{resposta_final}",
         tipo="texto"
     )

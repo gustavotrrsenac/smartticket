@@ -4,6 +4,9 @@ from uuid import uuid4
 from datetime import datetime
 import re
 from utils import validar_email, validar_senha, validar_documentos_especialista
+from routes.admin_routes import admin_bp
+from routes.especialista_routes import especialista_bp
+
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
@@ -461,6 +464,9 @@ def enviar_ticket_para_fila():
         
         
 
+# Registro das rotas de ADMIN e ESPECIALISTA
+app.register_blueprint(admin_bp)
+app.register_blueprint(especialista_bp)
 
     
     

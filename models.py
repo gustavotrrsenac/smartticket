@@ -17,6 +17,7 @@ class Usuario(BaseModel):
     email = CharField(max_length=150, unique=True)
     password_hash = TextField()
     role = CharField(choices=[('cliente', 'cliente'), ('especialista', 'especialista'), ('admin', 'admin')])
+    status_aprovacao = CharField(default='aprovado')
     foto_url = TextField(null=True)
     telefone = CharField(max_length=20, null=True)
     criado_em = DateTimeField(default=datetime.datetime.now)
