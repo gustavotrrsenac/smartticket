@@ -8,7 +8,7 @@ from utils import validar_email, validar_senha, validar_documentos_especialista
 from werkzeug.security import generate_password_hash, check_password_hash
 from routes.admin_routes import admin_bp
 from routes.especialista_routes import especialista_bp
-
+import json
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -666,6 +666,80 @@ def enviar_ticket_para_fila():
 app.register_blueprint(admin_bp)
 app.register_blueprint(especialista_bp)
 
+# ====================================================================================================
+
+# ROTA DO CHAT PARA O FRONTEND 
+@app.route('/api/chat/ticket', methods=['POST'])
+def criar_ticket_via_chat():
+    """
+    Rota CORRIGIDA para o chat
+    """
+    try:
+        data = request.json
+        
+        # Verificar campos obrigatórios
+        campos_obrigatorios = ['area', 'titulo', 'descricao', 'contato']
+        for campo in campos_obrigatorios:
+            if not data.get(campo):
+                return jsonify({
+                    'success': False,
+                    'message': f'Campo {campo} é obrigatório'
+                }), 400
+        
+        # Buscar usuário se tiver user_id
+        user_id = data.get('user_id')
+        usuario = None
+        
+        if user_id:
+            try:
+                usuario = Usuario.get_by_id(user_id)
+                print(f"✅ Ticket vinculado ao usuário: {usuario.email}")
+            except Usuario.DoesNotExist:
+                print(f"⚠️ User_id {user_id} não encontrado")
+                usuario = None  # Mantém como None se não encontrar
+        
+        # Descrição formatada SEM JSON complexo (simples)
+        descricao_formatada = f"""ÁREA: {data['area']}
+CONTATO: {data['contato']}
+ORIGEM: Chat (via assistente virtual)
+
+DESCRIÇÃO DO PROBLEMA:
+{data['descricao']}"""
+        
+        # Criar ticket - AGORA ACEITA cliente=None
+        ticket = Ticket.create(
+            id=str(uuid4()),
+            titulo=f"[CHAT] {data['titulo']}",
+            descricao=descricao_formatada,
+            cliente=usuario,      # ← Pode ser None (anônimo)
+            especialista=None,
+            triagem=None,
+            status='aberto',
+            criado_em=datetime.now(),
+            atualizado_em=datetime.now()
+        )
+        
+        print(f"✅ Ticket criado: {ticket.id}")
+
+        return jsonify({
+            'success': True,
+            'message': 'Ticket criado com sucesso via chat!',
+            'ticket_id': ticket.id,
+            'protocolo': f"CHAT-{ticket.id[:8].upper()}",
+            'vinculado_a_usuario': bool(usuario),
+            'dados': {
+                'area': data['area'],
+                'titulo': data['titulo'],
+                'contato': data['contato'],
+                'data_hora': datetime.now().strftime('%d/%m/%Y %H:%M')
+            }
+        }), 201
+
+    except Exception as e:
+        print(f"❌ Erro ao criar ticket: {str(e)}")
+        return jsonify({'success': False, 'message': f'Erro: {str(e)}'}), 500
+
+# ==========================================================================================================
     
     
 
