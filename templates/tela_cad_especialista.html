@@ -19,23 +19,23 @@
             <h1>Seja o nosso Especialista</h1>
             <p>Preencha seus dados para continuar</p>
 
-            <form>
+            <form method="post"> 
 
-                <input type="text" placeholder="Nome completo" />
+                <input type="text"  placeholder="Nome completo" />
 
                 <div class="linha">
                     <input type="text" placeholder="RG" />
                     <input type="text" placeholder="CPF" />
                 </div>
 
-                <div class="linha">
-                    <input type="text" placeholder="Telefone" />
-                    <input type="text" placeholder="Celular" />
+                <div class="linha" >
+                    <input type="text" id="telefone" name="telefone" placeholder="Telefone" />
+                    <input type="text" id="telefone" name="telefone" placeholder="Celular" />
                 </div>
 
-                <input type="email" placeholder="E-mail" />
+                <input type="email" id="email" name="email"placeholder="E-mail" />
 
-                <input type="password" placeholder="Senha" />
+                <input type="password" id="password_hash" name="password_hash" placeholder="Senha" />
 
                 <div class="upload-container">
                     <button class="upload-btn">+<br> envie sua documentação pessoal</button>
