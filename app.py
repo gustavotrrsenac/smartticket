@@ -5,12 +5,10 @@ from uuid import uuid4
 from datetime import datetime
 import re
 from utils import validar_email, validar_senha, validar_documentos_especialista
-<<<<<<< HEAD
 from werkzeug.security import generate_password_hash, check_password_hash
-=======
 from routes.admin_routes import admin_bp
 from routes.especialista_routes import especialista_bp
->>>>>>> 90e670a836d0b3b92d370234fb0ee6491369dbad
+
 
 
 app = Flask(__name__, static_url_path='', static_folder='static')
