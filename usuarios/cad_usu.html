@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Cadastro do Usuário</title>
+  <link rel="stylesheet" href="cad_usu.css" />
+</head>
+<body>
+  <div class="cadastro-wrapper">
+    <div class="cadastro-box">
+      <img src="logo_usu.jpeg" class="logo" alt="Logo Smart Ticket">
+      <h1>Smart Ticket</h1>
+      <h3>Faça seu cadastro</h3>
+
+      <!-- FORMULÁRIO ATUALIZADO COM OS CAMPOS NECESSÁRIOS -->
+      <form id="form-cadastro" novalidate>
+        
+        <!-- Campo role (tipo de usuário) - OBRIGATÓRIO -->
+        <div class="form-group">
+          <label for="role">Tipo de Cadastro *</label>
+          <select id="role" name="role" required class="form-select">
+            <option value="">Selecione...</option>
+            <option value="cliente">Cliente</option>
+            <option value="especialista">Especialista</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="nome">Nome completo *</label>
+          <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail *</label>
+          <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999" />
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha *</label>
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmar">Confirmar senha *</label>
+          <input type="password" id="confirmar" name="confirmar" placeholder="Confirme sua senha" required />
+        </div>
+
+        <!-- Seção para especialistas (aparece dinamicamente) -->
+        <div id="especialista-fields" style="display: none;">
+          <div class="form-group">
+            <label for="area_profissional">Área Profissional *</label>
+            <select id="area_profissional" name="area_profissional" class="form-select">
+              <option value="">Selecione sua área...</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="suporte">Suporte Técnico</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="administrativo">Administrativo</option>
+              <option value="outra">Outra</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="formacao">Formação Acadêmica</label>
+            <input type="text" id="formacao" name="formacao" placeholder="Ex: Ciência da Computação" />
+          </div>
+
+          <div class="form-group">
+            <label for="registro_prof">Registro Profissional (CREA, CRM, OAB, etc.)</label>
+            <input type="text" id="registro_prof" name="registro_prof" placeholder="Número do registro" />
+          </div>
+
+          <div class="form-group">
+            <label for="bio">Breve descrição profissional</label>
+            <textarea id="bio" name="bio" rows="3" placeholder="Descreva sua experiência profissional..."></textarea>
+          </div>
+        </div>
+
+        <!-- Requisitos da senha -->
+        <p class="titulo-requisitos">Sua senha deve conter:</p>
+        <ul class="lista-requisitos">
+          <li id="req-minuscula" data-base="Uma letra minúscula">Uma letra minúscula</li>
+          <li id="req-maiuscula" data-base="Uma letra maiúscula">Uma letra maiúscula</li>
+          <li id="req-especial" data-base="Um caractere especial">Um caractere especial (@#$%&!)</li>
+          <li id="req-numero" data-base="Um número">Um número</li>
+          <li id="req-tamanho" data-base="Mínimo 6 caracteres">Mínimo 6 caracteres</li>
+          <li id="req-confirmar" data-base="As senhas devem ser iguais">As senhas devem ser iguais</li>
+        </ul>
+
+        <button class="btn-login" id="btn-cadastrar" type="submit">Cadastrar</button>
+        
+        <!-- Mensagens de feedback -->
+        <div id="mensagem" style="margin-top: 20px;"></div>
+
+        <!-- Link para login -->
+        <div style="margin-top: 20px; font-size: 14px; color: #666;">
+          Já tem uma conta? <a href="login.html" style="color: #5e3ea1; text-decoration: none; font-weight: bold;">Faça login</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="cad_usu.js"></script>
+</body>
+</html>

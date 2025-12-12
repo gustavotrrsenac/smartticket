@@ -1,14 +1,13 @@
-from flask import Flask, request, jsonify, render_template
-from models import db, Usuario, Ticket, DocumentoEspecialista
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from models import db, Usuario, Ticket, DocumentoEspecialista, PerfilEspecialista
 from uuid import uuid4
 from datetime import datetime
 import re
 import hashlib
 
-app = Flask(__name__, static_url_path='', static_folder='')
-
-from flask_cors import CORS
-CORS(app)
+app = Flask(__name__)
+CORS(app)  # Habilita CORS para todas as rotas
 
 @app.before_request
 def _db_connect():
@@ -22,16 +21,6 @@ def _db_close(exc):
     if not db.is_closed():
         db.close()
 
-<<<<<<< HEAD
-@app.route("/")
-def rotaraiz():
-    return render_template('cad_usu.html')
-=======
-@app.route('/home')
-def index():
-    return render_template('index.html')
->>>>>>> 457a57e8a524c90abf4b4fdd5039001a432ab7d3
-
 # VALIDAÇÕES
 def validar_email(email):
     """Valida formato de email."""
@@ -43,7 +32,6 @@ def validar_senha(senha):
     if len(senha) < 6:
         return False, "A senha deve ter pelo menos 6 caracteres"
     
-    # Verificar requisitos
     tem_minuscula = re.search(r'[a-z]', senha)
     tem_maiuscula = re.search(r'[A-Z]', senha)
     tem_especial = re.search(r'[^a-zA-Z0-9]', senha)
@@ -72,16 +60,13 @@ def hash_senha(senha):
     """Gera hash SHA-256 para senha."""
     return hashlib.sha256(senha.encode()).hexdigest()
 
-
-
 # ROTAS DE USUÁRIOS
-@app.post("/Templates")
+@app.post("/usuarios")
 def criar_usuario():
     """Cria um novo usuário (cliente, especialista ou admin)."""
     try:
         data = request.json
         
-        # Campos obrigatórios
         campos_obrigatorios = ['nome', 'email', 'password', 'role']
         for campo in campos_obrigatorios:
             if not data.get(campo):
@@ -97,21 +82,18 @@ def criar_usuario():
         telefone = data.get("telefone")
         foto_url = data.get("foto_url")
 
-        # Validar role
         if role not in ['cliente', 'especialista', 'admin']:
             return jsonify({
                 'success': False,
                 'message': 'Role deve ser: cliente, especialista ou admin'
             }), 400
 
-        # Validar email
         if not validar_email(email):
             return jsonify({
                 'success': False,
                 'message': 'Formato de email inválido'
             }), 400
 
-        # Validar senha
         senha_valida, msg_senha = validar_senha(password)
         if not senha_valida:
             return jsonify({
@@ -119,19 +101,16 @@ def criar_usuario():
                 'message': msg_senha
             }), 400
 
-        # Verificar se email já existe
         if Usuario.select().where(Usuario.email == email).exists():
             return jsonify({
                 'success': False,
                 'message': 'Já existe um usuário com este email'
             }), 409
 
-        # Definir status de aprovação
-        status_aprovacao = 'aprovado'  # Default para clientes e admin
+        status_aprovacao = 'aprovado'
         if role == 'especialista':
             status_aprovacao = 'aguardando_validacao'
 
-        # Criar hash da senha
         password_hash = hash_senha(password)
 
         # Criar usuário
@@ -148,6 +127,24 @@ def criar_usuario():
             atualizado_em=datetime.now()
         )
 
+        # Se for especialista, criar perfil
+        if role == 'especialista':
+            area_profissional = data.get('area_profissional')
+            bio = data.get('bio')
+            formacao = data.get('formacao')
+            registro_prof = data.get('registro_prof')
+            
+            PerfilEspecialista.create(
+                id=str(uuid4()),
+                user=user,
+                area_profissional=area_profissional,
+                bio=bio,
+                formacao=formacao,
+                registro_prof=registro_prof,
+                rating=0.00,
+                criado_em=datetime.now()
+            )
+
         response_data = {
             "success": True,
             "msg": "Usuário criado com sucesso", 
@@ -158,7 +155,6 @@ def criar_usuario():
             "status_aprovacao": status_aprovacao
         }
 
-        # Mensagem específica para especialistas
         if role == 'especialista':
             response_data["msg"] = "Cadastro realizado! Seu perfil está em análise."
 
@@ -170,13 +166,13 @@ def criar_usuario():
             'message': f'Erro interno: {str(e)}'
         }), 500
 
+# ROTAS ESPECÍFICAS PARA ESPECIALISTAS
 @app.post("/especialistas")
-def criar_especialista():
+def criar_especialista_com_documentos():
     """Cria um especialista com documentos."""
     try:
         data = request.json
         
-        # Campos obrigatórios
         campos_obrigatorios = ['nome', 'email', 'password', 'documentos']
         for campo in campos_obrigatorios:
             if not data.get(campo):
@@ -191,15 +187,19 @@ def criar_especialista():
         telefone = data.get("telefone")
         foto_url = data.get("foto_url")
         documentos = data["documentos"]
+        
+        # Dados do perfil
+        area_profissional = data.get("area_profissional")
+        bio = data.get("bio")
+        formacao = data.get("formacao")
+        registro_prof = data.get("registro_prof")
 
-        # Validar email
         if not validar_email(email):
             return jsonify({
                 'success': False,
                 'message': 'Formato de email inválido'
             }), 400
 
-        # Validar senha
         senha_valida, msg_senha = validar_senha(password)
         if not senha_valida:
             return jsonify({
@@ -207,7 +207,6 @@ def criar_especialista():
                 'message': msg_senha
             }), 400
 
-        # Validar documentos
         documentos_validos, msg_documentos = validar_documentos_especialista(documentos)
         if not documentos_validos:
             return jsonify({
@@ -215,14 +214,12 @@ def criar_especialista():
                 'message': msg_documentos
             }), 400
 
-        # Verificar se email já existe
         if Usuario.select().where(Usuario.email == email).exists():
             return jsonify({
                 'success': False,
                 'message': 'Já existe um usuário com este email'
             }), 409
 
-        # Criar hash da senha
         password_hash = hash_senha(password)
 
         # Criar especialista com transação
@@ -238,6 +235,18 @@ def criar_especialista():
                 foto_url=foto_url,
                 criado_em=datetime.now(),
                 atualizado_em=datetime.now()
+            )
+
+            # Criar perfil do especialista
+            PerfilEspecialista.create(
+                id=str(uuid4()),
+                user=especialista,
+                area_profissional=area_profissional,
+                bio=bio,
+                formacao=formacao,
+                registro_prof=registro_prof,
+                rating=0.00,
+                criado_em=datetime.now()
             )
 
             # Salvar documentos
@@ -266,6 +275,261 @@ def criar_especialista():
             'message': f'Erro interno: {str(e)}'
         }), 500
 
+@app.get("/especialistas")
+def listar_especialistas():
+    """Lista todos os especialistas."""
+    try:
+        especialistas = Usuario.select().where(Usuario.role == 'especialista')
+        
+        resultados = []
+        for especialista in especialistas:
+            perfil = PerfilEspecialista.get_or_none(user=especialista)
+            
+            especialista_data = {
+                "id": especialista.id,
+                "nome": especialista.nome,
+                "email": especialista.email,
+                "telefone": especialista.telefone,
+                "status_aprovacao": especialista.status_aprovacao,
+                "criado_em": especialista.criado_em.isoformat() if especialista.criado_em else None
+            }
+            
+            if perfil:
+                especialista_data.update({
+                    "area_profissional": perfil.area_profissional,
+                    "bio": perfil.bio,
+                    "formacao": perfil.formacao,
+                    "registro_prof": perfil.registro_prof,
+                    "rating": float(perfil.rating) if perfil.rating else 0.0
+                })
+            
+            resultados.append(especialista_data)
+        
+        return jsonify(resultados)
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro ao listar especialistas: {str(e)}"
+        }), 500
+
+@app.get("/especialistas/<especialista_id>")
+def obter_especialista(especialista_id):
+    """Obtém um especialista específico com documentos."""
+    try:
+        especialista = Usuario.get_by_id(especialista_id)
+        
+        if especialista.role != 'especialista':
+            return jsonify({
+                "success": False,
+                "message": "Usuário não é um especialista"
+            }), 400
+        
+        perfil = PerfilEspecialista.get_or_none(user=especialista)
+        documentos = DocumentoEspecialista.select().where(
+            DocumentoEspecialista.especialista == especialista
+        )
+        
+        dados_especialista = {
+            "id": especialista.id,
+            "nome": especialista.nome,
+            "email": especialista.email,
+            "telefone": especialista.telefone,
+            "foto_url": especialista.foto_url,
+            "status_aprovacao": especialista.status_aprovacao,
+            "criado_em": especialista.criado_em.isoformat() if especialista.criado_em else None
+        }
+        
+        if perfil:
+            dados_especialista.update({
+                "area_profissional": perfil.area_profissional,
+                "bio": perfil.bio,
+                "formacao": perfil.formacao,
+                "registro_prof": perfil.registro_prof,
+                "rating": float(perfil.rating) if perfil.rating else 0.0
+            })
+        
+        dados_especialista["documentos"] = [
+            {
+                "id": doc.id,
+                "tipo_documento": doc.tipo_documento,
+                "nome_arquivo": doc.nome_arquivo,
+                "arquivo_url": doc.arquivo_url,
+                "criado_em": doc.criado_em.isoformat() if doc.criado_em else None
+            }
+            for doc in documentos
+        ]
+        
+        return jsonify(dados_especialista)
+        
+    except Usuario.DoesNotExist:
+        return jsonify({
+            "success": False,
+            "message": "Especialista não encontrado"
+        }), 404
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro interno: {str(e)}"
+        }), 500
+
+@app.get("/especialistas/pendentes")
+def listar_especialistas_pendentes():
+    """Lista especialistas aguardando aprovação."""
+    especialistas = Usuario.select().where(
+        (Usuario.role == 'especialista') & 
+        (Usuario.status_aprovacao == 'aguardando_validacao')
+    )
+    
+    resultados = []
+    for especialista in especialistas:
+        perfil = PerfilEspecialista.get_or_none(user=especialista)
+        
+        dados = {
+            "id": especialista.id,
+            "nome": especialista.nome,
+            "email": especialista.email,
+            "telefone": especialista.telefone,
+            "criado_em": especialista.criado_em.isoformat() if especialista.criado_em else None
+        }
+        
+        if perfil:
+            dados.update({
+                "area_profissional": perfil.area_profissional,
+                "formacao": perfil.formacao
+            })
+        
+        resultados.append(dados)
+    
+    return jsonify(resultados)
+
+@app.put("/especialistas/<especialista_id>/aprovar")
+def aprovar_especialista(especialista_id):
+    """Aprova um especialista."""
+    try:
+        especialista = Usuario.get_by_id(especialista_id)
+        
+        if especialista.role != 'especialista':
+            return jsonify({
+                "success": False,
+                "message": "Usuário não é um especialista"
+            }), 400
+        
+        especialista.status_aprovacao = 'aprovado'
+        especialista.atualizado_em = datetime.now()
+        especialista.save()
+        
+        return jsonify({
+            "success": True,
+            "message": "Especialista aprovado com sucesso",
+            "id": especialista.id,
+            "nome": especialista.nome,
+            "status_aprovacao": especialista.status_aprovacao
+        })
+        
+    except Usuario.DoesNotExist:
+        return jsonify({
+            "success": False,
+            "message": "Especialista não encontrado"
+        }), 404
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro interno: {str(e)}"
+        }), 500
+
+@app.put("/especialistas/<especialista_id>/rejeitar")
+def rejeitar_especialista(especialista_id):
+    """Rejeita um especialista."""
+    try:
+        especialista = Usuario.get_by_id(especialista_id)
+        
+        if especialista.role != 'especialista':
+            return jsonify({
+                "success": False,
+                "message": "Usuário não é um especialista"
+            }), 400
+        
+        especialista.status_aprovacao = 'rejeitado'
+        especialista.atualizado_em = datetime.now()
+        especialista.save()
+        
+        return jsonify({
+            "success": True,
+            "message": "Especialista rejeitado",
+            "id": especialista.id,
+            "nome": especialista.nome,
+            "status_aprovacao": especialista.status_aprovacao
+        })
+        
+    except Usuario.DoesNotExist:
+        return jsonify({
+            "success": False,
+            "message": "Especialista não encontrado"
+        }), 404
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro interno: {str(e)}"
+        }), 500
+
+@app.put("/especialistas/<especialista_id>/atualizar-rating")
+def atualizar_rating_especialista(especialista_id):
+    """Atualiza o rating de um especialista."""
+    try:
+        data = request.json
+        
+        if 'rating' not in data:
+            return jsonify({
+                "success": False,
+                "message": "O campo rating é obrigatório"
+            }), 400
+        
+        rating = float(data['rating'])
+        
+        if rating < 0 or rating > 5:
+            return jsonify({
+                "success": False,
+                "message": "Rating deve estar entre 0 e 5"
+            }), 400
+        
+        especialista = Usuario.get_by_id(especialista_id)
+        
+        if especialista.role != 'especialista':
+            return jsonify({
+                "success": False,
+                "message": "Usuário não é um especialista"
+            }), 400
+        
+        perfil = PerfilEspecialista.get(user=especialista)
+        perfil.rating = rating
+        perfil.save()
+        
+        return jsonify({
+            "success": True,
+            "message": "Rating atualizado com sucesso",
+            "id": especialista.id,
+            "nome": especialista.nome,
+            "rating": float(perfil.rating)
+        })
+        
+    except Usuario.DoesNotExist:
+        return jsonify({
+            "success": False,
+            "message": "Especialista não encontrado"
+        }), 404
+    except PerfilEspecialista.DoesNotExist:
+        return jsonify({
+            "success": False,
+            "message": "Perfil do especialista não encontrado"
+        }), 404
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Erro interno: {str(e)}"
+        }), 500
+
+# ROTAS DE USUÁRIOS (mantenha as existentes)
 @app.get("/usuarios")
 def listar_usuarios():
     """Lista todos os usuários."""
@@ -309,60 +573,7 @@ def obter_usuario(user_id):
             "message": f"Erro interno: {str(e)}"
         }), 500
 
-@app.get("/especialistas/pendentes")
-def listar_especialistas_pendentes():
-    """Lista especialistas aguardando aprovação."""
-    especialistas = Usuario.select().where(
-        (Usuario.role == 'especialista') & 
-        (Usuario.status_aprovacao == 'aguardando_validacao')
-    )
-    return jsonify([
-        {
-            "id": u.id,
-            "nome": u.nome,
-            "email": u.email,
-            "telefone": u.telefone,
-            "criado_em": u.criado_em.isoformat() if u.criado_em else None
-        }
-        for u in especialistas
-    ])
-
-@app.put("/especialistas/<especialista_id>/aprovar")
-def aprovar_especialista(especialista_id):
-    """Aprova um especialista."""
-    try:
-        usuario = Usuario.get_by_id(especialista_id)
-        
-        if usuario.role != 'especialista':
-            return jsonify({
-                "success": False,
-                "message": "Usuário não é um especialista"
-            }), 400
-        
-        usuario.status_aprovacao = 'aprovado'
-        usuario.atualizado_em = datetime.now()
-        usuario.save()
-        
-        return jsonify({
-            "success": True,
-            "message": "Especialista aprovado com sucesso",
-            "id": usuario.id,
-            "nome": usuario.nome,
-            "status_aprovacao": usuario.status_aprovacao
-        })
-        
-    except Usuario.DoesNotExist:
-        return jsonify({
-            "success": False,
-            "message": "Especialista não encontrado"
-        }), 404
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "message": f"Erro interno: {str(e)}"
-        }), 500
-
-# ROTAS DE TICKETS
+# ROTAS DE TICKETS (mantenha as existentes)
 @app.post("/tickets")
 def criar_ticket():
     """Cria um novo ticket."""
@@ -403,60 +614,6 @@ def criar_ticket():
             'message': f'Erro interno: {str(e)}'
         }), 500
 
-@app.post("/tickets/draft")
-def gerar_rascunho_ticket():
-    """Gera um rascunho de ticket a partir do chatbot."""
-    try:
-        data = request.json
-
-        user_id = data.get("user_id")
-        respostas = data.get("respostas_chat")
-        titulo = data.get("titulo")
-
-        # Validações
-        if not user_id:
-            return jsonify({"success": False, "message": "ID do usuário é obrigatório"}), 400
-
-        if not respostas or not isinstance(respostas, list):
-            return jsonify({"success": False, "message": "Respostas do chatbot são obrigatórias"}), 400
-
-        # Montar descrição
-        descricao = "\n".join(
-            [f"- {r.get('pergunta')}: {r.get('resposta')}" for r in respostas]
-        )
-
-        # Criar ticket como rascunho
-        ticket = Ticket.create(
-            id=str(uuid4()),
-            cliente=user_id,
-            especialista=None,
-            triagem=None,
-            titulo=titulo if titulo else "Ticket Gerado pelo Chatbot",
-            descricao=descricao,
-            status="rascunho",
-            criado_em=datetime.now(),
-            atualizado_em=datetime.now()
-        )
-
-        return jsonify({
-            "success": True,
-            "message": "Rascunho gerado com sucesso!",
-            "ticket": {
-                "id": ticket.id,
-                "titulo": ticket.titulo,
-                "descricao": ticket.descricao,
-                "status": ticket.status,
-                "cliente": user_id,
-                "criado_em": ticket.criado_em.isoformat()
-            }
-        }), 201
-
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "message": f"Erro ao gerar rascunho: {str(e)}"
-        }), 500
-
 @app.get("/tickets")
 def listar_tickets():
     """Lista todos os tickets."""
@@ -476,76 +633,6 @@ def listar_tickets():
         for t in tickets
     ])
 
-@app.get("/tickets/<ticket_id>")
-def obter_ticket(ticket_id):
-    """Obtém um ticket específico."""
-    try:
-        ticket = Ticket.get_by_id(ticket_id)
-        
-        return jsonify({
-            "id": ticket.id,
-            "titulo": ticket.titulo,
-            "descricao": ticket.descricao,
-            "status": ticket.status,
-            "cliente": {
-                "id": ticket.cliente.id,
-                "nome": ticket.cliente.nome,
-                "email": ticket.cliente.email
-            } if ticket.cliente else None,
-            "especialista": {
-                "id": ticket.especialista.id,
-                "nome": ticket.especialista.nome
-            } if ticket.especialista else None,
-            "criado_em": ticket.criado_em.isoformat() if ticket.criado_em else None,
-            "atualizado_em": ticket.atualizado_em.isoformat() if ticket.atualizado_em else None
-        })
-        
-    except Ticket.DoesNotExist:
-        return jsonify({
-            "success": False,
-            "message": "Ticket não encontrado"
-        }), 404
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "message": f"Erro interno: {str(e)}"
-        }), 500
-
-@app.put("/tickets/<ticket_id>/status")
-def atualizar_status_ticket(ticket_id):
-    """Atualiza o status de um ticket."""
-    try:
-        data = request.json
-        
-        if not data.get("status"):
-            return jsonify({
-                "success": False,
-                "message": "O campo status é obrigatório"
-            }), 400
-        
-        ticket = Ticket.get_by_id(ticket_id)
-        ticket.status = data["status"]
-        ticket.atualizado_em = datetime.now()
-        ticket.save()
-        
-        return jsonify({
-            "success": True,
-            "message": "Status atualizado",
-            "id": ticket.id,
-            "status": ticket.status
-        })
-        
-    except Ticket.DoesNotExist:
-        return jsonify({
-            "success": False,
-            "message": "Ticket não encontrado"
-        }), 404
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "message": f"Erro interno: {str(e)}"
-        }), 500
-
 # ROTA DE SAÚDE
 @app.get("/health")
 def health_check():
@@ -560,4 +647,5 @@ if __name__ == "__main__":
     print("🚀 Servidor Flask iniciando...")
     print(f"📅 {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print("🌐 API disponível em: http://localhost:5000")
+    print("🔓 CORS habilitado")
     app.run(debug=True, host="0.0.0.0", port=5000)
