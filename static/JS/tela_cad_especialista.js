@@ -71,18 +71,17 @@ document.addEventListener("DOMContentLoaded", () => {
   validarSenha();
 });
 
-// -----------------------------
-// BOTÃO DE ENVIAR RECUPERAÇÃO
-// -----------------------------
-document.getElementById("btnEnviarRecuperacao").addEventListener("click", function () {
-    const email = document.getElementById("emailRecuperar").value;
+// Seleciona o botão de cadastro pela classe que está no seu HTML
+const botaoCadastrar = document.querySelector('.btn-principal');
 
-    if (email.trim() === "") {
-        alert("Por favor, digite seu e-mail.");
-        return;
-    }
+// Adiciona o evento de clique ao botão
+botaoCadastrar.addEventListener('click', function(event) {
+    
+    // O preventDefault() é essencial aqui: ele impede que o formulário
+    // recarregue a página imediatamente, permitindo que o pop-up apareça.
+    event.preventDefault();
 
-    alert("Se o e-mail existir no sistema, enviaremos um link de recuperação.");
-    fecharModalSenha();
+    // Exibe a mensagem solicitada
+    alert("seus dados foram enviados para aprovação.");
+
 });
-
