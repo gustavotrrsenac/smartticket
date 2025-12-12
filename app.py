@@ -1,11 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from models import db, Usuario, Ticket, DocumentoEspecialista
 from uuid import uuid4
 from datetime import datetime
 import re
 import hashlib
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='')
 
 # Configuração do CORS (se necessário)
 # from flask_cors import CORS
@@ -22,6 +22,10 @@ def _db_close(exc):
     """Fecha conexão após cada requisição."""
     if not db.is_closed():
         db.close()
+
+@app.route("/")
+def rotaraiz():
+    return render_template('cad_usu.html')
 
 # VALIDAÇÕES
 def validar_email(email):
@@ -62,6 +66,8 @@ def validar_documentos_especialista(documentos):
 def hash_senha(senha):
     """Gera hash SHA-256 para senha."""
     return hashlib.sha256(senha.encode()).hexdigest()
+
+
 
 # ROTAS DE USUÁRIOS
 @app.post("/usuarios")
