@@ -208,7 +208,7 @@ header.glass-capsule {
 /* --- CARROSSEL (FULL SCREEN HERO) --- */
 .carousel-container {
     width: 100%;
-    height: 100vh;
+    height: 75vh;
     overflow: hidden;
     margin-bottom: 0;
     padding-top: 0;
@@ -255,7 +255,7 @@ header.glass-capsule {
 
 .carousel-reflection {
     width: 100%;
-    height: 100%;
+    height: 150%;
     background-size: cover;
     background-position: center bottom;
     transform: scaleY(-1);

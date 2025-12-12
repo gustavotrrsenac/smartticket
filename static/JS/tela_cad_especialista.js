@@ -71,3 +71,18 @@ document.addEventListener("DOMContentLoaded", () => {
   validarSenha();
 });
 
+// -----------------------------
+// BOTÃO DE ENVIAR RECUPERAÇÃO
+// -----------------------------
+document.getElementById("btnEnviarRecuperacao").addEventListener("click", function () {
+    const email = document.getElementById("emailRecuperar").value;
+
+    if (email.trim() === "") {
+        alert("Por favor, digite seu e-mail.");
+        return;
+    }
+
+    alert("Se o e-mail existir no sistema, enviaremos um link de recuperação.");
+    fecharModalSenha();
+});
+
