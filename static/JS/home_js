@@ -1,0 +1,67 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* --- CARROSSEL --- */
+    const wrapper = document.getElementById('carouselWrapper');
+    const images = document.querySelectorAll('.carousel-image');
+    const reflection = document.getElementById('carouselReflection');
+
+    let currentIndex = 0;
+    const totalImages = images.length;
+    const intervalTime = 3500; // Tempo em milissegundos
+
+    if (wrapper && totalImages > 0) {
+        wrapper.style.width = `${totalImages * 100}vw`;
+    }
+
+    function updateReflection() {
+        if (totalImages > 0 && reflection) {
+            const currentImageSrc = images[currentIndex].src;
+            reflection.style.backgroundImage = `url('${currentImageSrc}')`;
+        }
+    }
+
+    function nextSlide() {
+        currentIndex++;
+        if (currentIndex >= totalImages) {
+            currentIndex = 0;
+        }
+        if (wrapper) {
+            wrapper.style.transform = `translateX(-${currentIndex * 100}vw)`;
+        }
+        updateReflection();
+    }
+
+    updateReflection();
+
+    if (totalImages > 0) {
+        setInterval(nextSlide, intervalTime);
+    }
+
+
+    /* --- SCROLL SUAVE CORRIGIDO (COM OFFSET DO MENU) --- */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            // Evita conflito com o dropdown de perfil
+            if (this.closest('.profile-dropdown-container')) return;
+
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+
+            if (targetId && targetId !== '#') {
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Altura do header + um espaço extra (100px é um bom valor para o seu design)
+                    const headerOffset = 100; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        });
+    });
+});

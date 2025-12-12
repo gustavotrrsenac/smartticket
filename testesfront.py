@@ -56,6 +56,10 @@ def painel_adm():
 def tickets():
     return render_template('tickets_gerais.html')
 
+@app.get("/details") 
+def detalhes_do_perfil():
+    return render_template('ticket-details.html')
+
 ###################################################
 
 if __name__ == "__main__":
